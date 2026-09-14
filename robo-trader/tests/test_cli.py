@@ -84,3 +84,31 @@ def test_backtest_com_travas_de_risco(capsys):
     ])
     assert codigo == 0
     assert json.loads(capsys.readouterr().out)["max_drawdown"] >= -0.5
+
+
+def test_preflight_no_modo_paper_imprime_o_relatorio(capsys):
+    codigo = main(["preflight", "--mode", "paper", "--symbol", "BTC/USDT"])
+    saida = capsys.readouterr().out
+
+    assert codigo == 0
+    assert "PRONTO" in saida
+    assert "paper" in saida
+
+
+def test_preflight_reprova_e_devolve_codigo_de_erro(capsys):
+    # Notional maior que a carteira simulada: reprova sem tocar em corretora.
+    codigo = main(["preflight", "--mode", "paper", "--notional", "999999"])
+    saida = capsys.readouterr().out
+
+    assert codigo == 1
+    assert "NAO PRONTO" in saida
+
+
+def test_preflight_avisa_que_nao_enviou_ordem(capsys):
+    main(["preflight", "--mode", "paper"])
+    assert "Nenhuma ordem foi enviada" in capsys.readouterr().out
+
+
+def test_preflight_recusa_modo_desconhecido():
+    with pytest.raises(SystemExit):
+        main(["preflight", "--mode", "producao"])

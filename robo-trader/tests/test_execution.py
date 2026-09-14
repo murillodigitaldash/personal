@@ -1,4 +1,5 @@
 import pytest
+from conftest import ExchangeComMercado, ExchangeFalsa, ExchangeSemSandbox
 
 from robo_trader.domain import Order, OrderType, Side
 from robo_trader.execution import (
@@ -9,30 +10,6 @@ from robo_trader.execution import (
     PaperExecutionClient,
     build_execution_client,
 )
-
-
-class ExchangeFalsa:
-    """Dublê de exchange: registra as chamadas em vez de acessar a rede."""
-
-    def __init__(self):
-        self.ordens = []
-        self.sandbox = False
-
-    def set_sandbox_mode(self, ligado):
-        self.sandbox = ligado
-
-    def create_order(self, symbol, tipo, lado, quantidade, preco=None):
-        self.ordens.append((symbol, tipo, lado, quantidade, preco))
-        return {
-            "id": "1",
-            "average": preco or 100.0,
-            "filled": quantidade,
-            "fee": {"cost": 0.1},
-            "timestamp": 1704067200000,
-        }
-
-    def fetch_balance(self):
-        return {"USDT": {"free": 500.0, "used": 10.0}, "BTC": {"total": 0.25}}
 
 
 # -- paper -----------------------------------------------------------------
@@ -176,12 +153,6 @@ def test_ordem_invalida_e_recusada_na_criacao():
         Order(symbol="BTC/USDT", side=Side.BUY, quantity=1.0, type=OrderType.LIMIT)
 
 
-class ExchangeSemSandbox(ExchangeFalsa):
-    """Corretora que o ccxt expõe sem ambiente de homologação."""
-
-    set_sandbox_mode = None
-
-
 # -- testnet ---------------------------------------------------------------
 
 
@@ -298,3 +269,154 @@ def test_fabrica_nao_dispensa_as_travas_do_modo_real(monkeypatch):
 def test_fabrica_recusa_modo_desconhecido():
     with pytest.raises(ExecutionError, match="desconhecido"):
         build_execution_client("producao", "BTC/USDT")
+
+
+# -- regras de mercado -----------------------------------------------------
+
+def cliente_com_mercado(mercado=None, **kwargs):
+    exchange = ExchangeComMercado(mercado)
+    return cliente_testnet(exchange, **kwargs), exchange
+
+
+def test_quantidade_e_truncada_para_o_passo_do_mercado():
+    cliente, exchange = cliente_com_mercado()
+
+    fill = cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.123456), 100_000.0)
+
+    # Truncar, nunca arredondar para cima: comprar mais do que se pediu e' pior
+    # do que comprar um pouco menos.
+    assert exchange.ordens == [("BTC/USDT", "market", "buy", 0.123, None)]
+    assert fill.quantity == pytest.approx(0.123)
+
+
+def test_quantidade_abaixo_do_minimo_da_corretora_e_recusada():
+    cliente, exchange = cliente_com_mercado()
+
+    with pytest.raises(ExecutionError, match="abaixo do minimo"):
+        cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.0004), 100_000.0)
+    assert exchange.ordens == []
+
+
+def test_ordem_abaixo_do_notional_minimo_e_recusada():
+    cliente, exchange = cliente_com_mercado()
+
+    # 0.05 x 100 = 5 USDT, metade do minimo de 10 que a corretora aceita.
+    with pytest.raises(ExecutionError, match="notional"):
+        cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.05), 100.0)
+    assert exchange.ordens == []
+
+
+def test_corretora_sem_regras_publicadas_nao_bloqueia_a_ordem():
+    # ExchangeFalsa nao expoe load_markets: sem regras, o cliente envia o que recebeu.
+    exchange = ExchangeFalsa()
+    cliente = cliente_testnet(exchange)
+
+    cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.123456), 100_000.0)
+
+    assert exchange.ordens == [("BTC/USDT", "market", "buy", 0.123456, None)]
+
+
+def test_preco_da_ordem_limit_e_ajustado_ao_tick():
+    cliente, exchange = cliente_com_mercado()
+
+    cliente.submit(
+        Order(
+            symbol="BTC/USDT", side=Side.BUY, quantity=0.01,
+            type=OrderType.LIMIT, price=100_000.017,
+        )
+    )
+
+    assert exchange.ordens == [("BTC/USDT", "limit", "buy", 0.01, 100_000.01)]
+
+
+def test_regras_do_par_sao_carregadas_uma_unica_vez():
+    cliente, exchange = cliente_com_mercado()
+
+    cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.01), 100_000.0)
+    cliente.submit(Order(symbol="BTC/USDT", side=Side.SELL, quantity=0.01), 100_000.0)
+
+    assert exchange.carregamentos == 1
+
+
+def test_notional_usa_o_ticker_quando_nao_ha_preco_de_referencia():
+    class ComTicker(ExchangeComMercado):
+        def fetch_ticker(self, symbol):
+            return {"symbol": symbol, "last": 100.0}
+
+    exchange = ComTicker()
+    cliente = cliente_testnet(exchange)
+
+    # Ordem a mercado sem preco em mao: 0.05 x 100 = 5 USDT, abaixo do minimo de 10.
+    with pytest.raises(ExecutionError, match="notional"):
+        cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.05))
+    assert exchange.ordens == []
+
+
+def test_falha_ao_ler_as_regras_nao_vira_licenca_para_enviar_sem_ajuste():
+    """Rede caindo nao pode virar 'esse par nao tem regras'."""
+
+    class InstavelUmaVez(ExchangeComMercado):
+        def load_markets(self, reload=False):
+            if self.carregamentos == 0:
+                self.carregamentos += 1
+                raise ConnectionError("timeout na corretora")
+            return super().load_markets(reload)
+
+    exchange = InstavelUmaVez()
+    cliente = cliente_testnet(exchange)
+
+    with pytest.raises(ConnectionError):
+        cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.123456), 100_000.0)
+    assert exchange.ordens == []
+
+    cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.123456), 100_000.0)
+    assert exchange.ordens == [("BTC/USDT", "market", "buy", 0.123, None)]
+
+
+# -- leitura x ordem -------------------------------------------------------
+
+
+def test_saldo_e_posicao_sao_lidos_sem_a_autorizacao_de_ordem_real(monkeypatch):
+    """Ler nao move dinheiro: a trava do modo real e' sobre enviar ordem."""
+    monkeypatch.delenv(LIVE_ENV_FLAG, raising=False)
+    cliente = LiveExecutionClient(
+        symbol="BTC/USDT", exchange=ExchangeFalsa(), enabled=False,
+        api_key="k", api_secret="s",
+    )
+
+    assert cliente.balance().free == pytest.approx(500.0)
+    assert cliente.position("BTC/USDT").quantity == pytest.approx(0.25)
+
+
+def test_leitura_ainda_exige_credenciais(monkeypatch):
+    monkeypatch.delenv("ROBO_TRADER_API_KEY", raising=False)
+    monkeypatch.delenv("ROBO_TRADER_API_SECRET", raising=False)
+    cliente = LiveExecutionClient(symbol="BTC/USDT", exchange=ExchangeFalsa(), enabled=True)
+
+    with pytest.raises(ExecutionError, match="credenciais"):
+        cliente.balance()
+
+
+def test_afrouxar_a_leitura_nao_afrouxa_a_ordem(monkeypatch):
+    """A trava de ordem real continua inteira depois da mudanca na leitura."""
+    monkeypatch.delenv(LIVE_ENV_FLAG, raising=False)
+    exchange = ExchangeFalsa()
+    cliente = LiveExecutionClient(
+        symbol="BTC/USDT", exchange=exchange, enabled=True, api_key="k", api_secret="s"
+    )
+
+    cliente.balance()  # leitura passa
+    with pytest.raises(ExecutionError, match="modo real bloqueado"):
+        cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=1.0))
+    assert exchange.ordens == []
+
+
+def test_moeda_de_cotacao_vem_do_simbolo():
+    cliente = LiveExecutionClient(
+        symbol="BTC/BRL", exchange=ExchangeFalsa(), testnet=True, api_key="k", api_secret="s"
+    )
+    assert cliente.balance().currency == "BRL"
+
+
+def test_paper_usa_a_moeda_de_cotacao_do_simbolo():
+    assert PaperExecutionClient(symbol="ETH/BRL").balance().currency == "BRL"

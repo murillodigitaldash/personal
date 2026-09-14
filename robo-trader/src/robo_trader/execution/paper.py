@@ -5,7 +5,7 @@ from __future__ import annotations
 import pandas as pd
 
 from ..backtest.portfolio import Portfolio
-from ..domain import Fill, Order, OrderType, Position, Side
+from ..domain import Fill, Order, OrderType, Position, Side, quote_of
 from .base import Balance, ExecutionError
 
 
@@ -24,10 +24,10 @@ class PaperExecutionClient:
         initial_cash: float = 10_000.0,
         fee_rate: float = 0.001,
         slippage_rate: float = 0.0005,
-        quote_currency: str = "USDT",
+        quote_currency: str | None = None,
     ) -> None:
         self.symbol = symbol
-        self.quote_currency = quote_currency
+        self.quote_currency = quote_currency or quote_of(symbol)
         self.portfolio = Portfolio(
             symbol=symbol,
             initial_cash=initial_cash,

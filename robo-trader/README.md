@@ -35,6 +35,9 @@ robo-trader backtest --csv data/BTCUSDT_1h.csv --symbol BTC/USDT \
 
 # sem dados em mãos: candles sintéticos para exercitar o motor
 robo-trader backtest --synthetic --strategy ema_crossover --param fast=12 --param slow=26
+
+# antes da primeira ordem: confere credenciais, conexão, regras do par e saldo
+robo-trader preflight --mode testnet --symbol BTC/USDT --notional 20
 ```
 
 Saída típica:
@@ -87,7 +90,8 @@ src/robo_trader/
   strategies/      candles -> peso alvo da carteira, em [-1, 1]
   backtest/        carteira simulada, motor candle a candle, métricas, relatório
   risk/            teto de exposição, stop/alvo, limite diário e kill switch
-  execution/       interface de execução: paper, testnet e live (real, travada)
+  execution/       interface de execução: paper, testnet e live (real, travada),
+                   regras do par e preflight
   cli.py           comandos fetch / backtest / strategies
 ```
 
@@ -172,6 +176,16 @@ Pedir `"live"` na fábrica **não** dispensa as duas travas: o nome do modo
 costuma vir de arquivo de configuração, e isso é fraco demais para ser a única
 coisa entre um script e o dinheiro de verdade.
 
+### Ler não é operar
+
+As travas do modo real valem para **enviar ordem**. `balance()` e `position()`
+pedem só credenciais: leitura não move dinheiro, e exigir a autorização de ordem
+para conferir a conta empurraria quem está conferindo a ligar a trava antes da
+hora — exatamente o que ela deveria evitar. `submit()` continua exigindo as duas.
+
+A moeda de cotação sai do próprio par: quem opera `BTC/BRL` tem o saldo conferido
+em BRL, não em USDT.
+
 ### Homologação na testnet
 
 As chaves da testnet são separadas das reais — gere as suas em
@@ -192,12 +206,75 @@ homologação no CCXT, o cliente recusa em vez de cair silenciosamente na conta 
 histórico artificiais; homologar o *envio de ordem* lá é útil, medir estratégia
 com dados de lá não é.
 
+### Preflight: o que conferir antes da primeira ordem
+
+Homologação costuma falhar sempre pelas mesmas coisas — credencial do ambiente
+errado, sandbox que não ligou, par fora da lista, ordem abaixo do notional
+mínimo. Descobrir uma de cada vez, a cada ordem recusada, é caro. O `preflight`
+junta tudo num relatório e **não envia ordem nenhuma**:
+
+```bash
+robo-trader preflight --mode testnet --notional 20
+```
+
+```
+Preflight testnet em BTC/USDT
+-----------------------------
+[ok] modo: homologacao: saldo ficticio, ordem nao vale dinheiro real
+[FALHA] credenciais: faltando ROBO_TRADER_API_KEY/ROBO_TRADER_API_SECRET no .env ou no ambiente
+[ok] conexao: binance respondeu em testnet
+[ok] regras do par: passo 0.00001, minimo 0.00001, notional minimo 5
+[FALHA] saldo: nao foi possivel ler o saldo: credenciais da testnet ausentes (API key/secret)
+[ok] notional: ordem de 20.00 cabe no par (saldo nao verificado)
+
+NAO PRONTO para enviar ordem em testnet
+```
+
+Ele confere, nesta ordem: as travas do modo, as credenciais, a conexão com o
+ambiente certo, as regras do par, **as permissões da chave**, o saldo e o notional
+pretendido.
+
+Sai com código 1 quando reprova, então serve em script e em CI. Um detalhe de
+propósito: o relatório nunca afirma o que não conseguiu verificar — sem saldo
+lido, o notional sai como "saldo não verificado", e não como "cabe"; sem resposta
+da corretora sobre a chave, as permissões saem como "não verificadas".
+
+A checagem de permissão é a que mais economiza tempo: chave só de leitura é
+recusada pela corretora na hora da ordem, muito depois de tudo parecer certo.
+O preflight lê `enableSpotAndMarginTrading` e reprova antes — e também reprova
+chave com **saque habilitado**, que não tem por que existir num robô.
+
+O `--mode live` vai sempre reprovar a trava `enabled=True`, porque essa
+autorização mora no código de quem opera, não na linha de comando. A CLI não
+tem como liberar dinheiro real, e isso é intencional.
+
+### Regras do par
+
+Corretora recusa ordem que não respeite o passo de quantidade, o mínimo do par
+ou o notional mínimo — na Binance o BTC/USDT anda com passo de 0.00001 BTC e
+notional mínimo de 5 USDT. Descobrir isso com a ordem recusada, no meio de uma
+operação, custa a operação.
+
+Por isso o cliente lê as regras publicadas pela corretora (uma vez por sessão) e,
+antes de enviar:
+
+- **trunca a quantidade** para o passo do par — sempre para baixo, porque comprar
+  mais do que a estratégia pediu é pior do que comprar um pouco menos;
+- **ajusta o preço** da ordem limit ao tick;
+- **recusa antes de enviar** o que ficou abaixo do mínimo do par ou do notional
+  mínimo, dizendo qual dos dois foi.
+
+Falha de rede ao ler as regras não vira "esse par não tem regras": a ordem é
+recusada e a leitura é tentada de novo na próxima, para que uma queda de conexão
+nunca resulte em ordem enviada sem ajuste.
+
 ### Antes de ligar o dinheiro real
 
 1. Backtest com custos realistas e walk-forward fora da amostra.
 2. Paper trading em tempo real, para pegar divergência entre simulação e mercado.
-3. Testnet, para validar o caminho da ordem de ponta a ponta.
-4. Só então `live`, com capital pequeno e `max_drawdown` apertado.
+3. `preflight` verde na testnet, com o notional que se pretende operar.
+4. Testnet, para validar o caminho da ordem de ponta a ponta.
+5. Só então `live`, com capital pequeno e `max_drawdown` apertado.
 
 ### Credenciais
 
@@ -215,10 +292,12 @@ allowlist de IP, e só as permissões que o robô precisa de fato.
 pytest
 ```
 
-145 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
+177 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
 carteira, ausência de antecipação de dados, disparo de stop e alvo, kill switch,
-métricas, paginação da corretora (com dublê, sem rede), as travas do modo real e o
-roteamento da testnet.
+métricas, paginação da corretora (com dublê, sem rede), as travas do modo real, o
+roteamento da testnet, o ajuste de quantidade e preço às regras do par, a
+separação entre leitura e ordem, e o relatório de preflight (incluindo permissões
+da chave). Nenhum teste toca a rede.
 
 ## Próximos passos
 

@@ -5,13 +5,15 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import sys
 
 import pandas as pd
 
 from .backtest import BacktestConfig, BacktestEngine
-from .config import load_env_file
+from .config import EXCHANGE_ENV, load_env_file
 from .data import CsvMarketData, generate_ohlcv, write_ohlcv
+from .execution import MODES, build_execution_client, preflight
 from .risk import RiskConfig
 from .strategies import available, build_strategy
 
@@ -105,6 +107,17 @@ def cmd_backtest(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_preflight(args: argparse.Namespace) -> int:
+    """Confere o caminho da ordem antes da primeira ordem de verdade."""
+    extras = {} if args.mode == "paper" else {"exchange_id": args.exchange}
+    client = build_execution_client(args.mode, args.symbol, **extras)
+
+    report = preflight(client, notional=args.notional)
+    print(report.summary())
+    print("\nNenhuma ordem foi enviada.")
+    return 0 if report.ok else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="robo-trader", description="Robo trader de criptomoedas: dados, backtest e execucao"
@@ -152,6 +165,20 @@ def build_parser() -> argparse.ArgumentParser:
     backtest.add_argument("--report", default=None, help="diretorio para gravar os relatorios")
     backtest.add_argument("--json", action="store_true", help="imprime as metricas em JSON")
     backtest.set_defaults(func=cmd_backtest)
+
+    preflight_cmd = subparsers.add_parser(
+        "preflight", help="confere credenciais, conexao, regras do par e saldo sem enviar ordem"
+    )
+    preflight_cmd.add_argument("--mode", default="testnet", choices=MODES)
+    preflight_cmd.add_argument("--symbol", default="BTC/USDT")
+    preflight_cmd.add_argument("--exchange", default=os.getenv(EXCHANGE_ENV, "binance"))
+    preflight_cmd.add_argument(
+        "--notional",
+        type=float,
+        default=None,
+        help="tamanho pretendido da ordem na moeda de cotacao, para conferir minimo e saldo",
+    )
+    preflight_cmd.set_defaults(func=cmd_preflight)
 
     return parser
 

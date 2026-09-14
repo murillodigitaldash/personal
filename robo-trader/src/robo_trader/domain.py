@@ -134,3 +134,10 @@ class AccountState:
         if self.day_start_equity <= 0:
             return 0.0
         return self.equity / self.day_start_equity - 1.0
+
+
+def quote_of(symbol: str, default: str = "USDT") -> str:
+    """Moeda de cotacao do par: 'BTC/BRL' -> 'BRL', 'BTC/USDT:USDT' -> 'USDT'."""
+    if "/" not in symbol:
+        return default
+    return symbol.split("/", 1)[1].split(":", 1)[0] or default
