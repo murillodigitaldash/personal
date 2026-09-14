@@ -1,29 +1,35 @@
-"""Execucao real via CCXT. Desligada por padrao."""
+"""Execucao via CCXT: testnet para homologacao, real desligado por padrao."""
 
 from __future__ import annotations
 
 import logging
-import os
 
 import pandas as pd
 
-from ..domain import Fill, Order, OrderType, Position, Side
+from ..config import (
+    EXCHANGE_ENV,
+    LIVE_ENV_FLAG,
+    TESTNET_ENV_FLAG,
+    ExchangeCredentials,
+    env_flag,
+)
+from ..domain import Fill, Order, OrderType, Position
 from .base import Balance, ExecutionError
 
 logger = logging.getLogger(__name__)
 
-LIVE_ENV_FLAG = "ROBO_TRADER_ALLOW_LIVE"
+__all__ = ["LIVE_ENV_FLAG", "TESTNET_ENV_FLAG", "LiveExecutionClient"]
 
 
 class LiveExecutionClient:
-    """Envia ordens de verdade para a exchange.
+    """Envia ordens para a corretora, na testnet ou valendo dinheiro.
 
-    Exige duas autorizacoes independentes: `enabled=True` no codigo e a variavel de
-    ambiente `ROBO_TRADER_ALLOW_LIVE=1`. Sem as duas, `submit` recusa a ordem. A
-    intencao e que ninguem mande dinheiro real por engano ao rodar um script de teste.
+    Em `testnet=True` as ordens vao para o ambiente de homologacao da corretora,
+    com saldo ficticio: basta ter credenciais de testnet (que sao separadas das
+    reais). Sem testnet, enviar qualquer ordem exige duas autorizacoes
+    independentes — `enabled=True` no codigo e `ROBO_TRADER_ALLOW_LIVE=1` no
+    ambiente — para que ninguem mande dinheiro real por engano rodando um script.
     """
-
-    mode = "live"
 
     def __init__(
         self,
@@ -32,6 +38,7 @@ class LiveExecutionClient:
         api_key: str | None = None,
         api_secret: str | None = None,
         enabled: bool = False,
+        testnet: bool = False,
         quote_currency: str = "USDT",
         exchange=None,
     ) -> None:
@@ -39,27 +46,47 @@ class LiveExecutionClient:
         self.exchange_id = exchange_id
         self.quote_currency = quote_currency
         self.enabled = enabled
-        self._api_key = api_key or os.getenv("ROBO_TRADER_API_KEY")
-        self._api_secret = api_secret or os.getenv("ROBO_TRADER_API_SECRET")
+        self.testnet = testnet
+        self.mode = "testnet" if testnet else "live"
+
+        do_ambiente = ExchangeCredentials.from_env()
+        self.credentials = ExchangeCredentials(
+            api_key=api_key or do_ambiente.api_key,
+            api_secret=api_secret or do_ambiente.api_secret,
+        )
+
         self._exchange = exchange
+        self._sandbox_applied = False
+
+    @classmethod
+    def from_env(cls, symbol: str, **kwargs):
+        """Cliente configurado pelas variaveis de ambiente (apos `load_env_file`)."""
+        import os
+
+        kwargs.setdefault("exchange_id", os.getenv(EXCHANGE_ENV, "binance"))
+        kwargs.setdefault("testnet", env_flag(TESTNET_ENV_FLAG))
+        return cls(symbol=symbol, **kwargs)
 
     # -- travas ----------------------------------------------------------
 
     @staticmethod
     def env_allows_live() -> bool:
-        return os.getenv(LIVE_ENV_FLAG, "0").strip() == "1"
+        return env_flag(LIVE_ENV_FLAG)
 
-    def ensure_live_allowed(self) -> None:
-        if not self.enabled:
-            raise ExecutionError(
-                "modo real desligado: construa o cliente com enabled=True para operar valendo"
-            )
-        if not self.env_allows_live():
-            raise ExecutionError(
-                f"modo real bloqueado: defina {LIVE_ENV_FLAG}=1 no ambiente para liberar ordens reais"
-            )
-        if not (self._api_key and self._api_secret):
-            raise ExecutionError("credenciais da exchange ausentes (API key/secret)")
+    def ensure_allowed(self) -> None:
+        """Recusa a operacao quando falta alguma autorizacao."""
+        if not self.testnet:
+            if not self.enabled:
+                raise ExecutionError(
+                    "modo real desligado: construa o cliente com enabled=True para operar valendo"
+                )
+            if not self.env_allows_live():
+                raise ExecutionError(
+                    f"modo real bloqueado: defina {LIVE_ENV_FLAG}=1 no ambiente para liberar ordens reais"
+                )
+        if not self.credentials.complete:
+            ambiente = "testnet" if self.testnet else "exchange"
+            raise ExecutionError(f"credenciais da {ambiente} ausentes (API key/secret)")
 
     # -- conexao ---------------------------------------------------------
 
@@ -74,23 +101,36 @@ class LiveExecutionClient:
                 ) from exc
             self._exchange = getattr(ccxt, self.exchange_id)(
                 {
-                    "apiKey": self._api_key,
-                    "secret": self._api_secret,
+                    "apiKey": self.credentials.api_key,
+                    "secret": self.credentials.api_secret,
                     "enableRateLimit": True,
                 }
             )
+
+        if self.testnet and not self._sandbox_applied:
+            self._enable_sandbox(self._exchange)
+            self._sandbox_applied = True
+
         return self._exchange
+
+    def _enable_sandbox(self, exchange) -> None:
+        """Aponta o cliente ccxt para os endpoints de testnet da corretora."""
+        setter = getattr(exchange, "set_sandbox_mode", None)
+        if setter is None:
+            raise ExecutionError(f"{self.exchange_id} nao expoe modo testnet no ccxt")
+        setter(True)
+        logger.info("cliente %s em modo testnet", self.exchange_id)
 
     # -- operacoes -------------------------------------------------------
 
     def submit(self, order: Order, reference_price: float | None = None) -> Fill:
-        self.ensure_live_allowed()
+        self.ensure_allowed()
         if order.symbol != self.symbol:
             raise ExecutionError(f"cliente configurado para {self.symbol}, recebeu {order.symbol}")
 
         logger.warning(
-            "enviando ordem REAL %s %s %.8f em %s",
-            order.side.value, order.type.value, order.quantity, self.symbol,
+            "enviando ordem %s %s %s %.8f em %s",
+            self.mode.upper(), order.side.value, order.type.value, order.quantity, self.symbol,
         )
 
         if order.type is OrderType.MARKET:
@@ -124,7 +164,7 @@ class LiveExecutionClient:
         )
 
     def position(self, symbol: str) -> Position:
-        self.ensure_live_allowed()
+        self.ensure_allowed()
         base = symbol.split("/")[0]
         balances = self.exchange.fetch_balance()
         quantity = float(balances.get(base, {}).get("total") or 0.0)
@@ -132,7 +172,7 @@ class LiveExecutionClient:
         return Position(symbol=symbol, quantity=quantity)
 
     def balance(self) -> Balance:
-        self.ensure_live_allowed()
+        self.ensure_allowed()
         balances = self.exchange.fetch_balance()
         entry = balances.get(self.quote_currency, {})
         return Balance(

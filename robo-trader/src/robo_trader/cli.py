@@ -10,6 +10,7 @@ import sys
 import pandas as pd
 
 from .backtest import BacktestConfig, BacktestEngine
+from .config import load_env_file
 from .data import CsvMarketData, generate_ohlcv, write_ohlcv
 from .risk import RiskConfig
 from .strategies import available, build_strategy
@@ -156,6 +157,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Credenciais e travas saem do .env do diretorio de trabalho, quando existir.
+    load_env_file()
     parser = build_parser()
     args = parser.parse_args(argv)
     logging.basicConfig(

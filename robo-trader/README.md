@@ -81,12 +81,13 @@ resultado.save("reports/ema")
 ```
 src/robo_trader/
   domain.py        Order, Fill, Trade, Position — tipos comuns a todas as camadas
+  config.py        leitura do .env e credenciais, sem dependência externa
   indicators.py    EMA, SMA, RSI, ATR, Donchian
   data/            ingestão: schema/validação, CCXT, CSV, candles sintéticos
   strategies/      candles -> peso alvo da carteira, em [-1, 1]
   backtest/        carteira simulada, motor candle a candle, métricas, relatório
   risk/            teto de exposição, stop/alvo, limite diário e kill switch
-  execution/       interface de execução: paper (simulada) e live (real, travada)
+  execution/       interface de execução: paper, testnet e live (real, travada)
   cli.py           comandos fetch / backtest / strategies
 ```
 
@@ -148,20 +149,65 @@ por nível de volume.
 O bloqueio diário expira na virada do dia. O kill switch não religa sozinho — nem
 depois que o capital se recupera.
 
-## Execução real
+## Modos de execução
 
-`LiveExecutionClient` fala com a corretora via CCXT e exige **duas autorizações
-independentes** para enviar qualquer ordem:
+Três modos atrás da mesma interface `ExecutionClient`, o que permite trocar
+simulação por dinheiro real sem mexer em estratégia nenhuma:
 
-1. `enabled=True` no código;
-2. `ROBO_TRADER_ALLOW_LIVE=1` no ambiente.
+| Modo | O que faz | O que exige |
+|---|---|---|
+| `paper` | Carteira em memória, sem tocar na corretora | nada |
+| `testnet` | Ordens no ambiente de homologação, saldo fictício | credenciais de testnet |
+| `live` | Ordens reais, com dinheiro de verdade | `enabled=True` **e** `ROBO_TRADER_ALLOW_LIVE=1` |
 
-Faltando uma delas, `submit` recusa a ordem. Credenciais vêm de
-`ROBO_TRADER_API_KEY` / `ROBO_TRADER_API_SECRET` — copie `.env.example` para
-`.env` e não comite o arquivo.
+```python
+from robo_trader import build_execution_client, load_env_file
 
-Nenhuma estratégia conversa com a corretora diretamente: tudo passa pela
-interface `ExecutionClient`, e é por isso que a trava mora em um lugar só.
+load_env_file()                                    # lê o .env do diretório atual
+cliente = build_execution_client("testnet", "BTC/USDT")
+print(cliente.balance())
+```
+
+Pedir `"live"` na fábrica **não** dispensa as duas travas: o nome do modo
+costuma vir de arquivo de configuração, e isso é fraco demais para ser a única
+coisa entre um script e o dinheiro de verdade.
+
+### Homologação na testnet
+
+As chaves da testnet são separadas das reais — gere as suas em
+[testnet.binance.vision](https://testnet.binance.vision) e coloque no `.env`:
+
+```bash
+cp .env.example .env
+# ROBO_TRADER_API_KEY / ROBO_TRADER_API_SECRET = chaves da testnet
+# ROBO_TRADER_TESTNET=1
+# ROBO_TRADER_ALLOW_LIVE=0
+```
+
+Internamente o modo testnet chama `set_sandbox_mode(True)` no cliente CCXT, que
+redireciona os endpoints. Se a corretora configurada não tiver ambiente de
+homologação no CCXT, o cliente recusa em vez de cair silenciosamente na conta real.
+
+**Os candles continuam vindo da rede principal.** A testnet tem liquidez e
+histórico artificiais; homologar o *envio de ordem* lá é útil, medir estratégia
+com dados de lá não é.
+
+### Antes de ligar o dinheiro real
+
+1. Backtest com custos realistas e walk-forward fora da amostra.
+2. Paper trading em tempo real, para pegar divergência entre simulação e mercado.
+3. Testnet, para validar o caminho da ordem de ponta a ponta.
+4. Só então `live`, com capital pequeno e `max_drawdown` apertado.
+
+### Credenciais
+
+Vêm de `ROBO_TRADER_API_KEY` / `ROBO_TRADER_API_SECRET`, pelo ambiente ou pelo
+`.env` (que está no `.gitignore`). Variável exportada no shell vence o arquivo.
+O `repr` das credenciais nunca imprime os valores, para que chave não vaze em log
+ou traceback.
+
+Na corretora, para a chave que o robô vai usar: **saques desabilitados**,
+allowlist de IP, e só as permissões que o robô precisa de fato.
 
 ## Testes
 
@@ -169,17 +215,17 @@ interface `ExecutionClient`, e é por isso que a trava mora em um lugar só.
 pytest
 ```
 
-126 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
+145 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
 carteira, ausência de antecipação de dados, disparo de stop e alvo, kill switch,
-métricas, paginação da corretora (com dublê, sem rede) e as travas do modo real.
+métricas, paginação da corretora (com dublê, sem rede), as travas do modo real e o
+roteamento da testnet.
 
 ## Próximos passos
 
 1. Walk-forward e otimização de parâmetros com validação fora da amostra.
-2. Runner de paper trading em tempo real sobre o `PaperExecutionClient`.
+2. Runner em tempo real, reaproveitando os três modos de execução.
 3. Carteira com vários símbolos e alocação entre eles.
 4. Persistência de estado e observabilidade (logs estruturados, alertas).
-5. Homologação em testnet antes de qualquer ordem com dinheiro real.
 
 ## Aviso
 
