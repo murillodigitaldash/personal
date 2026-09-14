@@ -456,3 +456,63 @@ def test_ordem_carrega_identidade_do_candle():
 
     # 1704106800000 = 2024-01-01 11:00 UTC, o ultimo candle fechado as 12:00.
     assert cliente.recebidas[0].client_id == "BTCUSDT-buy-1704106800000"
+
+
+# -- tetos de giro dentro do runner ----------------------------------------
+
+
+def test_teto_por_ordem_limita_a_compra():
+    from robo_trader.risk import RiskConfig
+
+    candles = make_candles([100.0, 110.0, 120.0], start="2024-01-01 09:00", freq="1h")
+    cliente = PaperExecutionClient(
+        symbol="BTC/USDT", initial_cash=1_000.0, fee_rate=0.0, slippage_rate=0.0
+    )
+    runner = runner_de_teste(
+        candles, "2024-01-01 12:00:02", strategy=PesoControlado(1.0), client=cliente,
+        risk=RiskConfig(max_trade_notional=200.0),
+    )
+
+    decisao = runner.step()
+
+    assert decisao.action == "comprou"
+    assert decisao.fill.quantity * decisao.fill.price == pytest.approx(200.0)
+
+
+def test_cooldown_bloqueia_o_giro_seguinte():
+    from robo_trader.risk import RiskConfig, RiskManager
+
+    candles = make_candles([100.0, 110.0, 120.0], start="2024-01-01 09:00", freq="1h")
+    gestor = RiskManager(RiskConfig(trade_cooldown=3_600.0))
+    gestor.register_trade(pd.Timestamp("2024-01-01 10:30", tz="UTC"), 100.0)
+    runner = runner_de_teste(
+        candles, "2024-01-01 12:00:02", strategy=PesoControlado(1.0), risk=gestor,
+    )
+
+    decisao = runner.step()
+
+    assert decisao.action == "bloqueado"
+    assert "espera" in decisao.reason
+
+
+def test_teto_nao_prende_o_robo_dentro_da_posicao():
+    """Teto limita risco novo. Barrar a saida transformaria protecao em armadilha."""
+    from robo_trader.risk import RiskConfig
+
+    candles = make_candles([100.0, 100.0, 300.0], start="2024-01-01 09:00", freq="1h")
+    cliente = PaperExecutionClient(
+        symbol="BTC/USDT", initial_cash=1_000.0, fee_rate=0.0, slippage_rate=0.0
+    )
+    estrategia = PesoControlado(1.0)
+    runner = runner_de_teste(
+        candles, "2024-01-01 11:00:02", strategy=estrategia, client=cliente,
+        risk=RiskConfig(max_trade_notional=200.0),
+    )
+    runner.step()  # compra 2 BTC a 100, no teto
+
+    estrategia.peso = 0.0
+    runner._now = lambda: pd.Timestamp("2024-01-01 12:00:02", tz="UTC")
+    decisao = runner.step()
+
+    assert decisao.action == "vendeu"
+    assert decisao.fill.quantity == pytest.approx(2.0)  # saida inteira, valendo 600

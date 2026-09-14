@@ -252,7 +252,12 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--min-notional", type=float, default=10.0)
     run.add_argument("--rebalance-threshold", type=float, default=0.02)
     run.add_argument("--steps", type=int, default=None, help="para depois de N candles")
-    run.add_argument("--once", action="store_true", help="decide uma vez e sai (util em cron)")
+    run.add_argument(
+        "--once",
+        action="store_true",
+        help="decide uma vez e sai. Serve em cron apenas em testnet/live, onde a posicao "
+        "mora na corretora: em paper o estado e de memoria e cada chamada comeca zerada",
+    )
     run.set_defaults(func=cmd_run)
 
     preflight_cmd = subparsers.add_parser(

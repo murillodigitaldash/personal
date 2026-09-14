@@ -89,6 +89,7 @@ class Runner:
         self.max_candle_age = max_candle_age
         self._now = now or (lambda: pd.Timestamp.now(tz="UTC"))
         self._sleep = sleep or time.sleep
+        self._notional_block: str | None = None
 
     # -- leitura ---------------------------------------------------------
 
@@ -166,10 +167,14 @@ class Runner:
 
         ordem = self._order_for(alvo, atual, quantidade, livre, price, timestamp)
         if ordem is None:
-            motivo = self.risk.blocked_reason if bloqueado else "sem desvio que pague o giro"
-            return Decision(**base, action="bloqueado" if bloqueado else "manteve", reason=motivo)
+            if bloqueado:
+                return Decision(**base, action="bloqueado", reason=self.risk.blocked_reason)
+            if self._notional_block:
+                return Decision(**base, action="bloqueado", reason=self._notional_block)
+            return Decision(**base, action="manteve", reason="sem desvio que pague o giro")
 
         fill = self.client.submit(ordem, price)
+        self.risk.register_trade(timestamp, fill.quantity * fill.price)
         acao = "comprou" if ordem.side is Side.BUY else "vendeu"
         motivo = self.risk.blocked_reason if bloqueado else f"peso {atual:+.2f} -> {alvo:+.2f}"
         return Decision(**base, action=acao, reason=motivo, fill=fill)
@@ -188,6 +193,7 @@ class Runner:
         Espelha `Portfolio.rebalance` para que paper, testnet e live tomem a mesma
         decisao que o backtest tomaria no mesmo candle.
         """
+        self._notional_block = None
         cfg = self.risk.config
         if abs(alvo - atual) < cfg.rebalance_threshold and abs(alvo) > EPSILON:
             return None
@@ -204,6 +210,18 @@ class Runner:
             # de referencia, e dimensionar sem isso faz a corretora recusar por saldo.
             custo_unitario = price * (1 + self.slippage_rate) * (1 + self.fee_rate)
             tamanho = min(tamanho, max(livre / custo_unitario, 0.0))
+
+        # Teto e espera valem so para risco novo. Barrar a saida transformaria a
+        # protecao em armadilha: o robo ficaria preso dentro da posicao justamente
+        # quando precisa sair. Inversao direta (long -> short) escapa do teto, mas
+        # as estrategias de hoje so vao de 0 a 1.
+        if abs(alvo) > abs(atual):
+            pedido = tamanho * price
+            permitido = self.risk.allowed_notional(timestamp, pedido)
+            if permitido <= 0:
+                self._notional_block = self.risk.notional_blocked_reason
+                return None
+            tamanho = permitido / price
 
         zerando = abs(tamanho - abs(quantidade)) <= EPSILON and quantidade != 0
         if tamanho * price < cfg.min_trade_notional and not zerando:
