@@ -131,12 +131,25 @@ def test_run_once_no_modo_paper_decide_sem_tocar_a_rede(tmp_path, capsys):
     assert "paper" in saida
 
 
-def test_run_recusa_o_modo_live_na_linha_de_comando(tmp_path):
+def test_run_live_exige_a_flag_explicita(tmp_path):
+    """Escolher o modo nao e autorizacao: --mode costuma vir de arquivo de config."""
     arquivo = tmp_path / "BTCUSDT_1h.csv"
     write_ohlcv(generate_ohlcv(periods=50, timeframe="1h"), arquivo)
 
-    with pytest.raises(SystemExit, match="live"):
+    with pytest.raises(SystemExit, match="--live"):
         main(["run", "--once", "--mode", "live", "--csv", str(arquivo)])
+
+
+def test_run_live_com_a_flag_ainda_exige_a_variavel_de_ambiente(tmp_path, monkeypatch):
+    """Duas autorizacoes independentes: a flag digitada e a variavel no ambiente."""
+    from robo_trader.config import LIVE_ENV_FLAG
+
+    monkeypatch.delenv(LIVE_ENV_FLAG, raising=False)
+    arquivo = tmp_path / "BTCUSDT_1h.csv"
+    write_ohlcv(generate_ohlcv(periods=50, timeframe="1h"), arquivo)
+
+    with pytest.raises(SystemExit, match=LIVE_ENV_FLAG):
+        main(["run", "--once", "--mode", "live", "--live", "--csv", str(arquivo)])
 
 
 def test_run_nao_oferece_stop_loss(capsys):
@@ -144,3 +157,17 @@ def test_run_nao_oferece_stop_loss(capsys):
     with pytest.raises(SystemExit):
         main(["run", "--once", "--mode", "paper", "--stop-loss", "0.05"])
     assert "--stop-loss" in capsys.readouterr().err
+
+
+def test_run_aceita_as_travas_de_giro(tmp_path, capsys):
+    """As travas de volume e espera precisam chegar ao RiskConfig, nao so existir."""
+    arquivo = tmp_path / "BTCUSDT_1h.csv"
+    write_ohlcv(generate_ohlcv(periods=200, timeframe="1h", seed=3), arquivo)
+
+    codigo = main([
+        "run", "--once", "--mode", "paper", "--csv", str(arquivo),
+        "--trade-cooldown", "600", "--max-trade-notional", "50",
+        "--max-daily-notional", "200",
+    ])
+
+    assert codigo == 0

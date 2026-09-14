@@ -12,6 +12,7 @@ dinheiro de verdade.
 
 from __future__ import annotations
 
+import logging
 import time
 from dataclasses import dataclass
 from typing import Callable
@@ -21,8 +22,11 @@ import pandas as pd
 from .backtest.portfolio import EPSILON
 from .data.schema import normalize_ohlcv, timeframe_to_timedelta
 from .domain import Fill, Order, Side
+from .execution.base import ExecutionError
 from .risk import RiskConfig, RiskManager
 from .strategies.base import Strategy
+
+logger = logging.getLogger(__name__)
 
 __all__ = ["Decision", "Runner"]
 
@@ -173,7 +177,16 @@ class Runner:
                 return Decision(**base, action="bloqueado", reason=self._notional_block)
             return Decision(**base, action="manteve", reason="sem desvio que pague o giro")
 
-        fill = self.client.submit(ordem, price)
+        try:
+            fill = self.client.submit(ordem, price)
+        except ExecutionError as exc:
+            # Recusa e evento normal de operacao (notional, saldo que mudou entre a
+            # decisao e o envio, corretora fora do ar): registra e segue. Derrubar o
+            # processo deixaria posicao aberta sem ninguem olhando, que e pior do
+            # que a ordem perdida.
+            logger.warning("ordem recusada em %s: %s", self.symbol, exc)
+            return Decision(**base, action="recusado", reason=str(exc))
+
         self.risk.register_trade(timestamp, fill.quantity * fill.price)
         acao = "comprou" if ordem.side is Side.BUY else "vendeu"
         motivo = self.risk.blocked_reason if bloqueado else f"peso {atual:+.2f} -> {alvo:+.2f}"

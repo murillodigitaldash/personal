@@ -516,3 +516,33 @@ def test_teto_nao_prende_o_robo_dentro_da_posicao():
 
     assert decisao.action == "vendeu"
     assert decisao.fill.quantity == pytest.approx(2.0)  # saida inteira, valendo 600
+
+
+def test_ordem_recusada_pela_corretora_nao_derruba_o_robo():
+    """Recusa da corretora e um evento normal, nao o fim do robo.
+
+    Notional que ficou abaixo do minimo, saldo que mudou entre a decisao e o
+    envio, indisponibilidade momentanea: nada disso pode matar o processo que
+    esta operando sozinho.
+    """
+    from robo_trader.execution import ExecutionError
+
+    class ClienteQueRecusa(PaperExecutionClient):
+        def submit(self, order, reference_price=None):
+            raise ExecutionError("notional 3.00 abaixo do minimo do par BTC/USDT: 5.0")
+
+    candles = make_candles([100.0] * 12, start="2024-01-01", freq="1h")
+    runner = Runner(
+        source=FonteFalsa(candles),
+        strategy=PesoControlado(1.0),
+        client=ClienteQueRecusa(
+            symbol="BTC/USDT", initial_cash=1_000.0, fee_rate=0.0, slippage_rate=0.0
+        ),
+        symbol="BTC/USDT", timeframe="1h", fee_rate=0.0, slippage_rate=0.0,
+        now=lambda: candles.index[-1] + pd.Timedelta("1h"),
+    )
+
+    decisao = runner.step()
+
+    assert decisao.action == "recusado"
+    assert "abaixo do minimo" in decisao.reason

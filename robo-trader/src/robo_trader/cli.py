@@ -11,7 +11,7 @@ import sys
 import pandas as pd
 
 from .backtest import BacktestConfig, BacktestEngine
-from .config import EXCHANGE_ENV, load_env_file
+from .config import EXCHANGE_ENV, LIVE_ENV_FLAG, env_flag, load_env_file
 from .data import CsvMarketData, generate_ohlcv, write_ohlcv
 from .data.schema import timeframe_to_timedelta
 from .execution import MODES, build_execution_client, preflight
@@ -123,10 +123,19 @@ def cmd_preflight(args: argparse.Namespace) -> int:
 def cmd_run(args: argparse.Namespace) -> int:
     """Opera em tempo real: estrategia -> risco -> execucao, um passo por candle."""
     if args.mode == "live":
-        raise SystemExit(
-            "modo live nao e operavel pela linha de comando: a segunda autorizacao mora "
-            "no codigo de quem opera. Use --mode paper ou --mode testnet."
-        )
+        # Duas autorizacoes independentes, como no cliente de execucao: escolher o
+        # modo nao autoriza nada, porque --mode costuma sair de arquivo de config.
+        if not args.live:
+            raise SystemExit(
+                "modo live exige --live explicito na linha de comando. Escolher --mode live "
+                "nao autoriza: rode `robo-trader preflight --mode live` antes."
+            )
+        if not env_flag(LIVE_ENV_FLAG):
+            raise SystemExit(
+                f"modo live exige {LIVE_ENV_FLAG}=1 no ambiente. Prefira passar na propria "
+                f"linha ({LIVE_ENV_FLAG}=1 robo-trader run ...) a gravar no .env, para o "
+                "ambiente nao ficar armado depois."
+            )
 
     agora = None
     if args.csv:
@@ -146,7 +155,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     if args.mode == "paper":
         extras = dict(initial_cash=args.cash, fee_rate=args.fee, slippage_rate=args.slippage)
     else:
-        extras = dict(exchange_id=args.exchange)
+        extras = dict(exchange_id=args.exchange, enabled=args.mode == "live")
     client = build_execution_client(args.mode, args.symbol, **extras)
 
     strategy = build_strategy(args.strategy, _parse_params(args.param))
@@ -160,6 +169,9 @@ def cmd_run(args: argparse.Namespace) -> int:
             max_drawdown=args.max_drawdown,
             min_trade_notional=args.min_notional,
             rebalance_threshold=args.rebalance_threshold,
+            trade_cooldown=args.trade_cooldown,
+            max_trade_notional=args.max_trade_notional,
+            max_daily_notional=args.max_daily_notional,
         ),
         symbol=args.symbol,
         timeframe=args.timeframe,
@@ -251,6 +263,17 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--max-drawdown", type=float, default=0.0)
     run.add_argument("--min-notional", type=float, default=10.0)
     run.add_argument("--rebalance-threshold", type=float, default=0.02)
+    run.add_argument(
+        "--trade-cooldown", type=float, default=0.0,
+        help="segundos minimos entre giros; segura estrategia que oscila e queima taxa",
+    )
+    run.add_argument("--max-trade-notional", type=float, default=0.0, help="teto por ordem")
+    run.add_argument("--max-daily-notional", type=float, default=0.0, help="teto de giro no dia")
+    run.add_argument(
+        "--live",
+        action="store_true",
+        help="autoriza ordens com dinheiro real. Exige tambem ROBO_TRADER_ALLOW_LIVE=1",
+    )
     run.add_argument("--steps", type=int, default=None, help="para depois de N candles")
     run.add_argument(
         "--once",
