@@ -13,8 +13,10 @@ import pandas as pd
 from .backtest import BacktestConfig, BacktestEngine
 from .config import EXCHANGE_ENV, load_env_file
 from .data import CsvMarketData, generate_ohlcv, write_ohlcv
+from .data.schema import timeframe_to_timedelta
 from .execution import MODES, build_execution_client, preflight
 from .risk import RiskConfig
+from .runner import Runner
 from .strategies import available, build_strategy
 
 
@@ -118,6 +120,69 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     return 0 if report.ok else 1
 
 
+def cmd_run(args: argparse.Namespace) -> int:
+    """Opera em tempo real: estrategia -> risco -> execucao, um passo por candle."""
+    if args.mode == "live":
+        raise SystemExit(
+            "modo live nao e operavel pela linha de comando: a segunda autorizacao mora "
+            "no codigo de quem opera. Use --mode paper ou --mode testnet."
+        )
+
+    agora = None
+    if args.csv:
+        source = CsvMarketData(args.csv)
+        # Ensaio offline: o relogio vai para o fim do arquivo, senao a janela de
+        # candles recentes descartaria um historico que e todo passado.
+        historico = source.fetch_ohlcv(args.symbol, args.timeframe)
+        if len(historico):
+            fim = historico.index[-1] + timeframe_to_timedelta(args.timeframe)
+            agora = lambda: fim  # noqa: E731
+    else:
+        from .data.ccxt_source import CcxtMarketData
+
+        # Candles vem sempre da rede principal: a testnet tem preco artificial.
+        source = CcxtMarketData(exchange_id=args.exchange, cache_dir=args.cache_dir)
+
+    if args.mode == "paper":
+        extras = dict(initial_cash=args.cash, fee_rate=args.fee, slippage_rate=args.slippage)
+    else:
+        extras = dict(exchange_id=args.exchange)
+    client = build_execution_client(args.mode, args.symbol, **extras)
+
+    strategy = build_strategy(args.strategy, _parse_params(args.param))
+    runner = Runner(
+        source=source,
+        strategy=strategy,
+        client=client,
+        risk=RiskConfig(
+            max_position_weight=args.max_weight,
+            max_daily_loss=args.max_daily_loss,
+            max_drawdown=args.max_drawdown,
+            min_trade_notional=args.min_notional,
+            rebalance_threshold=args.rebalance_threshold,
+        ),
+        symbol=args.symbol,
+        timeframe=args.timeframe,
+        history=args.history,
+        fee_rate=args.fee,
+        slippage_rate=args.slippage,
+        **({"now": agora} if agora is not None else {}),
+    )
+
+    print(f"robo-trader {args.mode} em {args.symbol} {args.timeframe} — {strategy.describe()}")
+
+    if args.once:
+        print(runner.step())
+        return 0
+
+    print("um passo por candle fechado. Ctrl+C para parar.\n")
+    try:
+        runner.run(max_steps=args.steps, on_decision=lambda d: print(d, flush=True))
+    except KeyboardInterrupt:
+        print("\ninterrompido")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="robo-trader", description="Robo trader de criptomoedas: dados, backtest e execucao"
@@ -165,6 +230,30 @@ def build_parser() -> argparse.ArgumentParser:
     backtest.add_argument("--report", default=None, help="diretorio para gravar os relatorios")
     backtest.add_argument("--json", action="store_true", help="imprime as metricas em JSON")
     backtest.set_defaults(func=cmd_backtest)
+
+    run = subparsers.add_parser(
+        "run", help="opera em tempo real (paper ou testnet), um passo por candle fechado"
+    )
+    run.add_argument("--mode", default="paper", choices=MODES)
+    run.add_argument("--symbol", default="BTC/USDT")
+    run.add_argument("--timeframe", default="1h")
+    run.add_argument("--strategy", default="ema_crossover", choices=available())
+    run.add_argument("--param", action="append", metavar="CHAVE=VALOR")
+    run.add_argument("--csv", default=None, help="le candles de arquivo em vez da corretora")
+    run.add_argument("--exchange", default=os.getenv(EXCHANGE_ENV, "binance"))
+    run.add_argument("--cache-dir", default=None)
+    run.add_argument("--history", type=int, default=500, help="candles de historico por passo")
+    run.add_argument("--cash", type=float, default=1_000.0, help="capital inicial no modo paper")
+    run.add_argument("--fee", type=float, default=0.001)
+    run.add_argument("--slippage", type=float, default=0.0005)
+    run.add_argument("--max-weight", type=float, default=1.0)
+    run.add_argument("--max-daily-loss", type=float, default=0.0)
+    run.add_argument("--max-drawdown", type=float, default=0.0)
+    run.add_argument("--min-notional", type=float, default=10.0)
+    run.add_argument("--rebalance-threshold", type=float, default=0.02)
+    run.add_argument("--steps", type=int, default=None, help="para depois de N candles")
+    run.add_argument("--once", action="store_true", help="decide uma vez e sai (util em cron)")
+    run.set_defaults(func=cmd_run)
 
     preflight_cmd = subparsers.add_parser(
         "preflight", help="confere credenciais, conexao, regras do par e saldo sem enviar ordem"

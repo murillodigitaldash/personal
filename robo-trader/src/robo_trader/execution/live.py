@@ -242,11 +242,19 @@ class LiveExecutionClient:
             self.mode.upper(), order.side.value, order.type.value, quantity, self.symbol,
         )
 
+        # A chave de idempotencia e do chamador: so ele sabe que dois envios sao o
+        # mesmo giro. Gerar uma aqui, nova a cada chamada, nao protegeria de nada —
+        # a retentativa depois de um timeout entraria como ordem nova e dobraria a
+        # posicao. Sem chave, a corretora decide; com chave, ela recusa a segunda.
+        params = {"clientOrderId": order.client_id} if order.client_id else {}
+
         if order.type is OrderType.MARKET:
-            raw = self.exchange.create_order(self.symbol, "market", order.side.value, quantity)
+            raw = self.exchange.create_order(
+                self.symbol, "market", order.side.value, quantity, None, params
+            )
         else:
             raw = self.exchange.create_order(
-                self.symbol, "limit", order.side.value, quantity, price
+                self.symbol, "limit", order.side.value, quantity, price, params
             )
         return self._to_fill(raw, order, quantity, price)
 

@@ -112,3 +112,35 @@ def test_preflight_avisa_que_nao_enviou_ordem(capsys):
 def test_preflight_recusa_modo_desconhecido():
     with pytest.raises(SystemExit):
         main(["preflight", "--mode", "producao"])
+
+
+def test_run_once_no_modo_paper_decide_sem_tocar_a_rede(tmp_path, capsys):
+    arquivo = tmp_path / "BTCUSDT_1h.csv"
+    write_ohlcv(generate_ohlcv(periods=200, timeframe="1h", seed=7), arquivo)
+
+    codigo = main([
+        "run", "--once", "--mode", "paper", "--csv", str(arquivo),
+        "--symbol", "BTC/USDT", "--timeframe", "1h",
+        "--strategy", "ema_crossover", "--param", "fast=5", "--param", "slow=15",
+        "--cash", "1000",
+    ])
+    saida = capsys.readouterr().out
+
+    assert codigo == 0
+    assert "BTC/USDT" in saida
+    assert "paper" in saida
+
+
+def test_run_recusa_o_modo_live_na_linha_de_comando(tmp_path):
+    arquivo = tmp_path / "BTCUSDT_1h.csv"
+    write_ohlcv(generate_ohlcv(periods=50, timeframe="1h"), arquivo)
+
+    with pytest.raises(SystemExit, match="live"):
+        main(["run", "--once", "--mode", "live", "--csv", str(arquivo)])
+
+
+def test_run_nao_oferece_stop_loss(capsys):
+    # O runner nao implementa saida por stop: a flag nao pode existir insinuando que sim.
+    with pytest.raises(SystemExit):
+        main(["run", "--once", "--mode", "paper", "--stop-loss", "0.05"])
+    assert "--stop-loss" in capsys.readouterr().err

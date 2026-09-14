@@ -98,3 +98,61 @@ def test_reset_limpa_o_estado():
 def test_configuracao_invalida_e_recusada(kwargs):
     with pytest.raises(ValueError):
         RiskConfig(**kwargs)
+
+
+# -- tetos de ordem e espera entre giros -----------------------------------
+
+
+def test_cooldown_bloqueia_segundo_giro_antes_da_espera():
+    gestor = RiskManager(RiskConfig(trade_cooldown=600.0))
+    gestor.register_trade(D1, 500.0)
+
+    assert gestor.allowed_notional(D1 + pd.Timedelta(seconds=599), 500.0) == 0.0
+    assert "espera" in gestor.notional_blocked_reason
+
+
+def test_cooldown_libera_depois_da_espera():
+    gestor = RiskManager(RiskConfig(trade_cooldown=600.0))
+    gestor.register_trade(D1, 500.0)
+
+    assert gestor.allowed_notional(D1 + pd.Timedelta(seconds=600), 500.0) == 500.0
+    assert gestor.notional_blocked_reason is None
+
+
+def test_teto_por_ordem_corta_o_notional_pedido():
+    gestor = RiskManager(RiskConfig(max_trade_notional=200.0))
+
+    assert gestor.allowed_notional(D1, 5_000.0) == pytest.approx(200.0)
+    assert "teto por ordem" in gestor.notional_blocked_reason
+
+
+def test_volume_diario_corta_o_que_sobra_do_orcamento():
+    gestor = RiskManager(RiskConfig(max_daily_notional=1_000.0))
+    gestor.register_trade(D1, 800.0)
+
+    assert gestor.allowed_notional(D1_TARDE, 500.0) == pytest.approx(200.0)
+    assert "volume diario" in gestor.notional_blocked_reason
+
+
+def test_volume_diario_esgotado_bloqueia_o_giro():
+    gestor = RiskManager(RiskConfig(max_daily_notional=1_000.0))
+    gestor.register_trade(D1, 1_000.0)
+
+    assert gestor.allowed_notional(D1_TARDE, 500.0) == 0.0
+    assert "volume diario" in gestor.notional_blocked_reason
+
+
+def test_volume_diario_zera_no_dia_seguinte():
+    gestor = RiskManager(RiskConfig(max_daily_notional=1_000.0))
+    gestor.register_trade(D1, 1_000.0)
+
+    assert gestor.allowed_notional(D2, 500.0) == pytest.approx(500.0)
+    assert gestor.notional_blocked_reason is None
+
+
+@pytest.mark.parametrize(
+    "campo", ["trade_cooldown", "max_trade_notional", "max_daily_notional"]
+)
+def test_tetos_negativos_sao_recusados(campo):
+    with pytest.raises(ValueError, match=campo):
+        RiskConfig(**{campo: -1.0})

@@ -45,13 +45,15 @@ class ExchangeFalsa:
 
     def __init__(self):
         self.ordens = []
+        self.params = []
         self.sandbox = False
 
     def set_sandbox_mode(self, ligado):
         self.sandbox = ligado
 
-    def create_order(self, symbol, tipo, lado, quantidade, preco=None):
+    def create_order(self, symbol, tipo, lado, quantidade, preco=None, params=None):
         self.ordens.append((symbol, tipo, lado, quantidade, preco))
+        self.params.append(params or {})
         return {
             "id": "1",
             "average": preco or 100.0,

@@ -38,6 +38,10 @@ robo-trader backtest --synthetic --strategy ema_crossover --param fast=12 --para
 
 # antes da primeira ordem: confere credenciais, conexão, regras do par e saldo
 robo-trader preflight --mode testnet --symbol BTC/USDT --notional 20
+
+# opera em tempo real, um passo por candle fechado (paper não toca na corretora)
+robo-trader run --mode paper --symbol BTC/USDT --timeframe 1h \
+    --strategy ema_crossover --param fast=12 --param slow=26 --cash 1000
 ```
 
 Saída típica:
@@ -92,7 +96,8 @@ src/robo_trader/
   risk/            teto de exposição, stop/alvo, limite diário e kill switch
   execution/       interface de execução: paper, testnet e live (real, travada),
                    regras do par e preflight
-  cli.py           comandos fetch / backtest / strategies
+  runner.py        laco em tempo real: candle fechado -> decisao -> ordem
+  cli.py           comandos fetch / backtest / strategies / preflight / run
 ```
 
 O fluxo é sempre o mesmo: **fonte de dados → estratégia → risco → execução**. O
@@ -138,6 +143,60 @@ Backtest otimista demais vira prejuízo real. As decisões do motor:
 O que ainda **não** é modelado: profundidade de livro (ordens grandes movem o
 preço), funding de perpétuos, indisponibilidade da corretora e variação de taxa
 por nível de volume.
+
+## Operar em tempo real
+
+```bash
+robo-trader run --mode paper --timeframe 1h --strategy ema_crossover
+```
+
+```
+robo-trader paper em BTC/USDT 1m — ema_crossover(allow_short=False, fast=5, slow=15)
+um passo por candle fechado. Ctrl+C para parar.
+
+2026-09-14 20:09     79,036.16  alvo +1.00  atual +0.00  comprou: peso +0.00 -> +1.00
+2026-09-14 20:10     79,036.15  alvo +1.00  atual +1.00  manteve: sem desvio que pague o giro
+```
+
+O runner liga **fonte de candles → estratégia → risco → execução**, e não sabe se o
+cliente de execução é simulado, testnet ou real: a decisão é a mesma nos três.
+
+`--once` decide uma vez e sai, o que serve para rodar por cron. `--steps N` para
+depois de N candles. `--csv` lê de arquivo em vez da corretora e posiciona o
+relógio no fim do arquivo, para ensaiar sem rede.
+
+### O candle aberto não tem sinal
+
+Esta é a regra que o módulo existe para garantir. O backtest lê o sinal no
+fechamento de `t` e executa na abertura de `t+1`; em tempo real o equivalente é
+agir **logo depois que o candle fecha**. O candle corrente, que ainda está se
+formando, é descartado — usá-lo seria antecipação de dados, o mesmo erro que o
+backtest evita, só que aqui custando dinheiro de verdade.
+
+Por isso o runner espera o fechamento com uma folga de 2 segundos: pedir o candle
+no instante exato costuma devolver a vela ainda aberta.
+
+### Mesma decisão que o backtest
+
+Um teste roda o motor de backtest e o runner sobre a mesma série e compara
+**fill a fill** — lado, quantidade, preço — e o caixa final. Se divergirem, o
+backtest está mentindo sobre o que aconteceria de verdade, e o teste quebra.
+
+O dimensionamento da compra desconta taxa **e** slippage do caixa disponível. Sem
+isso, uma compra de 100% do capital é recusada por saldo: o preço que sai é pior
+que o de referência.
+
+### O que o runner ainda não faz
+
+- **Stop loss e take profit em tempo real.** O backtest zera a posição
+  exatamente no preço do stop, olhando a máxima e a mínima do candle. Ao vivo
+  isso é impossível: você só percebe o rompimento no fechamento e sai onde o
+  mercado estiver. Por isso `--stop-loss` e `--take-profit` **não existem** no
+  `run` — expor a flag sem a implementação seria mentir sobre a proteção. O jeito
+  certo é ordem de stop na corretora, e isso é trabalho à parte.
+- **Persistência.** Posição, kill switch e perda do dia vivem em memória. Se o
+  processo cair no meio de uma posição, o robô volta sem saber que está comprado.
+- **Vários símbolos.** Um runner opera um par.
 
 ## Gestão de risco
 
@@ -292,19 +351,23 @@ allowlist de IP, e só as permissões que o robô precisa de fato.
 pytest
 ```
 
-177 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
+199 testes cobrem validação de dados, indicadores, estratégias, contabilidade da
 carteira, ausência de antecipação de dados, disparo de stop e alvo, kill switch,
 métricas, paginação da corretora (com dublê, sem rede), as travas do modo real, o
 roteamento da testnet, o ajuste de quantidade e preço às regras do par, a
-separação entre leitura e ordem, e o relatório de preflight (incluindo permissões
-da chave). Nenhum teste toca a rede.
+separação entre leitura e ordem, o relatório de preflight (incluindo permissões
+da chave) e o runner — inclusive a equivalência fill a fill com o backtest e a
+recusa em operar sobre candle ainda aberto. Nenhum teste toca a rede.
 
 ## Próximos passos
 
-1. Walk-forward e otimização de parâmetros com validação fora da amostra.
-2. Runner em tempo real, reaproveitando os três modos de execução.
-3. Carteira com vários símbolos e alocação entre eles.
-4. Persistência de estado e observabilidade (logs estruturados, alertas).
+1. Paper trading em tempo real por alguns dias, comparado com o backtest do mesmo
+   período — divergência grande ali significa que o backtest está mentindo.
+2. Walk-forward e otimização de parâmetros com validação fora da amostra.
+3. Persistência de estado e observabilidade (logs estruturados, alertas), para o
+   robô sobreviver a um restart no meio de uma posição.
+4. Stop loss como ordem na corretora, em vez de avaliação no fechamento.
+5. Carteira com vários símbolos e alocação entre eles.
 
 ## Aviso
 

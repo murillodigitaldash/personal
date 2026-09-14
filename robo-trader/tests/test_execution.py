@@ -420,3 +420,28 @@ def test_moeda_de_cotacao_vem_do_simbolo():
 
 def test_paper_usa_a_moeda_de_cotacao_do_simbolo():
     assert PaperExecutionClient(symbol="ETH/BRL").balance().currency == "BRL"
+
+
+# -- identificador de ordem ------------------------------------------------
+
+
+def test_client_id_vai_para_a_corretora_como_chave_de_idempotencia():
+    """Sem essa chave, uma retentativa depois de timeout dobra a posicao."""
+    exchange = ExchangeFalsa()
+    cliente = cliente_testnet(exchange)
+
+    cliente.submit(
+        Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.5, client_id="vela-2024010110")
+    )
+
+    assert exchange.params == [{"clientOrderId": "vela-2024010110"}]
+
+
+def test_ordem_sem_client_id_nao_inventa_chave():
+    """Chave aleatoria por chamada nao protege de nada: so o chamador sabe a identidade do giro."""
+    exchange = ExchangeFalsa()
+    cliente = cliente_testnet(exchange)
+
+    cliente.submit(Order(symbol="BTC/USDT", side=Side.BUY, quantity=0.5))
+
+    assert exchange.params == [{}]
