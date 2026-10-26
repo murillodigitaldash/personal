@@ -1,6 +1,6 @@
 # V003 — Sua proposta de intervenção está completa?
 
-**Status:** narração gerada; styleframes aguardando aprovação.
+**Status:** entregue (26/10/2026). `entrega/`: MP4 1080×1920 30 fps, 54,5 s, −14,5 LUFS; capa, `.srt` e texto do post. QC: 1.636 quadros, sem pretos/congelamentos/cortes secos.
 
 - **Roteiro:** `roteiros/DIA-002.md` (v2, aprovado em 26/10/2026). Estrutura: gancho → competência 5 → 5 elementos um a um → exemplo aplicado → bizu → CTA.
 - **Voz:** Vinicius Messer, take 1 de 2 (51,4 s). Transcrição conferida palavra por palavra. Tempos em `audio/palavras_take1.json`.
