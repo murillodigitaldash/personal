@@ -1,6 +1,6 @@
 # V004 — Juros compostos: a pegadinha que derruba muita gente
 
-**Status:** narração gerada; styleframes aguardando aprovação.
+**Status:** entregue (26/10/2026). `entrega/`: MP4 1080×1920 30 fps, 50,8 s, −13,9 LUFS; capa, `.srt` e texto do post. QC: 1.524 quadros, sem pretos/congelamentos/cortes secos; a questão não revela a resposta antes da resolução.
 
 - **Roteiro:** `roteiros/DIA-002.md` (v2, aprovado em 26/10/2026). Estrutura: gancho → simples × compostos → fórmula → questão → resolução → armadilha → bizu → CTA.
 - **Voz:** Vinicius Messer, take 1 de 2 (47,4 s). Transcrição conferida palavra por palavra. Tempos em `audio/palavras_take1.json`.
