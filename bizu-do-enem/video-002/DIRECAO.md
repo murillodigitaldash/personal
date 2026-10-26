@@ -7,7 +7,7 @@
 > Três erros podem custar pontos no ENEM. Leia o comando até o fim, não gaste todo o tempo numa questão e só mude uma resposta se houver motivo concreto. Na prática, confira o enunciado e justifique sua escolha antes de marcar. Salva esse bizu e segue o Bizu do Enem para aprender mais.
 
 - **Mensagem central:** três hábitos de prova (ler o comando inteiro, distribuir o tempo, só trocar resposta com motivo) e uma rotina prática (conferir e justificar antes de marcar).
-- **Inconsistência do briefing:** o "roteiro geral" cita "abertura sobre inglês: cognatos", o que não aparece no título, na legenda nem na narração. Tratei como resto de modelo do agente editorial e não incluí. Se cognatos devem entrar, precisa de nova narração.
+- **Inconsistência do briefing:** o "roteiro geral" cita "abertura sobre inglês: cognatos", o que não aparece no título, na legenda nem na narração. O usuário confirmou em 26/10/2026 que foi erro do editorial: cognatos ficam de fora.
 - **Precisão:** sem tempos oficiais de prova (variam por edição), sem promessa de pontuação. "Travou? Pule e volte depois." foi preferido a "marque", que poderia soar como incentivo ao chute.
 - **Voz:** Vinicius Messer (`eleven_multilingual_v2`), take 1 de 2. As duas transcrições automáticas conferiram palavra por palavra. A take 1 tem 16,9 s.
 
