@@ -1,6 +1,6 @@
 # V001 — Você pode acertar mais e tirar nota menor?
 
-**Status:** styleframes aprovados (Etapa 2). Motion produzido; revisão técnica feita (Etapa 5).
+**Status:** entregue para aprovação final. Arquivos em `entrega/`.
 
 ## 1. Roteiro final (narração)
 
@@ -35,7 +35,7 @@ Contínuos: dolly global de 3,5 % ao longo do vídeo, luzes de fundo derivando, 
 - Composição em HTML/SVG com camadas independentes, numa timeline GSAP (`motion/video.html`) que segue os tempos de cada palavra.
 - Render em Chromium headless, 1080×1920. **Motion blur real:** 3 subquadros por quadro (obturador de 180°) com média no ffmpeg (`tools/render.js`).
 - Áudio: voz com compressão leve, efeitos sonoros sintetizados (whoosh, pop, tick, swipe, chime) entre −13 e −20 dB, loudness em −14 LUFS e true peak em −1,5 dBTP.
-- Entrega: H.264 High, yuv420p, BT.709, 30 fps, AAC 48 kHz e `legendas_v001.srt`.
+- Entrega: H.264 High, yuv420p, BT.709, 30 fps, AAC 48 kHz e `entrega/BizuDoEnem_V001.srt`.
 
 ## 5. Pendências
 
