@@ -1,45 +1,44 @@
 # V001 — Você pode acertar mais e tirar nota menor?
 
-**Status:** Etapa 2 (styleframes) aguardando aprovação. Nenhuma animação foi produzida.
+**Status:** styleframes aprovados (Etapa 2). Motion produzido; revisão técnica feita (Etapa 5).
 
-## 1. Análise do roteiro
+## 1. Roteiro final (narração)
 
-- **Mensagem central:** na TRI, a nota é uma *estimativa de proficiência*, não uma soma de pontos por acerto.
-- **Gancho:** contraste "mais acertos ≠ nota maior". É contraintuitivo e dá para mostrar em menos de 2 s.
-- **Risco pedagógico evitado:** nunca mostrar "X pontos por questão" como verdade. O único "+10 pts" que aparece está riscado. As notas são barras sem escala numérica, marcadas como "exemplo ilustrativo".
-- **Validação do exemplo:** os padrões A (32 acertos) e B (30 acertos) foram testados num modelo logístico de 3 parâmetros (a família usada no ENEM). A estimativa de A ficou em θ ≈ −0,64 e a de B em θ ≈ +0,82. O exemplo é coerente.
+> Você sabia que acertar mais questões nem sempre significa tirar nota maior? A TRI não transforma cada acerto em uma quantidade fixa de pontos. Ela estima proficiência considerando o padrão de respostas e as características dos itens. **O bizu: comece pelas questões que você domina e não deixe as fáceis escaparem por desatenção. Elas dão coerência ao seu padrão de respostas.** Quando o material estiver disponível, confira o guia gratuito no link da bio.
+
+- O trecho em negrito substitui "O segredo é entender a ideia e aplicá-la na questão, não decorar uma frase solta". A troca foi autorizada pelo usuário em 26/10/2026.
+- **Precisão:** no modelo de TRI do ENEM, acertar itens fáceis (em vez de errá-los) eleva a estimativa de proficiência. Erros em itens fáceis combinados com acertos em difíceis formam um padrão pouco provável. O bizu não promete pontuação.
+- **Voz:** Vinicius Messer (ElevenLabs, `eleven_multilingual_v2`), take 1 de 2. As duas transcrições automáticas conferiram palavra por palavra.
+- **Edição:** pausas de +1,2 s depois de "nota maior?" e de +1,0 s depois de "características dos itens", só no silêncio entre frases. Voz e texto não foram alterados.
 
 ## 2. Conceito visual: "o item é o protagonista"
 
-Cada questão é um **token** (círculo roxo ✓ / contorno ✕). O mesmo conjunto de tokens atravessa o vídeo inteiro e se transforma:
-folha de respostas → etiquetas de pontos que quebram → fila ordenada por dificuldade → um token vira o cartão do Item 37 (curva característica) → as curvas viram distribuições de proficiência → CTA.
-Esse objeto contínuo é o que tira o vídeo da estética de slides: não há "troca de tela", há **transformação de um mesmo objeto**.
+Cada questão é um token (círculo roxo ✓ / contorno ✕). O mesmo objeto se transforma ao longo do vídeo: chão de tokens → folhas de resposta → tokens com etiquetas "+10 pts" que caem → fila ordenada por dificuldade → um token vira o cartão do Item 37 → prova com 15 questões → curvas de estimativa → guia.
 
-- Base azul-marinho com luz roxa volumétrica, grade técnica sutil, grão e vinheta.
-- O amarelo #FFC400 aparece só em ênfase: a palavra-chave, a resposta certa e o estudante B.
-- Tipografia: Inter Display Black/ExtraBold para os títulos, Inter para o texto e JetBrains Mono para rótulos técnicos (tom de "dado").
-- Profundidade em 2.5D: cartões em perspectiva, sombras longas, plano de tokens inclinado no gancho.
+## 3. Plano de motion (Etapa 3): tempos no áudio editado
 
-## 3. Sequência de cenas (tempos estimados; o áudio final define)
-
-| # | Narração | Tempo | Intenção visual | Movimento previsto | Transição para a próxima |
+| # | Tempo | Âncora na fala | Entrada | Durante | Saída / transição |
 |---|---|---|---|---|---|
-| 01 | "Você sabia que acertar mais questões nem sempre significa tirar nota maior?" | 0–4 s | Choque tipográfico | Plano de tokens sobe em perspectiva; "Mais acertos" entra por máscara; o "≠" cai com overshoot no "nem sempre"; "maior?" fica amarelo no fim da frase | Os tokens do chão sobem e se organizam nas duas folhas |
-| 02 | (continuação / respiro) | 4–7 s | O paradoxo concreto | Contadores 32 e 30 sobem rolando; barras de nota crescem; a de B passa a de A (inversão) | As folhas colapsam em 8 tokens |
-| 03 | "A TRI não transforma cada acerto em uma quantidade fixa de pontos." | 7–11 s | Desmontar o modelo mental errado | Etiquetas "+10 pts" se prendem aos tokens; o traço amarelo corta "pontos fixos" exatamente em "fixa de pontos"; etiquetas caem e se desfazem | Os tokens se alinham num eixo |
-| 04 | "Ela estima proficiência considerando o padrão de respostas…" | 11–14 s | Coerência do padrão | O eixo fácil→difícil se desenha; tokens se ordenam com stagger; anéis amarelos marcam os erros fáceis e os acertos difíceis de A | Câmera mergulha no token 37 |
-| 05 | "…e as características dos itens." | 14–17 s | O item tem perfil | O token expande e vira o cartão; a curva se desenha (stroke); b, a e c acendem em sequência com as pílulas | A curva se achata e vira as distribuições |
-| 06 | (fecho da frase / respiro) | 17–19 s | Resultado = estimativa | A curva de A abre larga (incerta), a de B estreita e mais à direita; marcadores A e B pousam | Card sai pela esquerda; luz roxa varre a tela |
-| 07 | "O segredo é entender a ideia e aplicá-la na questão, não decorar uma frase solta." | 19–24 s | Do conceito à prática | "Entenda." / "Aplique." batem nas palavras; a seta leva a ideia até a questão; a alternativa C acende; a frase decorada desfoca e é riscada em "não decorar" | A questão se fecha num livro (o guia) |
-| 08 | "Quando o material estiver disponível, confira o guia gratuito no link da bio." | 24–28 s | CTA com marca | O guia gira em 3D até a pose final; pílula "Link na bio" pulsa uma vez; assinatura de marca | Fim (loop limpo para o 01) |
+| 01 Gancho | 0,0–4,1 | "acertar mais" 0,69 · "nem sempre" 1,75 · "nota maior?" 3,0 | Chão de tokens sobe em perspectiva (expo.out); "Mais acertos" por máscara | "≠" cai com back.out em "nem sempre"; "maior?" fica amarelo com um pulso | O chão decola para cima (power3.in) e o tipo sai por máscara; whoosh |
+| 02 Paradoxo | 3,95–6,8 | "A TRI" 5,3 | Cards A/B sobem com rotação X; 45 tokens surgem em ordem aleatória | Contadores 0→32 e 0→30; barras crescem e B ultrapassa A; chip "TRI = Teoria de Resposta ao Item" em "TRI" | Cards recuam com fade; varredura de luz |
+| 03 A regra | 6,5–10,6 | "não" 6,5 · "cada acerto" 7,3 · "fixa" 8,8 · "pontos" 9,3 | 8 tokens caem de cima e encaixam na grade 3D | Etiquetas "+10 pts" se prendem; o traço amarelo corta "pontos fixos" em "fixa"; as etiquetas são riscadas e caem em "pontos" | A grade se achata e os 8 tokens pousam exatamente na linha B da cena 04 (troca invisível) |
+| 04 Padrão | 10,3–13,9 | "estima proficiência" 10,1 · "padrão" 12,4 · "respostas" 12,8 | Eixo fácil→difícil se desenha; linhas completam | "Proficiência" rola para "Padrão de respostas"; rótulos COERENTE/INCOERENTE; anéis amarelos nas anomalias de A (ticks) | O card some e o último token de A cresce e vira o card do item |
+| 05 Item | 13,75–16,6 | "características" 13,9 · "itens" 14,8 | Card emerge do token (escala + raio de borda) | Curva se desenha (stroke); c → b → a acendem; pílulas entram em sequência | Card tomba em X com fade; varredura |
+| 06 O bizu | 16,6–22,0 | "comece" 17,3 · "domina" 17,7 · "fáceis" 19,9 · "escaparem" 20,3 · "desatenção" 21,05 | Prova com 15 questões sobe | As questões dominadas são marcadas em sequência; o título rola para "Não deixe as fáceis escaparem."; a questão fácil 06 escapa (desfoque/deriva); em "desatenção" o anel amarelo a captura de volta | Card recua; pílula "Atenção nas fáceis" sai |
+| 07 Estimativa | 22,05–24,4 | "coerência" 22,5 · "padrão de respostas" 23,2 | Curva cinza "errando fáceis" se desenha | A curva amarela "garantindo as fáceis" surge mais estreita e à direita; "Uma estimativa, não uma soma." | Card sai pela esquerda; varredura |
+| 08 CTA | 24,4–29,6 | "disponível" 25,4 · "gratuito" 26,8 · "link" 27,4 · "bio" 27,7 | O guia gira em 3D até a pose final | "gratuito" acende em amarelo; "Link na bio" surge (chime) e pulsa em "bio"; a assinatura pulsa | Respiro final de 1,4 s |
 
-## 4. Pontos para o editorial / aprovação
+Contínuos: dolly global de 3,5 % ao longo do vídeo, luzes de fundo derivando, grão animado a 24 qps, capítulos rolando no canto (01–08).
 
-1. **Título do guia ("TRI sem mistério") é provisório.** Preciso do nome real ou de autorização para manter.
-2. **Logo:** o "B!" e a assinatura são provisórios até receber a marca oficial.
-3. **Frase 4 do roteiro** ("O segredo é entender a ideia…") é genérica para o tema TRI. Visualmente, conecto com a prática "acertar as questões que você domina com atenção". Sugiro ao editorial considerar um bizu mais específico; não alterei o texto.
-4. **Duração:** ~28 s estimados para cerca de 65 palavras. Será ajustada ao áudio real.
+## 4. Técnica
 
-## 5. Técnica de produção (Etapa 4)
+- Composição em HTML/SVG com camadas independentes, numa timeline GSAP (`motion/video.html`) que segue os tempos de cada palavra.
+- Render em Chromium headless, 1080×1920. **Motion blur real:** 3 subquadros por quadro (obturador de 180°) com média no ffmpeg (`tools/render.js`).
+- Áudio: voz com compressão leve, efeitos sonoros sintetizados (whoosh, pop, tick, swipe, chime) entre −13 e −20 dB, loudness em −14 LUFS e true peak em −1,5 dBTP.
+- Entrega: H.264 High, yuv420p, BT.709, 30 fps, AAC 48 kHz e `legendas_v001.srt`.
 
-Composição em HTML/SVG com camadas independentes, animadas com GSAP (timeline controlada por tempo). Render quadro a quadro em Chromium headless a 1080×1920 / 30 fps e montagem em ffmpeg (H.264 + AAC). Os tempos vêm do alinhamento palavra a palavra da narração.
+## 5. Pendências
+
+- Guia "TRI sem mistério": título sugerido, aguardando confirmação.
+- Marca: a proposta v1 foi aplicada (pasta `marca/`); continua provisória até aprovação.
+- Trilha musical: não usada. O conector ElevenLabs desta conta não gera música, e a narração e os efeitos sonoros sustentam o ritmo.
