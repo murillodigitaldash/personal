@@ -1,6 +1,6 @@
 # V002 — 3 erros que podem custar pontos no ENEM
 
-**Status:** Etapa 2 (styleframes) aguardando aprovação. Nenhuma animação foi produzida.
+**Status:** styleframes e pausas aprovados (26/10/2026). Motion em produção.
 
 ## 1. Análise do roteiro
 
