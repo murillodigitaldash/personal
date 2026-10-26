@@ -1,6 +1,6 @@
 # V002 — 3 erros que podem custar pontos no ENEM
 
-**Status:** styleframes e pausas aprovados (26/10/2026). Motion em produção.
+**Status:** entregue (26/10/2026). Arquivos em `entrega/`: MP4 1080×1920 30 fps, 21,3 s, −14 LUFS; capa, `.srt` e texto do post. QC: 638 quadros, sem pretos/congelamentos/cortes secos.
 
 ## 1. Análise do roteiro
 
