@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V004 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.alt{display:flex;align-items:center;gap:20px;padding:16px 20px;border-radius:20px;margin-bottom:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);position:relative}
+.alt .l{position:relative;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{position:relative;font:700 38px/1 var(--display);font-variant-numeric:tabular-nums}
+.alt .n{margin-left:auto;font:600 22px/1 var(--mono)}
+.alt .on{position:absolute;inset:-1.5px;border-radius:20px;border:1.5px solid var(--amarelo);background:rgba(255,196,0,.12);opacity:0}
+.strike{position:absolute;left:-4px;right:-4px;top:52%;height:4px;background:#FF7A8A;transform-origin:0 50%}
+.math{white-space:nowrap;font:800 64px/1.1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-1px}
+sup{font-size:.55em;vertical-align:.9em}
+.hl-word{border-radius:8px;padding:0 4px}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {tok, ctaFollow} = KIT;
+/* tempo: narração take 1 + pausas aprovadas (+0,6 s após "elevado ao tempo."; +1,5 s após "três meses?") */
+const T = t => t + (t > 18.30 ? .6 : 0) + (t > 24.65 ? 1.5 : 0);
+const DUR = T(47.369) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CONCEITO','FÓRMULA','APLICAÇÃO','ARMADILHA','O BIZU','CTA'], dur:DUR});
+
+/* gráfico simples × compostos */
+const S=[1000,1100,1200,1300], C=[1000,1100,1210,1331], MAX=1400, H=520, BW=64;
+const Y=v=>H-(v-800)/(MAX-800)*H, HH=v=>(v-800)/(MAX-800)*H;
+const chart=`<svg width="800" height="${H+90}" viewBox="0 0 800 ${H+90}" style="overflow:visible">
+  ${[1000,1100,1200,1300].map(v=>`<line x1="0" x2="800" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="-12" y="${Y(v)+8}" text-anchor="end" font-family="JetBrains Mono" font-size="20" fill="#5B6680">${v}</text>`).join('')}
+  <line id="base" x1="0" x2="800" y1="${Y(1000)}" y2="${Y(1000)}" stroke="#A9B1C4" stroke-width="3" stroke-dasharray="10 8" opacity="0"/>
+  <text id="baseT" x="796" y="${Y(1000)-12}" text-anchor="end" font-family="JetBrains Mono" font-size="20" fill="#A9B1C4" opacity="0">sempre sobre 1.000</text>
+  ${[0,1,2,3].map(m=>{const x=60+m*190;return `
+    <rect class="bS" x="${x}" y="${Y(S[m])}" width="${BW}" height="${HH(S[m])}" rx="10" fill="#5B6680"/>
+    ${m>0?`<text class="tS" x="${x+BW/2}" y="${Y(S[m])-14}" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="20" fill="#A9B1C4">+100</text>`:''}
+    <rect class="bC" x="${x+BW+12}" y="${Y(C[m])}" width="${BW}" height="${HH(C[m])}" rx="10" fill="#6C3BFF"/>
+    ${m>0?`<rect class="bJ" x="${x+BW+12}" y="${Y(C[m])}" width="${BW}" height="${(C[m]-C[m-1])/(MAX-800)*H}" rx="8" fill="#FFC400"/>
+      <text class="tJ" x="${x+BW+12+BW/2}" y="${Y(C[m])-14}" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="22" fill="#FFC400">+${C[m]-C[m-1]}</text>`:''}
+    <text x="${x+BW+6}" y="${H+44}" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="#A9B1C4">mês ${m}</text>`}).join('')}
+  <line x1="0" x2="800" y1="${H}" y2="${H}" stroke="rgba(255,255,255,.35)" stroke-width="2"/></svg>`;
+const legend=`<div style="display:flex;gap:26px;font:700 26px/1 var(--display);margin-bottom:26px">
+  <span id="lgS" style="display:flex;align-items:center;gap:10px"><i style="width:22px;height:22px;border-radius:6px;background:#5B6680"></i>Simples</span>
+  <span id="lgC" style="display:flex;align-items:center;gap:10px"><i style="width:22px;height:22px;border-radius:6px;background:#6C3BFF"></i>Compostos</span>
+  <span id="lgJ" style="display:flex;align-items:center;gap:10px;color:var(--amarelo)"><i style="width:22px;height:22px;border-radius:6px;background:#FFC400"></i>juros do mês</span></div>`;
+const ALTS=[['A','R$ 1.300,00','juros simples','trap'],['B','R$ 1.310,00','',''],['C','R$ 1.331,00','✓ correta','ok'],['D','R$ 1.210,00','só 2 meses','x'],['E','R$ 1.464,10','4 meses','x']];
+const alts=(p)=>ALTS.map(([l,v,n,k])=>`<div class="alt ${p}alt" id="${p}${l}"><div class="on"></div>
+  <div class="l">${l}${k==='ok'?`<div class="abs ${p}Cf" style="inset:-2px;border-radius:50%;display:grid;place-items:center;background:var(--amarelo);color:var(--navy);opacity:0">${l}</div>`:''}</div>
+  <div class="v">${v}${k==='trap'?`<div class="strike ${p}strike"></div>`:''}</div>
+  ${n?`<div class="n ${p}note" style="color:${k==='trap'?'#FF7A8A':k==='ok'?'var(--amarelo)':'var(--cinza-2)'}">${k==='trap'?'⚠ ':''}${n}</div>`:''}</div>`).join('');
+
+$('#scenes').innerHTML=`
+<!-- 01 GANCHO -->
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Matemática · Juros compostos</span></div>
+    <div class="h-l nowrap">${mask('A pegadinha','s1a')}${mask('dos <span class="y">juros</span>','s1b')}${mask('compostos','s1c','y')}</div></div>
+  <div id="s1card" class="abs card" style="left:60px;top:880px;width:870px;padding:40px 40px 20px">
+    <div style="display:flex;align-items:center;gap:30px;margin-bottom:20px">
+      <div id="s1v1" class="math" style="position:relative;color:var(--cinza-2)">R$ 1.300<div id="s1st" class="strike" style="height:6px"></div></div>
+      <div id="s1ar" style="font:900 60px/1 var(--display);color:var(--cinza-3)">→</div>
+      <div id="s1v2" class="math y" style="font-size:84px;text-shadow:0 0 50px rgba(255,196,0,.4)">R$ 1.331</div></div>
+    <div class="note" style="color:var(--cinza-2)">R$ 1.000 · 10% ao mês · 3 meses</div>
+  </div>
+</section>
+
+<!-- 02 SIMPLES × COMPOSTOS -->
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s2k">Simples × compostos</span></div>
+    <div style="position:relative;height:230px;width:920px">
+      <div class="abs h-l" style="left:0;top:0">${mask('Simples:','s2s1')}${mask('<span style="color:var(--cinza-2)">valor inicial</span>','s2s2')}</div>
+      <div class="abs h-l" style="left:0;top:0">${mask('Compostos:','s2c1')}${mask('<span style="color:var(--roxo-claro)">valor atualizado</span>','s2c2')}</div>
+      <div class="abs h-l" style="left:0;top:0">${mask('Juros sobre','s2j1')}${mask('juros','s2j2','y')}</div>
+    </div></div>
+  <div id="s2card" class="abs card" style="left:60px;top:720px;width:870px;padding:40px 40px 20px 70px">${legend}${chart}</div>
+</section>
+
+<!-- 03 FÓRMULA -->
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s3k">O montante</span></div>
+    <div class="h-l">${mask('A <span class="y">fórmula</span>','s3a')}</div></div>
+  <div id="s3card" class="abs card" style="left:60px;top:680px;width:870px;padding:60px 50px 46px">
+    <div style="font:900 104px/1 var(--display);letter-spacing:-3px;text-align:center;white-space:nowrap">
+      <span id="fM" style="display:inline-block">M</span> <span id="fC" style="display:inline-block">= C</span> <span id="fP" style="display:inline-block">· (1 + i)</span><sup id="fT" style="color:var(--amarelo);display:inline-block">t</sup></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px">
+      ${[['M','montante','#fff'],['C','capital','var(--c1)'],['i','taxa','var(--c3)'],['t','tempo','var(--amarelo)']].map(([a,b,c],k)=>`<div class="ft" id="ft${k}" style="text-align:center;padding:20px 10px;border-radius:20px;background:rgba(255,255,255,.05)">
+        <div style="font:900 56px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div></div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- 04 QUESTÃO + RESOLUÇÃO -->
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s4k">Vamos aplicar</span></div>
+    <div class="h-l">${mask('Na <span class="y">questão</span>','s4a')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:640px;width:870px;padding:40px 40px 30px">
+    <div class="note" style="color:var(--roxo-claro);margin-bottom:20px">QUESTÃO · ESTILO ENEM</div>
+    <div style="font:600 34px/1.4 var(--texto);color:var(--cinza-1);margin-bottom:28px">Uma pessoa aplica <b id="q1" class="hl-word" style="color:#fff">R$ 1.000,00</b> a juros compostos de <b id="q2" class="hl-word" style="color:#fff">10% ao mês</b>, sem retiradas. Após <b id="q3" class="hl-word" style="color:#fff">3 meses</b>, o montante será de:</div>
+    ${alts('q')}
+  </div>
+</section>
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Resolução</span></div>
+    <div class="h-l">${mask('Passo a <span class="y">passo</span>','s5a')}</div></div>
+  <div id="s5card" class="abs card" style="left:60px;top:660px;width:870px;padding:50px 50px 44px">
+    <div id="r0" class="math" style="margin-bottom:34px">1.000 · <span class="y">1,1</span><sup class="y">3</sup></div>
+    ${[['1,1²','= 1,21'],['1,21 · 1,1','= 1,331'],['1.000 · 1,331','= 1.331']].map(([a,b],i)=>`
+      <div id="r${i+1}" style="display:flex;align-items:center;gap:24px;margin-bottom:24px">
+        <div style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:800 22px/1 var(--mono);background:rgba(108,59,255,.35)">${i+1}</div>
+        <div style="font:700 52px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--cinza-1)">${a} <span id="r${i+1}b" style="display:inline-block;color:${i===2?'var(--amarelo)':'#fff'}">${b}</span></div></div>`).join('')}
+    <div id="rAns" style="margin-top:20px;display:inline-flex;background:var(--amarelo);color:var(--navy);padding:16px 26px;border-radius:999px;font:800 40px/1 var(--display);box-shadow:0 0 40px rgba(255,196,0,.4)">R$ 1.331,00 · (C)</div>
+  </div>
+</section>
+
+<!-- 05 ARMADILHA -->
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:#FF7A8A"><span id="s6k">Atenção</span></div>
+    <div class="h-l">${mask('Cuidado com','s6a')}${mask('a <span style="color:#FF7A8A">(A)</span>','s6b')}</div></div>
+  <div id="s6card" class="abs card" style="left:60px;top:720px;width:870px;padding:36px 40px 26px">${alts('t')}</div>
+  <div id="s6eq" class="abs" style="left:84px;top:1240px;font:600 32px/1.35 var(--texto);color:var(--cinza-1);width:840px">R$ 1.300 = 1.000 + 3 × 100 → <b style="color:#FF7A8A">conta de juros simples</b></div>
+</section>
+
+<!-- 06 BIZU -->
+<section id="s7">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s7k">O bizu</span></div>
+    <div class="h-l nowrap">${mask('Taxa vira fator,','s7a')}${mask('fator elevado','s7b','y')}${mask('ao tempo','s7c','y')}</div></div>
+  <div id="s7card" class="abs card" style="left:60px;top:860px;width:870px;padding:50px 40px;display:flex;align-items:center;justify-content:space-between">
+    ${[['10%','taxa','var(--cinza-1)'],['1,1','fator','var(--c3)'],['1,1<sup>t</sup>','no tempo','var(--amarelo)']].map(([a,b,c],i)=>`
+      <div class="b7" id="b7_${i}" style="text-align:center"><div style="font:900 84px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:12px">${b}</div></div>
+      ${i<2?`<div class="a7" id="a7_${i}" style="font:900 54px/1 var(--display);color:var(--cinza-3)">→</div>`:''}`).join('')}
+  </div>
+  <div class="abs" style="left:84px;top:1180px;display:flex;gap:14px;flex-wrap:wrap;width:860px">
+    ${[['5%','1,05'],['12%','1,12'],['−20%','0,80']].map(([a,b])=>`<div class="pill c7" style="font-size:28px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12)"><span style="color:var(--cinza-2)">${a}</span> → <span class="y">${b}</span></div>`).join('')}</div>
+</section>
+
+<!-- 07 CTA -->
+<section id="s8">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s8k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s8a')}${mask('e segue','s8b','y')}</div></div>
+  <div id="s8cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* ---- 01 GANCHO: 0 → 4.1 ---- */
+show('#s1',0,4.55);
+up('#s1k',.05); up('#s1b',0.0); up('#s1c',.30); up('#s1a',T(2.85));
+tl.from('#s1card',{y:200,opacity:0,duration:.8,ease:'expo.out'},.6);
+tl.from('#s1v1',{opacity:0,x:-30,duration:.4},.9);
+tl.from('#s1st',{scaleX:0,duration:.3,ease:'power4.inOut'},T(3.30));
+tl.to('#s1v1',{opacity:.55,duration:.3},T(3.35));
+tl.from('#s1ar',{opacity:0,x:-20,duration:.3},T(3.45));
+tl.from('#s1v2',{opacity:0,scale:.6,duration:.5,ease:'back.out(2)'},T(3.55));
+out(['#s1k','#s1a','#s1b','#s1c'],4.05,{stagger:.03});
+tl.to('#s1card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},4.05);
+
+/* ---- 02 SIMPLES × COMPOSTOS: 4.2 → 13.6 ---- */
+show('#s2',4.2,14.1); chap(1,4.2);
+up('#s2k',4.25);
+tl.from('#s2card',{y:200,opacity:0,duration:.8,ease:'expo.out'},4.3);
+tl.from('#lgS',{opacity:0,duration:.3},4.6); tl.from('#lgC',{opacity:0,duration:.3},T(8.5)); tl.from('#lgJ',{opacity:0,duration:.3},T(10.6));
+up('#s2s1',T(4.40)); up('#s2s2',T(7.15));
+tl.from('.bS',{scaleY:0,transformOrigin:'50% 100%',duration:.5,ease:'power3.out',stagger:.18},T(4.67));
+tl.from('.tS',{opacity:0,duration:.3,stagger:.18},T(5.3));
+tl.to(['#base','#baseT'],{opacity:1,duration:.4},T(7.2));
+out(['#s2s1','#s2s2'],T(8.25),{duration:.3}); up('#s2c1',T(8.45)); up('#s2c2',T(10.25));
+tl.to(['#base','#baseT'],{opacity:0,duration:.3},T(8.5));
+tl.to('.bS',{opacity:.45,duration:.4},T(8.5)); tl.to('.tS',{opacity:0,duration:.3},T(8.5));
+tl.from('.bC',{scaleY:0,transformOrigin:'50% 100%',duration:.5,ease:'power3.out',stagger:.18},T(8.59));
+tl.from('.bJ',{scaleY:0,transformOrigin:'50% 100%',duration:.4,ease:'back.out(2)',stagger:.35},T(10.65));
+tl.from('.tJ',{opacity:0,y:10,duration:.3,stagger:.35},T(10.75));
+out(['#s2c1','#s2c2'],T(11.62),{duration:.3}); up('#s2j1',T(11.80)); up('#s2j2',T(12.95),{color:'#fff'}); tl.to('#s2j2',{color:'#FFC400',duration:.25},T(13.1));
+tl.fromTo('.bJ',{opacity:1},{opacity:.4,duration:.18,yoyo:true,repeat:3,immediateRender:false},T(12.10));
+out(['#s2k','#s2j1','#s2j2'],13.55,{stagger:.04});
+tl.to('#s2card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},13.55);
+
+/* ---- 03 FÓRMULA: 13.6 → 19.0 ---- */
+show('#s3',13.7,T(18.44)+.35); chap(2,13.7);
+up('#s3k',13.75); up('#s3a',13.8);
+tl.from('#s3card',{y:200,opacity:0,duration:.8,ease:'expo.out'},13.85);
+tl.from('.ft',{opacity:0,y:30,duration:.4,stagger:.06},14.0);
+tl.set(['#fM','#fC','#fP','#fT'],{opacity:0},0);
+[['#fM',14.38,0],['#fC',15.10,1],['#fP',16.11,2],['#fT',17.23,3]].forEach(([s,t,k])=>{
+  tl.fromTo(s,{opacity:0,y:40},{opacity:1,y:0,duration:.45,ease:'back.out(2)',immediateRender:false},T(t));
+  tl.to('#ft'+k,{backgroundColor:'rgba(255,255,255,.14)',duration:.25,yoyo:true,repeat:1},T(t));
+});
+pulse('#fT',T(17.8),1.3);
+const s3out=T(18.30)+.2;
+out(['#s3k','#s3a'],s3out,{stagger:.04});
+tl.to('#s3card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s3out);
+
+/* ---- 04 QUESTÃO ---- */
+const s4in=s3out+.35;
+show('#s4',s4in,T(24.74)+.45); chap(3,s4in);
+up('#s4k',T(18.44)); up('#s4a',T(18.67));
+tl.from('#s4card',{y:220,opacity:0,duration:.8,ease:'expo.out'},T(18.9));
+[['#q1',20.19],['#q2',21.70],['#q3',23.86]].forEach(([s,t])=>tl.fromTo(s,{backgroundColor:'rgba(108,59,255,0)'},{backgroundColor:'rgba(108,59,255,.55)',duration:.3,immediateRender:false},T(t)));
+tl.set('.qnote',{opacity:0},0); tl.set('.qstrike',{scaleX:0},0); // a questão não pode entregar a resposta
+tl.from('.qalt',{opacity:0,x:-30,duration:.35,stagger:.1},T(23.03));
+const s4out=T(24.74)-.05;
+out(['#s4k','#s4a'],s4out,{stagger:.04});
+tl.to('#s4card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s4out);
+
+/* ---- 05 RESOLUÇÃO ---- */
+const s5in=s4out+.3;
+show('#s5',s5in,T(36.30)+.5); chap(3,s5in);
+up('#s5k',s5in); up('#s5a',s5in+.05);
+tl.from('#s5card',{y:200,opacity:0,duration:.7,ease:'expo.out'},s5in+.05);
+tl.from('#r0',{opacity:0,y:30,duration:.5},T(25.40));
+pulse('#r0 sup',T(26.98),1.4);
+tl.from('#r1',{opacity:0,x:-30,duration:.4},T(27.56)); tl.from('#r1b',{opacity:0,scale:.6,duration:.35,ease:'back.out(2.5)'},T(29.40));
+tl.from('#r2',{opacity:0,x:-30,duration:.4},T(30.31)); tl.from('#r2b',{opacity:0,scale:.6,duration:.35,ease:'back.out(2.5)'},T(32.00));
+tl.from('#r3',{opacity:0,x:-30,duration:.4},T(33.55)); tl.from('#r3b',{opacity:0,scale:.6,duration:.35,ease:'back.out(2.5)'},T(34.70));
+tl.from('#rAns',{opacity:0,scale:.7,duration:.5,ease:'back.out(2)'},T(34.90));
+const s5out=T(36.40);
+out(['#s5k','#s5a'],s5out,{stagger:.04});
+tl.to('#s5card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s5out);
+sweep(s5out+.05);
+
+/* ---- 06 ARMADILHA ---- */
+const s6in=s5out+.35;
+show('#s6',s6in,T(42.10)+.4); chap(4,s6in);
+up('#s6k',T(36.50)); up('#s6a',T(37.40)); up('#s6b',T(38.15));
+tl.from('#s6card',{y:200,opacity:0,duration:.7,ease:'expo.out'},s6in+.05);
+tl.from('.talt',{opacity:0,x:-30,duration:.3,stagger:.06},s6in+.15);
+tl.set(['.tnote'],{opacity:0},0);
+tl.set('.tstrike',{scaleX:0},0);
+tl.to('#tC .on',{opacity:1,duration:.3},s6in+.6); tl.to('.tCf',{opacity:1,duration:.3},s6in+.6);
+tl.to('#tC .tnote',{opacity:1,duration:.3},s6in+.7);
+tl.to('#tA',{borderColor:'#FF7A8A',duration:.3},T(38.15));
+pulse('#tA',T(38.15),1.04);
+tl.to('.tstrike',{scaleX:1,duration:.35,ease:'power4.inOut'},T(39.10));
+tl.to('#tA .v',{color:'#A9B1C4',duration:.3},T(39.10));
+tl.to('#tA .tnote',{opacity:1,duration:.3},T(41.28));
+tl.to(['#tD','#tE'],{opacity:.4,duration:.4},T(39.97));
+tl.to(['#tD .tnote','#tE .tnote'],{opacity:1,duration:.3},T(39.97));
+tl.to('#tB',{opacity:.4,duration:.4},T(39.97));
+tl.from('#s6eq',{opacity:0,y:20,duration:.45},T(40.90));
+const s6out=T(42.10);
+out(['#s6k','#s6a','#s6b'],s6out,{stagger:.04});
+tl.to(['#s6card','#s6eq'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},s6out);
+
+/* ---- 07 BIZU ---- */
+const s7in=T(42.20);
+show('#s7',s7in,T(45.25)+.4); chap(5,s7in);
+up('#s7k',T(42.23)); up('#s7a',T(42.90)); up('#s7b',T(43.80)); up('#s7c',T(44.30));
+tl.from('#s7card',{y:180,opacity:0,duration:.7,ease:'expo.out'},T(42.5));
+tl.from('#b7_0',{opacity:0,scale:.7,duration:.35,ease:'back.out(2)'},T(43.50));
+tl.from('#a7_0',{opacity:0,x:-15,duration:.25},T(43.75));
+tl.from('#b7_1',{opacity:0,scale:.7,duration:.35,ease:'back.out(2)'},T(43.84));
+tl.from('#a7_1',{opacity:0,x:-15,duration:.25},T(44.25));
+tl.from('#b7_2',{opacity:0,scale:.7,duration:.35,ease:'back.out(2)'},T(44.36));
+tl.from('.c7',{opacity:0,y:20,duration:.35,stagger:.1},T(44.70));
+const s7out=T(45.15);
+out(['#s7k','#s7a','#s7b','#s7c'],s7out,{stagger:.03,duration:.32});
+tl.to(['#s7card','.c7'],{y:-50,opacity:0,duration:.35,ease:'power3.in'},s7out);
+
+/* ---- 08 CTA ---- */
+const s8in=T(45.25);
+show('#s8',s8in,DUR+1); chap(6,s8in);
+up('#s8k',s8in+.05); up('#s8a',T(45.30));
+const [save,follow]=$$('#s8cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(45.35));
+pulse(save.firstElementChild,T(45.7),1.15);
+up('#s8b',T(46.15),{color:'#fff'}); tl.to('#s8b',{color:'#FFC400',duration:.25},T(46.3));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(46.20));
+pulse(follow.lastElementChild,T(46.55),1.12);
+pulse(follow.lastElementChild,T(47.6),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(46.6));
+
+MOTION.ready();
+</script>
+</body>
+</html>
