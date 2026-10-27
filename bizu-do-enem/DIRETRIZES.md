@@ -13,3 +13,5 @@ Decisões do usuário que valem para todos os vídeos. Ficam junto do prompt mes
 4. **Cadência:** 2 vídeos por dia (12h e 19h).
 5. **Precisão:** não prometer nota; não usar datas ou tempos de prova sem conferir; questões de exemplo são originais (inspiradas no estilo ENEM, não copiadas).
 6. **Narração:** números por extenso no roteiro do ElevenLabs.
+7. **Palavras estrangeiras com sotaque nativo** (27/10/2026): em vídeos de inglês e espanhol, os trechos no idioma estrangeiro precisam soar nativos. Processo: gerar o trecho estrangeiro numa geração separada, na mesma voz, com o texto 100% no idioma (o modelo adota a pronúncia da língua do texto), e montar com a narração em português. Conferir pela transcrição antes de usar.
+8. **Entrega:** os MP4s finais são enviados no chat. Os textos (legendas dos posts) ficam no Google Drive do usuário. Os MP4s não entram mais no repositório.

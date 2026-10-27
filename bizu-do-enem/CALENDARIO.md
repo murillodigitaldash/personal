@@ -6,12 +6,23 @@ Cadência: 2 vídeos por dia (12h e 19h). Vídeos de matéria seguem sempre a me
 |---|---|---|---|---|
 | 001 | 26/10 | V001 TRI (estratégia) | V002 3 erros de prova (estratégia) | ✅ entregues |
 | 002 | 27/10 | V003 Redação: proposta de intervenção | V004 Matemática: juros compostos | ✅ entregues |
-| 003 | 28/10 | V005 Física: consumo de energia (kWh) | V006 Linguagens: funções da linguagem | 🎨 styleframes p/ aprovação |
+| 003 | 28/10 | V005 Física: consumo de energia (kWh) | V006 Linguagens: funções da linguagem | 🎬 em render |
 | 004 | 29/10 | V007 Inglês: ideia central sem fluência | V008 Espanhol: falsos amigos | 📝 roteiro p/ aprovação |
 | 005 | 30/10 | V009 Geografia: escala cartográfica | V010 Biologia: fluxo de energia | 📝 roteiro p/ aprovação |
 | 006 | 31/10 | V011 História: leitura de documento (Lei Áurea) | V012 Literatura: Modernismo (Oswald) | 📝 roteiro p/ aprovação |
-| 007 | 01/11 | V013 Dicas: cartão-resposta e questão em branco | V014 Dicas: véspera da prova | 📝 roteiro p/ aprovação |
+| 007 | 01/11 | V013 Dicas: cartão-resposta e questão em branco | V014 Dicas: o que cai em cada dia (1º: Linguagens, Humanas e Redação · 2º: Natureza e Matemática) | 📝 roteiro p/ aprovação |
 | 008 | 02/11 | V015 Sociologia: fato social (Durkheim) | V016 Filosofia: contratualistas (Hobbes × Locke × Rousseau) | 💡 tema proposto |
+
+## Datas da prova e vídeos fixos
+**ENEM 2026: 8/11 (1º dia) e 15/11 (2º dia).**
+
+| Data | Vídeo fixo |
+|---|---|
+| 07/11 (sábado), 19h | Véspera do 1º dia: o que fazer e o que não fazer (antigo V014, reposicionado) |
+| 09/11, 12h | Pós-prova: como usar o intervalo entre os dois dias (revisão leve de Natureza e Matemática) |
+| 14/11 (sábado), 19h | Véspera do 2º dia: calculadora não entra, então revise as contas que mais caem |
+
+A partir de 01/11, os vídeos podem ganhar contagem regressiva ("faltam X dias").
 
 ## Banco de temas (próximos dias)
 
@@ -31,5 +42,5 @@ Os temas abaixo seguem o critério de alta recorrência no ENEM e de ter uma que
 | Filosofia | Ética: Kant × utilitarismo | dilema com as duas leituras |
 
 ## Observações
-- **Data do ENEM 2026:** ainda não foi confirmada na produção. Quando o usuário informar, o V014 (véspera) deve ser reposicionado para a semana da prova, e os vídeos de "reta final" podem ganhar contagem regressiva.
+- **Data do ENEM 2026:** 8 e 15/11 (informada pelo usuário em 27/10/2026).
 - Antes de publicar dicas que citem regras da prova (V013, V014), conferir o edital vigente.
