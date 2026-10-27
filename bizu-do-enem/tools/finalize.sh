@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Junta segmentos + mix, gera a capa e roda o QC automático.
 # uso: tools/finalize.sh <dir_video> <NomeArquivo> <tempo_capa_s>
-set -euo pipefail
+set -eu
 D=$1; N=$2; CAPA=$3; O=$D/entrega/$N.mp4
 mkdir -p "$D/entrega"
 ffmpeg -y -loglevel error -i $D/render/seg/seg_00.mp4 -i $D/render/seg/seg_01.mp4 -i $D/render/seg/seg_02.mp4 -i $D/render/seg/seg_03.mp4 -i $D/audio/mix_final.wav \
