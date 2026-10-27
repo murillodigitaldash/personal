@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V006 · Styleframes</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+.alt{display:flex;align-items:center;gap:20px;padding:16px 20px;border-radius:20px;margin-bottom:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.alt .l{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{font:700 36px/1 var(--display)}
+.alt .n{margin-left:auto;font:600 22px/1 var(--mono)}
+.fn{display:flex;align-items:center;gap:20px;padding:18px 24px;border-radius:22px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);margin-bottom:12px}
+.fn .dot{width:20px;height:20px;border-radius:50%;flex:none}
+.fn .e{font:600 24px/1 var(--mono);color:var(--cinza-2);width:220px}
+.fn .f{font:800 36px/1 var(--display)}
+.node{position:absolute;transform:translate(-50%,-50%);text-align:center;padding:22px 20px;border-radius:24px;background:rgba(15,23,42,.85);border:2.5px solid var(--c);width:250px}
+.node b{display:block;font:800 38px/1 var(--display)}
+.node span{display:block;margin-top:10px;font:600 24px/1 var(--mono);color:var(--c)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../shared/kit.js"></script>
+<script>
+const {tok,brand,shell,ctaFollow}=KIT; const F=KIT.page();
+// elemento da comunicação → função → cor
+const FN=[['emissor','Emotiva','#FF7A8A','sentimentos de quem fala'],['receptor','Conativa','#FFC400','convencer, dar ordem'],['assunto','Referencial','#4CC9F0','informar'],
+          ['canal','Fática','#3dd6a5','testar o contato'],['código','Metalinguística','#9C7BFF','a língua explica a língua'],['mensagem','Poética','#F0ABFC','rima, ritmo, jogo de palavras']];
+const ad=(hl)=>`<div style="padding:34px 36px;border-radius:26px;background:linear-gradient(135deg,#FFE7A3,#FFC400);color:#0F172A;box-shadow:0 30px 70px rgba(0,0,0,.4)">
+  <div style="font:800 22px/1 var(--mono);letter-spacing:2px;opacity:.6;margin-bottom:16px">ANÚNCIO</div>
+  <div style="font:900 52px/1.15 var(--display);letter-spacing:-1px"><span style="${hl?'background:#0F172A;color:#FFC400;border-radius:10px;padding:0 8px':''}">Proteja</span> sua pele.<br><span style="${hl?'background:#0F172A;color:#FFC400;border-radius:10px;padding:0 8px':''}">Use</span> protetor solar<br>todos os dias.</div></div>`;
+const ALTS=[['A','emotiva','',''],['B','conativa','✓ imperativo + leitor','ok'],['C','referencial','fala de produto ≠ foco','trap'],['D','fática','',''],['E','metalinguística','','']];
+const alts=(st)=>ALTS.map(([l,v,n,k])=>{const ok=st&&k==='ok',trap=st&&k==='trap';
+  return `<div class="alt" style="${ok?'border-color:var(--amarelo);background:rgba(255,196,0,.12)':''};${trap?'border-color:#FF7A8A':''};${st&&!k?'opacity:.4':''}">
+  <div class="l" style="${ok?'background:var(--amarelo);color:var(--navy);border-color:var(--amarelo)':''}">${l}</div>
+  <div class="v" style="${trap?'text-decoration:line-through;text-decoration-color:#FF7A8A;text-decoration-thickness:4px;color:var(--cinza-2)':''}">${v}</div>
+  ${st&&n?`<div class="n" style="color:${trap?'#FF7A8A':'var(--amarelo)'}">${trap?'⚠ ':''}${n}</div>`:''}</div>`}).join('');
+// diagrama: emissor → mensagem → receptor, com canal, código e referente
+const diagram=(focus=-1)=>{const P={emissor:[135,330],receptor:[725,330],mensagem:[430,330],assunto:[430,100],canal:[430,560],código:[725,560]};
+  return `<div style="position:relative;width:940px;height:680px">
+  <svg class="abs" style="left:0;top:0" width="940" height="680"><g stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-dasharray="8 8" fill="none">
+    <path d="M260 330 H305"/><path d="M555 330 H600"/><path d="M430 150 V280"/><path d="M430 380 V510"/><path d="M555 560 H600"/></g></svg>
+  ${FN.map(([e,f,c],i)=>{const [x,y]=P[e];return `<div class="node" style="left:${x}px;top:${y}px;--c:${c};${focus>=0&&i!==focus?'opacity:.3':''};${i===focus?`box-shadow:0 0 50px ${c}66;background:rgba(15,23,42,.95)`:''}">
+    <b>${e[0].toUpperCase()+e.slice(1)}</b><span>${f.toLowerCase()}</span></div>`}).join('')}</div>`;};
+
+const frames={
+1:()=>shell(`${brand('01','GANCHO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Linguagens</div>
+    <div class="h-l">Funções da<br>linguagem:<br><span class="y">ache o foco</span></div></div>
+  <div class="abs card" style="left:60px;top:900px;width:870px;padding:44px;position:relative;overflow:hidden">
+    ${[92,80,88,60].map(w=>`<div style="height:20px;width:${w}%;border-radius:10px;background:rgba(255,255,255,.12);margin-bottom:22px"></div>`).join('')}
+    <svg class="abs" style="right:70px;top:30px" width="220" height="220" viewBox="0 0 24 24" fill="none" stroke="#FFC400" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="6.5" fill="rgba(255,196,0,.12)"/><path d="M15 15l6 6"/></svg>
+  </div>`),
+
+2:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">6 elementos, 6 funções</div>
+    <div class="h-l">Cada foco,<br><span class="y">uma função</span></div></div>
+  <div class="abs" style="left:60px;top:720px">${diagram()}</div>`),
+
+3:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:#3dd6a5">Foco no canal</div>
+    <div class="h-l">"Alô, tá me<br><span style="color:#3dd6a5">ouvindo?"</span></div></div>
+  <div class="abs" style="left:60px;top:720px">${diagram(3)}</div>`),
+
+4:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Resumo</div>
+    <div class="h-l">Onde está<br>o <span class="y">foco?</span></div></div>
+  <div class="abs" style="left:60px;top:700px;width:870px">
+    ${FN.map(([e,f,c,d])=>`<div class="fn"><div class="dot" style="background:${c}"></div><div class="e">${e}</div><div><div class="f" style="color:${c}">${f}</div><div class="note" style="color:var(--cinza-2);margin-top:6px">${d}</div></div></div>`).join('')}
+  </div>`),
+
+5:()=>shell(`${brand('03','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Vamos aplicar</div>
+    <div class="h-l">Qual a função<br><span class="y">predominante?</span></div></div>
+  <div class="abs" style="left:60px;top:720px;width:870px">${ad(1)}</div>
+  <div class="abs" style="left:60px;top:1110px;width:870px;display:flex;gap:14px;flex-wrap:wrap">
+    ${['verbos no imperativo','fala direto com o leitor'].map(t=>`<div class="pill" style="font-size:28px;background:rgba(255,196,0,.14);border:1.5px solid rgba(255,196,0,.5);color:var(--amarelo)">${t}</div>`).join('')}</div>`),
+
+6:()=>shell(`${brand('04','ARMADILHA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:#FF7A8A">Atenção</div>
+    <div class="h-l">Não é<br><span style="color:#FF7A8A">referencial</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:36px 40px 26px">${alts(1)}</div>`),
+
+7:()=>shell(`${brand('05','O BIZU')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:var(--amarelo)">O bizu</div>
+    <div class="h-l nowrap" style="font-size:100px">Em quem ou<br>em quê o texto<br><span class="y">está focado?</span></div></div>
+  <div class="abs" style="left:84px;top:860px;width:860px;display:flex;flex-wrap:wrap;gap:14px">
+    ${FN.map(([e,f,c])=>`<div class="pill" style="font-size:30px;background:rgba(255,255,255,.06);border:1.5px solid ${c}88"><span style="color:var(--cinza-2)">${e}</span> → <span style="color:${c}">${f.toLowerCase()}</span></div>`).join('')}
+  </div>`),
+
+8:()=>shell(`${brand('06','CTA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Curtiu o bizu?</div>
+    <div class="h-l">Salva<br><span class="y">e segue</span></div></div>
+  <div class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>`),
+};
+document.getElementById('root').innerHTML=frames[F]();
+</script>
+</body>
+</html>

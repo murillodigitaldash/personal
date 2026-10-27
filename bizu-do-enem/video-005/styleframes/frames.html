@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V005 · Styleframes</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+.alt{display:flex;align-items:center;gap:20px;padding:16px 20px;border-radius:20px;margin-bottom:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.alt .l{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{font:700 38px/1 var(--display);font-variant-numeric:tabular-nums}
+.alt .n{margin-left:auto;font:600 22px/1 var(--mono)}
+.math{white-space:nowrap;font:800 64px/1.1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.conv{display:flex;align-items:center;gap:22px;padding:26px 30px;border-radius:26px;background:rgba(255,255,255,.05);margin-bottom:18px}
+.conv .a{font:800 54px/1 var(--display);color:var(--cinza-2);white-space:nowrap}
+.conv .b{font:900 64px/1 var(--display);white-space:nowrap}
+.conv .op{font:700 24px/1 var(--mono);color:var(--c3);padding:10px 14px;border-radius:12px;background:rgba(61,214,165,.14);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../shared/kit.js"></script>
+<script>
+const {tok,brand,shell,ctaFollow}=KIT; const F=KIT.page();
+const SHOWER=`<svg width="230" height="230" viewBox="0 0 120 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M30 18h34a14 14 0 0 1 14 14v8" stroke="#A9B1C4" stroke-width="7"/>
+  <path d="M58 46h40l-6 12H64z" fill="#6C3BFF" stroke="#9C7BFF" stroke-width="3"/>
+  ${[64,72,80,88].map((x,i)=>`<path d="M${x} 66 l-4 ${16+i%2*8}" stroke="#4CC9F0" stroke-width="4" opacity=".8"/>`).join('')}
+  <path d="M84 70 l-8 16 h10 l-6 16" stroke="#FFC400" stroke-width="5"/></svg>`;
+const ALTS=[['A','3.300 kWh','minutos sem converter','trap'],['B','165 kWh','1 h por dia','x'],['C','55 kWh','✓ correta','ok'],['D','1,83 kWh','só 1 dia','x'],['E','55.000 kWh','watts sem converter','x']];
+const question=(st)=>`<div class="note" style="color:var(--roxo-claro);margin-bottom:20px">QUESTÃO · ESTILO ENEM</div>
+  <div style="font:600 34px/1.4 var(--texto);color:var(--cinza-1);margin-bottom:26px">Um chuveiro elétrico de <b style="color:#fff">5.500 W</b> fica ligado <b style="color:#fff">20 minutos por dia</b>. Em <b style="color:#fff">30 dias</b>, o consumo será de:</div>
+  ${ALTS.map(([l,v,n,k])=>{const ok=st&&k==='ok',trap=st&&k==='trap',x=st&&k==='x';
+   return `<div class="alt" style="${ok?'border-color:var(--amarelo);background:rgba(255,196,0,.12)':''};${trap?'border-color:#FF7A8A':''};${x?'opacity:.4':''}">
+    <div class="l" style="${ok?'background:var(--amarelo);color:var(--navy);border-color:var(--amarelo)':''}">${l}</div>
+    <div class="v" style="${trap?'text-decoration:line-through;text-decoration-color:#FF7A8A;text-decoration-thickness:4px;color:var(--cinza-2)':''}">${v}</div>
+    ${st?`<div class="n" style="color:${trap?'#FF7A8A':ok?'var(--amarelo)':'var(--cinza-2)'}">${trap?'⚠ ':''}${n}</div>`:''}</div>`}).join('')}`;
+
+const frames={
+1:()=>shell(`${brand('01','GANCHO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Física · Energia elétrica</div>
+    <div class="h-l">Quanto o<br>chuveiro<br><span class="y">gasta?</span></div></div>
+  <div class="abs card" style="left:60px;top:900px;width:870px;padding:40px 44px;display:flex;align-items:center;gap:40px">
+    ${SHOWER}
+    <div><div class="note" style="color:var(--cinza-2);margin-bottom:12px">CONSUMO NO MÊS</div>
+      <div class="math y" style="font-size:96px">?? kWh</div>
+      <div class="note" style="color:var(--cinza-2);margin-top:14px">20 min por dia · 30 dias</div></div>
+  </div>`),
+
+2:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Energia consumida</div>
+    <div class="h-l">Potência<br><span class="y">× tempo</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:56px 50px 44px">
+    <div style="font:900 120px/1 var(--display);letter-spacing:-3px;text-align:center;white-space:nowrap">E = P · <span class="y">Δt</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px">
+      ${[['E','energia','kWh','#fff'],['P','potência','kW','var(--c4)'],['Δt','tempo','h','var(--amarelo)']].map(([a,b,u,c])=>`<div style="text-align:center;padding:22px 10px;border-radius:22px;background:rgba(255,255,255,.05)">
+        <div style="font:900 60px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div>
+        <div style="margin-top:14px;display:inline-block;font:700 26px/1 var(--mono);padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.08);color:${c}">${u}</div></div>`).join('')}
+    </div>
+    <div style="margin-top:34px;text-align:center;font:600 30px/1.3 var(--texto);color:var(--cinza-1)">Na conta de luz: <b class="y">kW × h = kWh</b></div>
+  </div>`),
+
+3:()=>shell(`${brand('03','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Vamos aplicar</div>
+    <div class="h-l">Na <span class="y">questão</span></div></div>
+  <div class="abs card" style="left:60px;top:640px;width:870px;padding:40px 40px 30px">${question(0)}</div>`),
+
+4:()=>shell(`${brand('03','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Passo 1</div>
+    <div class="h-l">Primeiro,<br><span class="y">converta</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:40px 40px 22px">
+    <div class="conv"><div class="a">5.500 W</div><div class="op">÷ 1.000</div><div class="b" style="color:var(--c4)">5,5 kW</div></div>
+    <div class="conv"><div class="a" style="font-size:44px">20 min × 30</div><div class="op">= 600 min ÷ 60</div><div class="b y">10 h</div></div>
+  </div>`),
+
+5:()=>shell(`${brand('03','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Passo 2</div>
+    <div class="h-l">Agora,<br><span class="y">multiplique</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:56px 50px;text-align:center">
+    <div class="math" style="font-size:96px"><span style="color:var(--c4)">5,5</span> × <span class="y">10</span> = 55</div>
+    <div style="margin-top:20px;font:800 52px/1 var(--display);color:var(--cinza-2)">kWh</div>
+    <div style="margin-top:36px;display:inline-flex;background:var(--amarelo);color:var(--navy);padding:18px 30px;border-radius:999px;font:800 40px/1 var(--display);box-shadow:0 0 40px rgba(255,196,0,.4)">55 kWh · (C)</div>
+  </div>`),
+
+6:()=>shell(`${brand('04','ARMADILHA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:#FF7A8A">Atenção</div>
+    <div class="h-l">Esqueceu de<br><span style="color:#FF7A8A">converter?</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:36px 40px 26px">${question(1).replace(/<div class="note"[\s\S]*?consumo será de:<\/div>/,'')}</div>
+  <div class="abs" style="left:84px;top:1290px;font:600 32px/1.35 var(--texto);color:var(--cinza-1);width:840px">5,5 × 600 min = 3.300 → <b style="color:#FF7A8A">60 vezes maior</b></div>`),
+
+7:()=>shell(`${brand('05','O BIZU')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:var(--amarelo)">O bizu</div>
+    <div class="h-l nowrap" style="font-size:100px">Antes de<br>multiplicar:<br><span class="y">kW e horas</span></div></div>
+  <div class="abs" style="left:60px;top:860px;width:870px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    ${[['W → kW','÷ 1.000','var(--c4)'],['min → h','÷ 60','var(--amarelo)']].map(([a,b,c])=>`<div class="card" style="padding:40px 30px;text-align:center">
+      <div style="font:900 56px/1 var(--display);color:${c}">${a}</div><div style="margin-top:18px;font:700 36px/1 var(--mono);color:var(--cinza-1)">${b}</div></div>`).join('')}
+  </div>`),
+
+8:()=>shell(`${brand('06','CTA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Curtiu o bizu?</div>
+    <div class="h-l">Salva<br><span class="y">e segue</span></div></div>
+  <div class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>`),
+};
+document.getElementById('root').innerHTML=frames[F]();
+</script>
+</body>
+</html>
