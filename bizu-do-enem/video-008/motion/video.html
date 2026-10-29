@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V008 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.alt{display:flex;align-items:center;gap:18px;padding:12px 18px;border-radius:18px;margin-bottom:8px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);position:relative}
+.alt .l{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:800 22px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{position:relative;font:700 27px/1.18 var(--display)}
+.alt .on{position:absolute;inset:-1.5px;border-radius:18px;border:1.5px solid var(--amarelo);background:rgba(255,196,0,.12);opacity:0}
+.alt .bad{position:absolute;inset:-1.5px;border-radius:18px;border:1.5px solid #FF7A8A;background:rgba(255,122,138,.10);opacity:0}
+.strike{position:absolute;left:-4px;right:-4px;top:52%;height:4px;background:#FF7A8A;transform-origin:0 50%}
+.ff{position:relative;width:417px;height:300px;padding:30px 30px;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1.5px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.ff .es{font:900 50px/1 var(--display);letter-spacing:-1.5px;color:var(--amarelo)}
+.ff .flag{font:700 18px/1 var(--mono);letter-spacing:2px;color:var(--cinza-2);margin-bottom:16px}
+.ff .no{position:relative;display:inline-block;margin-top:30px;font:600 30px/1.1 var(--display);color:var(--cinza-2)}
+.ff .no small{font:600 18px/1 var(--mono);letter-spacing:1px;color:#FF7A8A;display:block;margin-bottom:8px}
+.ff .yes{margin-top:22px;display:flex;align-items:center;gap:14px;font:800 36px/1.05 var(--display)}
+.sent{font:700 54px/2.05 var(--display);letter-spacing:-.5px;color:rgba(255,255,255,.28)}
+.sent .k{position:relative;display:inline-block}
+.sent .u{position:absolute;left:0;right:0;bottom:12px;height:5px;border-radius:3px;background:var(--amarelo);transform-origin:0 50%}
+.sent .tr{position:absolute;left:50%;top:84%;transform:translateX(-50%);white-space:nowrap;font:700 26px/1 var(--mono);color:#3dd6a5}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {ctaFollow, CHECK, CROSS} = KIT;
+/* tempo: narração com trechos nativos (palavras_nativa.json) + pausa de +1,5 s após "exquisito." (questão na tela) */
+const T = t => t + (t > 30.31 ? 1.5 : 0);
+const DUR = T(45.31) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','ESTRATÉGIA','FALSOS AMIGOS','APLICAÇÃO','O BIZU','CTA'], dur:DUR});
+
+// falso amigo: espanhol, parece, significa, t(palavra), t(significado)
+const FF=[['exquisito','esquisito','delicioso',17.68,18.79],['embarazada','embaraçada','grávida',19.66,20.70],
+          ['oficina','oficina mecânica','escritório',21.30,22.28],['rato','rato, o bicho','um tempinho',23.24,24.07]];
+// frase: [palavra, início, falso amigo → tradução, tempo da tradução]
+const ES=[['Pasé',27.28],['un',27.52],['rato',27.62,'tempo',35.53],['en',27.82],['la',27.89],['oficina',27.96,'escritório',35.88],
+          ['y',28.70],['luego',28.84],['comí',29.05],['algo',29.30],['exquisito.',29.47,'delicioso',37.43]];
+const ALTS=[['A','Vi um rato na oficina e comi algo estranho','trap'],['B','Passei um tempo no escritório e depois comi algo delicioso','ok'],
+  ['C','Passei um tempo na oficina e comi algo estranho',''],['D','Peguei um rato no escritório e comi algo delicioso',''],['E','Fiquei pouco tempo no escritório e não comi nada','']];
+
+$('#scenes').innerHTML=`
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Espanhol no ENEM</span></div>
+    <div style="position:relative;height:330px;width:920px">
+      <div class="abs h-l nowrap" style="left:0;top:0">${mask('Parece','s1a')}${mask('fácil…','s1b','y')}</div>
+      <div class="abs h-l nowrap" style="left:0;top:0;font-size:100px">${mask('É aí que mora','s1c')}${mask('a pegadinha','s1d','y')}</div>
+    </div></div>
+  <div id="s1card" class="abs" style="left:60px;top:930px;width:870px;display:flex;gap:24px">
+    <div class="card" style="flex:1;padding:36px 34px"><div class="kicker" style="color:var(--cinza-2)">Português</div><div style="font:900 64px/1 var(--display);margin-top:22px">oficina</div><div class="note" style="margin-top:16px">conserto de carro</div></div>
+    <div class="card" style="flex:1;padding:36px 34px;border-color:#FFC40066"><div class="kicker" style="color:var(--amarelo)">Español</div><div style="font:900 64px/1 var(--display);margin-top:22px;color:var(--amarelo)">oficina</div>
+      <div class="note" style="margin-top:16px;color:#3dd6a5" id="s1m">= escritório</div></div>
+  </div>
+  <div id="s1eq" class="abs" style="left:445px;top:875px;width:100px;height:100px;border-radius:50%;background:#FF7A8A;display:grid;place-items:center;font:900 60px/1 var(--display);color:#0F172A;box-shadow:0 0 40px rgba(255,122,138,.6)">≠</div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s2k">Ideia central</span></div>
+    <div class="h-l nowrap" style="font-size:100px">${mask('A estratégia','s2a')}${mask('é a mesma','s2b','y')}</div></div>
+  <div class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:22px">
+    ${[['1','Pergunta primeiro','ela diz o que procurar'],['2','Título, fonte e imagens','já entregam o tema'],['3','Palavras que se repetem','mostram a ideia central']].map(([n,a,b])=>`
+      <div class="card s2r" style="width:846px;padding:28px 34px;display:flex;align-items:center;gap:28px">
+        <div style="width:76px;height:76px;border-radius:50%;background:var(--roxo);display:grid;place-items:center;font:900 38px/1 var(--display)">${n}</div>
+        <div><div style="font:800 44px/1 var(--display)">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div></div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:#FF7A8A"><span id="s3k">⚠ Cuidado</span></div>
+    <div style="position:relative;height:230px;width:920px">
+      <div class="abs h-l nowrap" style="left:0;top:0">${mask('Falsos','s3a')}${mask('amigos','s3b','y')}</div>
+      <div class="abs h-l nowrap" style="left:0;top:0;font-size:84px">${mask('Parecem português,','s3c')}${mask('<span class="y">significam outra coisa</span>','s3d')}</div>
+    </div></div>
+  <div class="abs" style="left:60px;top:740px;width:870px;display:grid;grid-template-columns:1fr 1fr;gap:36px">
+    ${FF.map(([es,no,yes],i)=>`<div class="ff" id="f${i}"><div class="flag">ESPAÑOL</div><div class="es">${es}</div>
+      <div class="no" id="fn${i}"><small>PARECE</small>${no}<div class="strike" id="fs${i}" style="top:68%"></div></div>
+      <div class="yes" id="fy${i}"><div class="tok ok" style="--s:48px">${CHECK}</div>${yes}</div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:380px"><div style="position:relative;height:60px;width:900px">
+    <div class="abs kicker mask" style="left:0;top:0"><span id="s4k">Vamos aplicar</span></div>
+    <div class="abs kicker mask" style="left:0;top:0;color:#FF7A8A"><span id="s4k2">Só pela aparência…</span></div>
+    <div class="abs kicker mask" style="left:0;top:0;color:var(--amarelo)"><span id="s4k3">Mas a frase diz</span></div></div></div>
+  <div id="s4txt" class="abs" style="left:84px;top:440px;width:860px"><div class="sent">${ES.map(([w,t,tr],i)=>`<span class="k" id="e${i}">${w}${tr?`<span class="u"></span><span class="tr">${tr}</span>`:''}</span>`).join(' ')}</div></div>
+  <div id="s4q" class="abs card" style="left:60px;top:900px;width:870px;padding:24px 26px 16px">
+    <div style="font:800 30px/1 var(--display);margin:4px 4px 18px">A frase significa:</div>
+    ${ALTS.map(([l,v,k])=>`<div class="alt" id="a${l}"><div class="on"></div><div class="bad"></div>
+      <div class="l">${l}${k==='ok'?'<div class="abs aCf" style="inset:-2px;border-radius:50%;display:grid;place-items:center;background:var(--amarelo);color:var(--navy);opacity:0">B</div>':''}</div>
+      <div class="v">${v}${k==='trap'?'<div class="strike aStrike"></div>':''}</div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s5k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:100px">${mask('Desconfie da','s5a')}${mask('palavra que','s5b')}${mask('parece igual','s5c','y')}</div></div>
+  <div id="s5card" class="abs card" style="left:60px;top:900px;width:870px;padding:40px 44px;display:flex;flex-wrap:wrap;gap:14px">
+    ${FF.map(([es,no,yes])=>`<div class="pill s5p" style="font-size:30px;background:rgba(255,255,255,.06);border:1.5px solid #FFC40066"><span class="y">${es}</span> = ${yes}</div>`).join('')}
+  </div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s6a')}${mask('e segue','s6b','y')}</div></div>
+  <div id="s6cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* 01 GANCHO: 0 → 3.2 */
+show('#s1',0,3.65);
+up('#s1k',.05); up('#s1a',0); up('#s1b',T(.36),{color:'#fff'}); tl.to('#s1b',{color:'#FFC400',duration:.25},T(.7));
+tl.from('#s1card > .card',{y:180,opacity:0,duration:.7,ease:'expo.out',stagger:.12},.3);
+tl.set('#s1m',{opacity:0},0);
+out(['#s1a','#s1b'],T(1.3),{duration:.3}); up('#s1c',T(1.45)); up('#s1d',T(2.22),{color:'#fff'}); tl.to('#s1d',{color:'#FFC400',duration:.25},T(2.4));
+tl.from('#s1eq',{scale:0,rotation:-90,duration:.5,ease:'back.out(2)'},T(2.31)); pulse('#s1eq',T(2.7),1.15);
+tl.to('#s1m',{opacity:1,duration:.3},T(2.5));
+out(['#s1k','#s1c','#s1d'],3.1,{stagger:.03});
+tl.to(['#s1card','#s1eq'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},3.1);
+
+/* 02 ESTRATÉGIA */
+const s2in=3.25, s2out=T(12.55);
+show('#s2',s2in,s2out+.5); chap(1,s2in);
+up('#s2k',T(3.29)); up('#s2a',T(4.77)); up('#s2b',T(5.53),{color:'#fff'}); tl.to('#s2b',{color:'#FFC400',duration:.25},T(5.7));
+const R=$$('.s2r'); [6.48,7.87,10.54].forEach((t,i)=>{ tl.from(R[i],{x:-140,opacity:0,duration:.5,ease:'expo.out'},T(t)); pulse(R[i].firstElementChild,T(t)+.3,1.15); });
+out(['#s2k','#s2a','#s2b'],s2out,{stagger:.03}); tl.to('.s2r',{y:-40,opacity:0,duration:.3,stagger:.03,ease:'power3.in'},s2out);
+sweep(s2out+.05);
+
+/* 03 FALSOS AMIGOS */
+const s3in=T(12.7), s3out=T(25.35);
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',T(12.75)); up('#s3a',T(13.69)); up('#s3b',T(14.06),{color:'#fff'}); tl.to('#s3b',{color:'#FFC400',duration:.25},T(14.2));
+out(['#s3a','#s3b'],T(14.6),{duration:.3}); up('#s3c',T(14.73)); up('#s3d',T(16.35));
+tl.set('[id^=fy]',{opacity:0},0); tl.set('[id^=fs]',{scaleX:0},0);
+FF.forEach(([es,no,yes,t0,t1],i)=>{
+  tl.from(`#f${i}`,{opacity:0,y:60,scale:.9,duration:.5,ease:'back.out(1.6)'},T(t0)-.1); pulse(`#f${i} .es`,T(t0)+.1,1.1);
+  tl.to(`#fs${i}`,{scaleX:1,duration:.3,ease:'power4.inOut'},T(t1)-.15); tl.to(`#fn${i}`,{opacity:.55,duration:.3},T(t1));
+  tl.fromTo(`#fy${i}`,{opacity:0,x:-20},{opacity:1,x:0,duration:.35,immediateRender:false},T(t1));
+  tl.to(`#f${i}`,{borderColor:'rgba(61,214,165,.6)',duration:.3},T(t1)); });
+out(['#s3k','#s3c','#s3d'],s3out,{stagger:.03});
+tl.to('.ff',{y:-50,opacity:0,duration:.35,stagger:.04,ease:'power3.in'},s3out);
+
+/* 04 APLICAÇÃO */
+const s4in=T(25.45), s4out=T(38.35);
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',T(25.5));
+tl.from('.sent .k',{opacity:0,y:18,duration:.3,stagger:.03},T(26.3));
+tl.set('.sent .u',{scaleX:0},0); tl.set('.sent .tr',{opacity:0},0);
+ES.forEach(([w,t,tr],i)=>{ tl.to(`#e${i}`,{color:'#fff',duration:.15},T(t)); if(tr) tl.to(`#e${i} .u`,{scaleX:1,duration:.3},T(t)+.15); });
+// questão na tela (pausa de 1,5 s)
+const qIn=T(30.25);
+tl.set('.aStrike',{scaleX:0},0);
+tl.from('#s4q',{y:140,opacity:0,duration:.6,ease:'expo.out'},qIn);
+tl.from('#s4q .alt',{opacity:0,x:-30,duration:.3,stagger:.08},qIn+.2);
+// "quem confia só na aparência…" → A é a armadilha
+out('#s4k',T(30.4),{duration:.3}); up('#s4k2',T(30.5));
+tl.to('#aA .bad',{opacity:1,duration:.3},T(31.9));
+tl.to('.aStrike',{scaleX:1,duration:.35,ease:'power4.inOut'},T(33.5)); tl.to('#aA .v',{color:'#A9B1C4',duration:.3},T(33.5));
+// "mas a frase diz…" → B
+out('#s4k2',T(34.0),{duration:.3}); up('#s4k3',T(34.1));
+tl.to('#aB',{borderColor:'#FFC400',duration:.3},T(35.1));
+ES.forEach(([w,t,tr,tt],i)=>{ if(tr){ tl.to(`#e${i} .tr`,{opacity:1,duration:.3},T(tt)); pulse(`#e${i} .tr`,T(tt),1.2); tl.to(`#e${i} .u`,{background:'#3dd6a5',duration:.3},T(tt)); } });
+tl.to('#aB .on',{opacity:1,duration:.3},T(37.43)); tl.to('.aCf',{opacity:1,duration:.3},T(37.43)); pulse('#aB',T(37.43),1.03);
+tl.to(['#aC','#aD','#aE'],{opacity:.4,duration:.4},T(37.6));
+out('#s4k3',s4out,{duration:.3});
+tl.to(['#s4txt','#s4q'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},s4out);
+
+/* 05 BIZU */
+const s5in=T(38.45), s5out=T(42.4);
+show('#s5',s5in,s5out+.45); chap(4,s5in);
+up('#s5k',T(38.45)); up('#s5a',T(40.21)); up('#s5b',T(40.89)); up('#s5c',T(41.48),{color:'#fff'}); tl.to('#s5c',{color:'#FFC400',duration:.25},T(41.83));
+tl.from('#s5card',{y:120,opacity:0,duration:.6,ease:'expo.out'},T(38.9));
+tl.from('.s5p',{opacity:0,y:24,scale:.9,duration:.35,ease:'back.out(2)',stagger:.12},T(39.2));
+out(['#s5k','#s5a','#s5b','#s5c'],s5out,{stagger:.03,duration:.32});
+tl.to('#s5card',{y:-40,opacity:0,duration:.3,ease:'power3.in'},s5out);
+
+/* 06 CTA */
+const s6in=T(42.45);
+show('#s6',s6in,DUR+1); chap(5,s6in);
+up('#s6k',s6in+.05); up('#s6a',T(42.48));
+const [save,follow]=$$('#s6cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(42.55)); pulse(save.firstElementChild,T(42.9),1.15);
+up('#s6b',T(43.49),{color:'#fff'}); tl.to('#s6b',{color:'#FFC400',duration:.25},T(43.71));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(43.5));
+pulse(follow.lastElementChild,T(44.07),1.12); pulse(follow.lastElementChild,T(45.5),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(44.07));
+
+MOTION.ready();
+</script>
+</body>
+</html>

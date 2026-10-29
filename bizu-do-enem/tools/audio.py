@@ -1,11 +1,11 @@
 # Monta a narração com pausas, mixa efeitos sonoros, normaliza (−14 LUFS) e gera o .srt.
 # uso: python3 tools/audio.py <dir_video> <json_config>
-#  config: {"cuts": [[t, pausa], ...], "tail": 1.3, "sfx": [[nome, t_final, dB], ...], "srt": "entrega/X.srt"}
+#  config: {"src": "audio/narracao_nativa.wav", "words": "audio/palavras_nativa.json" (opcionais), "cuts": [[t, pausa], ...], "tail": 1.3, "sfx": [[nome, t_final, dB], ...], "srt": "entrega/X.srt"}
 import json, subprocess, sys, os
 d, cfg = sys.argv[1], json.loads(sys.argv[2])
 cuts = cfg['cuts']; SFX = os.path.join(os.path.dirname(__file__), '..', 'video-001', 'audio', 'sfx')
 T = lambda t: t + sum(p for c, p in cuts if t > c)
-src = f'{d}/audio/narracao_take1.mp3'; pts = [0] + [c for c, _ in cuts] + [None]; parts = []
+src = f"{d}/{cfg.get('src', 'audio/narracao_take1.mp3')}"; pts = [0] + [c for c, _ in cuts] + [None]; parts = []
 for i in range(len(pts) - 1):
     a, b = pts[i], pts[i + 1]; fn = f'{d}/audio/_p{i}.wav'
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', src, '-af', f"atrim={a}" + (f":{b}" if b else "") + ",asetpts=PTS-STARTPTS", '-ac', '1', '-ar', '44100', fn], check=True); parts.append(fn)
@@ -14,7 +14,7 @@ for i in range(len(pts) - 1):
 ins = sum((['-i', p] for p in parts), [])
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error'] + ins + ['-filter_complex', ''.join(f'[{k}]' for k in range(len(parts))) + f'concat=n={len(parts)}:v=0:a=1', f'{d}/audio/voz_editada.wav'], check=True)
 [os.remove(p) for p in parts]
-W = json.load(open(f'{d}/audio/palavras_take1.json')); DUR = T(W[-1]['e']) + cfg.get('tail', 1.3)
+W = json.load(open(f"{d}/{cfg.get('words', 'audio/palavras_take1.json')}")); DUR = T(W[-1]['e']) + cfg.get('tail', 1.3)
 ins = ['-i', f'{d}/audio/voz_editada.wav']; fl = []; labs = []
 for k, (f, t, g) in enumerate(cfg['sfx']):
     ins += ['-i', f'{SFX}/{f}.wav']; ms = int(t * 1000)

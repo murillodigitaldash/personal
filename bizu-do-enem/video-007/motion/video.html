@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V007 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.alt{display:flex;align-items:center;gap:18px;padding:12px 18px;border-radius:18px;margin-bottom:8px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);position:relative}
+.alt .l{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:800 22px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{position:relative;font:700 28px/1.15 var(--display)}
+.alt .on{position:absolute;inset:-1.5px;border-radius:18px;border:1.5px solid var(--amarelo);background:rgba(255,196,0,.12);opacity:0}
+.alt .n{margin-left:auto;font:600 19px/1 var(--mono);white-space:nowrap}
+.strike{position:absolute;left:-4px;right:-4px;top:52%;height:4px;background:#FF7A8A;transform-origin:0 50%}
+/* item de prova */
+.item{position:absolute;left:60px;width:870px;border-radius:30px;background:#F5F3FF;color:#0F172A;box-shadow:0 40px 90px rgba(0,0,0,.45);padding:44px 44px 48px}
+.item .hd{display:flex;justify-content:space-between;font:800 20px/1 var(--mono);letter-spacing:2px;color:#6C3BFF;margin-bottom:22px}
+.zone{position:relative;border-radius:16px;padding:8px 12px;margin:0 -12px}
+.zone .tag{z-index:3}
+.zone .hl{position:absolute;inset:0;border-radius:16px;border:3px solid #FFC400;background:rgba(255,196,0,.18);opacity:0}
+.zone>*{position:relative}
+.title{font:900 54px/1.05 var(--display);letter-spacing:-1px}
+.src{font:600 19px/1 var(--mono);color:#5B6680;margin-top:10px}
+.body{font:500 40px/1.45 var(--texto);color:#1E2638}
+.stem{font:800 40px/1.2 var(--display);color:#0F172A}
+.w{position:relative;display:inline-block;border-radius:8px;padding:0 3px;margin:0 -3px}
+.w .bg{position:absolute;inset:2px -1px;border-radius:8px;background:#6C3BFF;opacity:0}
+.w em{position:relative;font-style:normal}
+.tag{position:absolute;padding:10px 18px;border-radius:999px;font:800 24px/1 var(--display);background:#FFC400;color:#0F172A;box-shadow:0 10px 30px rgba(0,0,0,.35);white-space:nowrap}
+/* aplicação */
+.big{font:600 46px/1.38 var(--texto);color:rgba(255,255,255,.28)}
+.big .k{position:relative;display:inline-block;isolation:isolate}
+.big .k i{position:absolute;inset:4px -6px;border-radius:12px;background:var(--roxo);opacity:0;z-index:-1}
+.chip{display:inline-flex;flex-direction:column;align-items:center;gap:8px;padding:16px 22px;border-radius:22px;background:rgba(108,59,255,.18);border:2px solid #9C7BFF}
+.chip b{font:800 36px/1 var(--display)} .chip span{font:600 22px/1 var(--mono);color:#FFC400}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {ctaFollow, CHECK} = KIT;
+/* tempo: narração com trechos nativos (palavras_nativa.json) + pausas: +0,6 s após "life." e +1,5 s após "marine." (questão na tela) */
+const T = t => t + (t > 29.38 ? .6 : 0) + (t > 36.47 ? 1.5 : 0);
+const DUR = T(51.82) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','ESTRATÉGIA','APLICAÇÃO','ALERTA','O BIZU','CTA'], dur:DUR});
+
+// frase em inglês: [palavra, início (s), cognato → tradução]
+const EN=[['Plastic',22.35,'plástico'],['pollution',22.80,'poluição'],['is',23.31],['a',23.52],['global',23.61,'global'],['problem.',24.05,'problema'],
+  ['Every',24.81],['year,',25.05],['millions',25.63],['of',26.00],['tons',26.12],['of',26.35],['plastic',26.46,'plástico'],['end',26.95],['up',27.19],
+  ['in',27.34],['the',27.43],['oceans,',27.57,'oceanos'],['harming',28.27],['marine',28.63,'marinha'],['life.',28.92]];
+const CHIPS=[['plastic','plástico',32.01],['pollution','poluição',32.75],['global','global',33.53],['problem','problema',34.23],['oceans','oceanos',34.93],['marine','marinha',35.84]];
+const ALTS=[['A','incentivar a reciclagem doméstica','⚠ tema vizinho','trap'],['B','apontar a poluição dos oceanos por plástico como problema global','','ok'],
+  ['C','explicar como o plástico é fabricado','',''],['D','defender a pesca industrial','',''],['E','apresentar dados sobre turismo no litoral','','']];
+const wrap=(s,i)=>`<span class="w" id="w${i}"><span class="bg"></span><em>${s}</em></span>`;
+const bodyHTML = EN.map(([w,t,c],i)=>c?wrap(w,i):w).join(' ');
+
+$('#scenes').innerHTML=`
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Inglês no ENEM</span></div>
+    <div class="h-l nowrap">${mask('Ideia central','s1a')}${mask('sem ser','s1b')}${mask('fluente?','s1c','y')}</div></div>
+  <div id="s1card" class="abs card" style="left:60px;top:930px;width:870px;padding:40px 44px">
+    <div style="font:500 36px/1.6 var(--texto);color:rgba(255,255,255,.22)">
+      ${['The','plastic','problem','is','not','only','about','the','oceans,','but','about','the','global','economy','and','our','daily','choices.']
+        .map((w,i)=>`<span class="s1w${[1,2,8,12,13].includes(i)?' k':''}" style="display:inline-block;margin-right:12px;filter:blur(${[1,2,8,12,13].includes(i)?0:5}px)">${w}</span>`).join('')}</div>
+  </div>
+  <div id="s1pill" class="abs pill" style="left:84px;top:1330px;background:var(--roxo);font-size:34px">✓ com estratégia</div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:380px">
+    <div style="position:relative;height:60px;width:900px">
+      ${['1 · Pergunta primeiro','2 · Título, fonte e imagem','3 · Cognatos e repetições'].map((k,i)=>`<div class="abs kicker mask" style="left:0;top:0"><span id="s2k${i}">${k}</span></div>`).join('')}
+    </div>
+    <div style="position:relative;height:130px;width:920px">
+      ${[['Ela vem em','<span class="y">português</span>'],['Eles entregam','<span class="y">o tema</span>'],['Palavras','<span class="y">conhecidas</span>']]
+        .map(([a,b],i)=>`<div class="abs h-l nowrap" style="left:0;top:0;font-size:84px">${mask(a+' '+b,'s2h'+i)}</div>`).join('')}
+    </div>
+  </div>
+  <div id="item" class="item" style="top:640px">
+    <div class="hd"><span>QUESTÃO 07</span><span>INGLÊS</span></div>
+    <div class="zone" id="zTop"><div class="hl"></div>
+      <div style="display:flex;gap:24px;align-items:center">
+        <svg width="200" height="160" viewBox="0 0 150 120" style="flex:none;border-radius:14px;background:#4CC9F0">
+          <path d="M0 70 Q20 58 40 70 T80 70 T120 70 T160 70 V120 H0Z" fill="#1d7fb0"/><path d="M0 88 Q20 76 40 88 T80 88 T120 88 T160 88 V120 H0Z" fill="#0f5f8a"/>
+          <rect x="62" y="34" width="22" height="42" rx="6" fill="#fff" opacity=".9" transform="rotate(-18 73 55)"/><rect x="66" y="26" width="12" height="9" rx="3" fill="#FFC400" transform="rotate(-18 73 55)"/></svg>
+        <div><div class="title">Plastic in<br>the Oceans</div><div class="src">Texto adaptado para fins didáticos</div></div>
+      </div><div id="tag2" class="tag" style="right:10px;bottom:-24px">tema: plástico no mar</div></div>
+    <div class="zone" id="zBody" style="margin-top:18px"><div class="hl"></div><div class="body">${bodyHTML}</div><div id="tag3" class="tag" style="right:10px;bottom:-30px">plastic ×2 = repetição</div></div>
+    <div class="zone" id="zStem" style="margin-top:18px"><div class="hl"></div><div class="stem">A ideia central do texto é:</div><div id="tag1" class="tag" style="right:10px;bottom:-30px">em português!</div></div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:380px">
+    <div style="position:relative;height:60px;width:900px">
+      <div class="abs kicker mask" style="left:0;top:0"><span id="s3k">Vamos aplicar</span></div>
+      <div class="abs kicker mask" style="left:0;top:0"><span id="s3k2">Você reconhece</span></div>
+      <div class="abs kicker mask" style="left:0;top:0;color:var(--amarelo)"><span id="s3k3">A ideia central</span></div>
+    </div>
+  </div>
+  <div id="s3txt" class="abs" style="left:84px;top:470px;width:860px"><div class="big">${EN.map(([w,t,c],i)=>`<span class="k" id="e${i}">${c?'<i></i>':''}${w}</span>`).join(' ')}</div></div>
+  <div id="s3chips" class="abs" style="left:84px;top:1000px;width:860px;display:flex;flex-wrap:wrap;gap:16px">
+    ${CHIPS.map(([a,b],i)=>`<div class="chip" id="c${i}"><b>${a}</b><span>${b}</span></div>`).join('')}</div>
+  <div id="s3q" class="abs card" style="left:60px;top:960px;width:870px;padding:24px 26px 16px">
+    <div style="font:800 30px/1 var(--display);margin:4px 4px 18px">A ideia central do texto é:</div>
+    ${ALTS.map(([l,v,n,k])=>`<div class="alt" id="a${l}"><div class="on"></div>
+      <div class="l">${l}${k==='ok'?'<div class="abs aCf" style="inset:-2px;border-radius:50%;display:grid;place-items:center;background:var(--amarelo);color:var(--navy);opacity:0">B</div>':''}</div>
+      <div class="v">${v}${k==='trap'?'<div class="strike aStrike"></div>':''}</div>
+      ${n?`<div class="n aNote" style="color:#FF7A8A">${n}</div>`:''}</div>`).join('')}
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:#FF7A8A"><span id="s4k">⚠ Falso cognato</span></div>
+    <div class="h-l nowrap">${mask('Cuidado!','s4a')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:720px;width:870px;padding:50px 54px">
+    <div id="s4w" style="font:900 120px/1 var(--display);letter-spacing:-3px;color:var(--amarelo)">actually</div>
+    <div id="s4ok" style="display:flex;align-items:center;gap:24px;margin-top:46px"><div class="tok ok" style="--s:72px">${CHECK}</div><div style="font:800 60px/1 var(--display)">= na verdade</div></div>
+    <div id="s4no" style="display:flex;align-items:center;gap:24px;margin-top:30px;position:relative"><div class="tok err" style="--s:72px;border-color:#FF7A8A">${KIT.CROSS('#FF7A8A')}</div>
+      <div style="position:relative;font:800 60px/1 var(--display);color:var(--cinza-2)">≠ atualmente<div class="strike" id="s4strike" style="top:50%"></div></div></div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s5k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:104px">${mask('Pergunta','s5a')}${mask('primeiro,','s5b','y')}</div></div>
+  <div class="abs" style="left:84px;top:780px;display:flex;flex-direction:column;gap:22px">
+    ${[['1','Pergunta','em português'],['2','Título','fonte e imagem'],['3','Palavras conhecidas','cognatos e repetições']].map(([n,a,b],i)=>`
+      <div class="card s5r" style="width:846px;padding:28px 34px;display:flex;align-items:center;gap:28px">
+        <div style="width:76px;height:76px;border-radius:50%;background:var(--roxo);display:grid;place-items:center;font:900 38px/1 var(--display)">${n}</div>
+        <div><div style="font:800 44px/1 var(--display)">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div></div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s6a')}${mask('e segue','s6b','y')}</div></div>
+  <div id="s6cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* 01 GANCHO: 0 → 4.4 */
+show('#s1',0,4.85);
+up('#s1k',.05); up('#s1a',0); up('#s1b',T(.66)); up('#s1c',T(1.45),{color:'#fff'}); tl.to('#s1c',{color:'#FFC400',duration:.25},T(1.75));
+tl.from('#s1card',{y:200,opacity:0,duration:.8,ease:'expo.out'},.5);
+tl.from('.s1w',{opacity:0,y:20,duration:.3,stagger:.04},.8);
+tl.to('.s1w.k',{color:'#fff',duration:.3,stagger:.1},T(3.2));
+tl.to('.s1w:not(.k)',{opacity:.5,duration:.4},T(3.2));
+tl.from('#s1pill',{opacity:0,scale:.7,duration:.45,ease:'back.out(2)'},T(3.56));
+out(['#s1k','#s1a','#s1b','#s1c'],4.3,{stagger:.03});
+tl.to(['#s1card','#s1pill'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},4.3);
+
+/* 02 ESTRATÉGIA: item de prova com 3 zonas */
+const s2in=4.45, s2out=T(20.3);
+show('#s2',s2in,s2out+.5); chap(1,s2in);
+tl.from('#item',{y:240,opacity:0,rotationX:-18,transformPerspective:1600,duration:.9,ease:'expo.out'},s2in);
+tl.set(['#tag1','#tag2','#tag3'],{opacity:0},0);
+const step=(i,t0,t1,zone,tag)=>{ up(`#s2k${i}`,t0); up(`#s2h${i}`,t0+.12);
+  tl.to(`${zone} .hl`,{opacity:1,duration:.3},t0+.1); pulse(zone,t0+.12,1.03);
+  if(i<2){ out([`#s2k${i}`,`#s2h${i}`],t1-.3,{duration:.28}); tl.to(`${zone} .hl`,{opacity:0,duration:.3},t1-.1); }
+  tl.fromTo(tag,{opacity:0,scale:.6},{opacity:1,scale:1,duration:.4,ease:'back.out(2)',immediateRender:false},t0+.9);
+  if(i<2) tl.to(tag,{opacity:0,duration:.25},t1-.2); };
+step(0,T(4.53),T(8.68),'#zStem','#tag1');
+step(1,T(8.68),T(13.51),'#zTop','#tag2');
+step(2,T(13.51),s2out,'#zBody','#tag3');
+// cognatos acendem em "cognatos", as repetições em "repetem"
+EN.forEach(([w,t,c],i)=>{ if(c){ tl.to(`#w${i} .bg`,{opacity:1,duration:.25},T(16.75)+i*.04); tl.to(`#w${i} em`,{color:'#fff',duration:.25},T(16.75)+i*.04);} });
+pulse(['#w0','#w12'],T(18.08),1.15);
+out(['#s2k2','#s2h2'],s2out-.3,{duration:.3});
+tl.to(['#item'],{y:-80,opacity:0,duration:.45,ease:'power3.in'},s2out-.2);
+sweep(s2out);
+
+/* 03 APLICAÇÃO */
+const s3in=T(20.4), s3out=T(40.45);
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',T(20.54));
+tl.from('.big .k',{opacity:0,y:18,duration:.3,stagger:.025},T(21.0));
+EN.forEach(([w,t],i)=>{ tl.to(`#e${i}`,{color:'#fff',duration:.15},T(t)); });
+// palavras desconhecidas recuam; cognatos ganham fundo roxo
+out('#s3k',T(29.45),{duration:.3}); up('#s3k2',T(29.55));
+EN.forEach(([w,t,c],i)=>{ if(!c) tl.to(`#e${i}`,{color:'rgba(255,255,255,.22)',duration:.4},T(29.6)); });
+tl.set('.chip',{opacity:0},0);
+CHIPS.forEach(([a,b,t],i)=>{ const idx=EN.findIndex(e=>e[0].toLowerCase().replace(/[.,]/g,'')===a);
+  tl.to(`#e${idx} i`,{opacity:1,duration:.25},T(t)); pulse(`#e${idx}`,T(t),1.08);
+  if(a==='plastic') tl.to('#e12 i',{opacity:1,duration:.25},T(t));
+  tl.fromTo(`#c${i}`,{opacity:0,y:30,scale:.8},{opacity:1,y:0,scale:1,duration:.4,ease:'back.out(2)',immediateRender:false},T(t)); });
+// questão na tela (pausa de 1,5 s)
+const qIn=T(36.40);
+tl.to('#s3chips',{y:-40,opacity:0,duration:.35,ease:'power3.in'},qIn-.1);
+out('#s3k2',qIn,{duration:.3}); up('#s3k3',qIn+.1);
+tl.set('.aNote',{opacity:0},0); tl.set('.aStrike',{scaleX:0},0);
+tl.from('#s3q',{y:140,opacity:0,duration:.6,ease:'expo.out'},qIn+.1);
+tl.from('#s3q .alt',{opacity:0,x:-30,duration:.3,stagger:.08},qIn+.3);
+tl.to('#aB',{borderColor:'#FFC400',duration:.3},T(37.64));
+tl.to('#aB .on',{opacity:1,duration:.3},T(38.4)); tl.to('.aCf',{opacity:1,duration:.3},T(38.4)); pulse('#aB',T(38.4),1.03);
+tl.to('#aA',{borderColor:'#FF7A8A',duration:.3},T(39.0)); tl.to('.aStrike',{scaleX:1,duration:.35,ease:'power4.inOut'},T(39.1));
+tl.to('#aA .v',{color:'#A9B1C4',duration:.3},T(39.1)); tl.to('#aA .aNote',{opacity:1,duration:.3},T(39.3));
+tl.to(['#aC','#aD','#aE'],{opacity:.4,duration:.4},T(39.4));
+out('#s3k3',s3out,{duration:.3});
+tl.to(['#s3txt','#s3q'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},s3out);
+
+/* 04 ALERTA: actually */
+const s4in=T(40.6), s4out=T(45.45);
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',T(40.67)); up('#s4a',T(40.89));
+tl.from('#s4card',{y:160,opacity:0,duration:.7,ease:'expo.out'},T(42.3));
+tl.from('#s4w',{opacity:0,scale:.7,transformOrigin:'0 50%',duration:.45,ease:'back.out(2)'},T(42.77)); pulse('#s4w',T(42.8),1.08);
+tl.from('#s4ok',{opacity:0,x:-40,duration:.4},T(43.85));
+tl.from('#s4no',{opacity:0,x:-40,duration:.4},T(44.6));
+tl.set('#s4strike',{scaleX:0},0); tl.to('#s4strike',{scaleX:1,duration:.35,ease:'power4.inOut'},T(44.95));
+out(['#s4k','#s4a'],s4out,{stagger:.03}); tl.to('#s4card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s4out);
+
+/* 05 BIZU */
+const s5in=T(45.6), s5out=T(49.3);
+show('#s5',s5in,s5out+.45); chap(4,s5in);
+up('#s5k',T(45.69)); up('#s5a',T(46.46)); up('#s5b',T(46.85),{color:'#fff'}); tl.to('#s5b',{color:'#FFC400',duration:.25},T(47.05));
+const R=$$('.s5r'); [46.46,47.85,48.22].forEach((t,i)=>tl.from(R[i],{x:-120,opacity:0,duration:.45,ease:'expo.out'},T(t)));
+out(['#s5k','#s5a','#s5b'],s5out,{stagger:.03,duration:.32});
+tl.to('.s5r',{y:-40,opacity:0,duration:.3,stagger:.03,ease:'power3.in'},s5out);
+
+/* 06 CTA */
+const s6in=T(49.4);
+show('#s6',s6in,DUR+1); chap(5,s6in);
+up('#s6k',s6in+.05); up('#s6a',T(49.48));
+const [save,follow]=$$('#s6cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(49.55)); pulse(save.firstElementChild,T(49.9),1.15);
+up('#s6b',T(50.48),{color:'#fff'}); tl.to('#s6b',{color:'#FFC400',duration:.25},T(50.67));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(50.5));
+pulse(follow.lastElementChild,T(50.98),1.12); pulse(follow.lastElementChild,T(52.3),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(50.98));
+
+MOTION.ready();
+</script>
+</body>
+</html>

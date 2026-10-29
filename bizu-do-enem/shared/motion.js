@@ -17,8 +17,8 @@ const MOTION = (() => {
     gsap.defaults({ ease: 'power3.out', duration: .6 });
     tl = gsap.timeline({ paused: true });
     const show = (sel, t0, t1) => { tl.set(sel, { visibility: 'visible' }, t0); if (t1 != null) tl.set(sel, { visibility: 'hidden' }, t1); };
-    const up = (sel, t, o = {}) => tl.from(sel, { yPercent: 110, duration: .7, ease: 'expo.out', ...o }, t);
-    const out = (sel, t, o = {}) => tl.to(sel, { yPercent: -110, duration: .42, ease: 'power3.in', ...o }, t);
+    const up = (sel, t, o = {}) => tl.from(sel, { yPercent: 135, duration: .7, ease: 'expo.out', ...o }, t);
+    const out = (sel, t, o = {}) => tl.to(sel, { yPercent: -135, duration: .42, ease: 'power3.in', ...o }, t);
     const chap = (i, t) => tl.to('#chapInner', { y: -26 * i, duration: .5, ease: 'power3.inOut' }, t);
     const sweep = t => { tl.fromTo('#sweep', { x: 0 }, { x: 1700, duration: .55, ease: 'power2.inOut', immediateRender: false }, t);
       tl.fromTo('#sweep', { opacity: 0 }, { opacity: 1, duration: .27, yoyo: true, repeat: 1, ease: 'sine.inOut', immediateRender: false }, t); };
