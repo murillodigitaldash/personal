@@ -1,6 +1,6 @@
 # V009 — Escala cartográfica: a conta de cabeça
 
-**Status:** em produção (29/10/2026). Roteiro: `roteiros/DIA-004-a-007.md` (produção autorizada pelo usuário em 29/10/2026).
+**Status:** entregue (29/10/2026). MP4 enviado no chat; capa, `.srt` e texto do post em `entrega/`. QC: sem pretos/congelamentos/cortes secos. Roteiro: `roteiros/DIA-004-a-007.md` (produção autorizada pelo usuário em 29/10/2026).
 
 - **Voz:** Vinicius Messer (`eleven_multilingual_v2`), take 1 de 2; transcrição conferida palavra por palavra (125 palavras).
 - **Pausa:** +1,5 s depois de "Qual a distância real?" (alternativas na tela). Duração: 47,4 s.

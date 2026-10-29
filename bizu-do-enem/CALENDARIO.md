@@ -8,7 +8,7 @@ Cadência: 2 vídeos por dia (12h e 19h). Vídeos de matéria seguem sempre a me
 | 002 | 27/10 | V003 Redação: proposta de intervenção | V004 Matemática: juros compostos | ✅ entregues |
 | 003 | 28/10 | V005 Física: consumo de energia (kWh) | V006 Linguagens: funções da linguagem | ✅ entregues |
 | 004 | 29/10 | V007 Inglês: ideia central sem fluência | V008 Espanhol: falsos amigos | ✅ entregues |
-| 005 | 30/10 | V009 Geografia: escala cartográfica | V010 Biologia: fluxo de energia | 📝 roteiro p/ aprovação |
+| 005 | 30/10 | V009 Geografia: escala cartográfica | V010 Biologia: fluxo de energia | ✅ entregues |
 | 006 | 31/10 | V011 História: leitura de documento (Lei Áurea) | V012 Literatura: Modernismo (Oswald) | 📝 roteiro p/ aprovação |
 | 007 | 01/11 | V013 Dicas: cartão-resposta e questão em branco | V014 Dicas: o que cai em cada dia (1º: Linguagens, Humanas e Redação · 2º: Natureza e Matemática) | 📝 roteiro p/ aprovação |
 | 008 | 02/11 | V015 Sociologia: fato social (Durkheim) | V016 Filosofia: contratualistas (Hobbes × Locke × Rousseau) | 💡 tema proposto |
