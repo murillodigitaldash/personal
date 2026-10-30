@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V012 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.par{position:relative;display:flex;align-items:center;gap:22px;padding:30px 28px;border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1.5px solid rgba(255,255,255,.12)}
+.par .nm{width:160px;flex:none;font:800 22px/1.15 var(--mono);color:var(--roxo-claro)}
+.par .ln{flex:1;display:flex;flex-direction:column;gap:10px}
+.par .ln i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.14)}
+.gap{position:relative;height:96px;display:flex;align-items:center;gap:14px;padding-left:150px}
+.gap .lk{position:absolute;left:66px;top:19px;width:26px;height:58px;border-radius:13px;border:5px solid var(--amarelo)}
+.cn{padding:12px 20px;border-radius:999px;background:var(--amarelo);color:#0F172A;font:800 28px/1 var(--display);white-space:nowrap}
+.cn.b{background:rgba(255,196,0,.14);color:var(--amarelo);border:2px solid var(--amarelo)}
+.txt{font:600 38px/1.35 var(--texto)}
+.mk{position:relative;display:inline-block}
+.mk u{position:absolute;inset:2px -6px;border-radius:10px;z-index:-1;text-decoration:none}
+.mk{isolation:isolate}
+.tg{position:absolute;left:0;top:calc(100% - 4px);white-space:nowrap;font:800 22px/1 var(--mono);padding:8px 12px;border-radius:10px;color:#0F172A}
+.strike{position:absolute;left:-4px;right:-4px;top:52%;height:5px;background:#FF7A8A;transform-origin:0 50%}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {ctaFollow, CHECK, CROSS} = KIT;
+/* tempo: narração take 1 + pausa de +0,6 s após "áreas de risco." (ler o exemplo) */
+const T = t => t + (t > 33.64 ? .6 : 0);
+const DUR = T(51.502) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CONECTIVOS','APLICAÇÃO','ARMADILHAS','O BIZU','CTA'], dur:DUR});
+
+const PAR=['Introdução','1º desenv.','2º desenv.','Conclusão'];
+// conectivos de cada passagem: [principal, tempo, alternativa, tempo]
+const CN=[['Em primeiro lugar,',12.41,'Inicialmente,',13.69],['Além disso,',15.5,'Ademais,',16.42],['Portanto,',18.37,'Diante disso,',19.27]];
+const lines=n=>[...Array(n)].map((_,i)=>`<i style="width:${[96,88,92,70][i%4]}%"></i>`).join('');
+
+$('#scenes').innerHTML=`
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Redação · Competência 4</span></div>
+    <div style="position:relative;height:230px;width:920px">
+      <div class="abs h-l nowrap" style="left:0;top:0">${mask('Coesão:','s1a')}${mask('ligue os parágrafos','s1b','y')}</div>
+      <div class="abs h-l nowrap" style="left:0;top:0;font-size:88px">${mask('Cada parágrafo','s1c')}${mask('<span class="y">conecta ao anterior</span>','s1d')}</div>
+    </div></div>
+  <div id="map" class="abs" style="left:60px;top:720px;width:870px">
+    ${PAR.map((p,i)=>`<div class="par" id="p${i}"><div class="nm">${p}</div><div class="ln">${lines(i===0||i===3?2:3)}</div></div>
+      ${i<3?`<div class="gap" id="gp${i}"><div class="lk"></div><div class="cn" id="cA${i}">${CN[i][0]}</div><div class="cn b" id="cB${i}">${CN[i][2]}</div></div>`:''}`).join('')}
+  </div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:380px"><div style="position:relative;height:60px;width:900px">
+    <div class="abs kicker mask" style="left:0;top:0;color:#FF7A8A"><span id="s2k">Só o conectivo não basta</span></div>
+    <div class="abs kicker mask" style="left:0;top:0"><span id="s2k2">Vamos aplicar</span></div></div>
+    <div style="position:relative;height:120px;width:920px">
+      <div class="abs h-l nowrap" style="left:0;top:0;font-size:92px">${mask('Retome a <span class="y">ideia</span>','s2a')}</div>
+    </div></div>
+  <div id="d1" class="abs card" style="left:60px;top:620px;width:870px;padding:30px 34px">
+    <div class="nm" style="font:800 22px/1 var(--mono);color:var(--roxo-claro);margin-bottom:18px">1º DESENVOLVIMENTO</div>
+    <div class="ln" style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px"><i style="display:block;height:12px;width:94%;border-radius:6px;background:rgba(255,255,255,.14)"></i><i style="display:block;height:12px;width:82%;border-radius:6px;background:rgba(255,255,255,.14)"></i></div>
+    <div class="txt">Isso ocorre, sobretudo, pela <span class="mk" id="mk0"><u style="background:rgba(61,214,165,.28)"></u>falta de drenagem nas cidades</span>.</div>
+  </div>
+  <svg id="loop" class="abs" style="left:860px;top:820px" width="90" height="300" viewBox="0 0 90 300"><path id="loopP" d="M10 270 C 85 250, 85 40, 10 20" stroke="#3dd6a5" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M10 20 l22 -4 M10 20 l14 16" stroke="#3dd6a5" stroke-width="6" stroke-linecap="round"/></svg>
+  <div id="d2" class="abs card" style="left:60px;top:960px;width:870px;padding:30px 34px">
+    <div class="nm" style="font:800 22px/1 var(--mono);color:var(--roxo-claro);margin-bottom:18px">2º DESENVOLVIMENTO</div>
+    <div class="txt"><span class="mk" id="mk1"><u style="background:rgba(255,196,0,.32)"></u>Além disso,</span> <span class="mk" id="mk2"><u style="background:rgba(61,214,165,.28)"></u>esse problema</span> se agrava com a ocupação de áreas de risco.</div>
+    <div style="display:flex;gap:14px;margin-top:22px"><span class="tg" id="tg1" style="position:static;background:var(--amarelo)">"Além disso" + acrescenta</span><span class="tg" id="tg2" style="position:static;background:#3dd6a5">"esse problema" ↺ retoma</span></div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:#FF7A8A"><span id="s3k">⚠ As armadilhas</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('Conectivo','s3a')}${mask('<span style="color:#FF7A8A">errado</span>','s3b')}</div></div>
+  <div class="abs" style="left:60px;top:830px;width:870px;display:flex;flex-direction:column;gap:30px">
+    <div class="card" id="tr1" style="padding:30px 34px">
+      <div style="font:800 22px/1 var(--mono);color:var(--cinza-2);margin-bottom:16px">2º DESENVOLVIMENTO</div>
+      <div style="display:flex;align-items:center;gap:20px"><div class="tok err" style="--s:60px;border-color:#FF7A8A">${CROSS('#FF7A8A')}</div>
+        <div style="position:relative;font:800 46px/1 var(--display)">Portanto, …<div class="strike" id="st1"></div></div></div>
+      <div class="note" style="margin-top:14px;color:#FF7A8A">conclui antes da hora</div></div>
+    <div class="card" id="tr2" style="padding:30px 34px">
+      <div style="font:800 22px/1 var(--mono);color:var(--cinza-2);margin-bottom:16px">TODOS OS PARÁGRAFOS</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">${[0,1,2].map(i=>`<div class="cn b rep" style="position:relative;border-color:#FF7A8A;color:#FF7A8A;background:rgba(255,122,138,.1)">Além disso,</div>`).join('')}</div>
+      <div class="note" style="margin-top:14px;color:#FF7A8A">repetição empobrece a coesão</div></div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s4k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:100px">${mask('Conectivo','s4a')}${mask('<span class="y">+ retomada</span>','s4b')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:830px;width:870px;padding:40px 40px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+    <div class="cn" style="font-size:34px">Além disso,</div><div style="font:900 50px/1 var(--display)">+</div>
+    <div class="cn" style="font-size:34px;background:#3dd6a5">esse problema</div>
+    <div class="note" style="width:100%;margin-top:14px;color:var(--cinza-2)">no início de cada parágrafo</div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s5a')}${mask('e segue','s5b','y')}</div></div>
+  <div id="s5cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* 01 GANCHO + REGRA + MAPA: 0 → 20.0 */
+const s1out=T(20.0);
+show('#s1',0,s1out+.5);
+up('#s1k',.05); up('#s1a',T(2.87)); up('#s1b',T(5.14),{color:'#fff'}); tl.to('#s1b',{color:'#FFC400',duration:.25},T(5.4));
+tl.from('.par',{opacity:0,x:-60,duration:.45,stagger:.12,ease:'expo.out'},.4);
+tl.set('.gap .lk',{scale:0},0); tl.set('.gap .cn',{opacity:0},0);
+tl.to('.gap .lk',{scale:1,duration:.35,stagger:.15,ease:'back.out(2.4)'},T(5.6));
+out(['#s1a','#s1b'],T(6.7),{duration:.3}); up('#s1c',T(7.56)); up('#s1d',T(8.81));
+chap(1,T(10.6));
+CN.forEach(([a,ta,b,tb],i)=>{ tl.fromTo(`#cA${i}`,{opacity:0,x:-20},{opacity:1,x:0,duration:.3,immediateRender:false},T(ta));
+  tl.fromTo(`#cB${i}`,{opacity:0,x:-20},{opacity:1,x:0,duration:.3,immediateRender:false},T(tb));
+  pulse(`#p${i+1}`,T(ta),1.03); });
+out(['#s1k','#s1c','#s1d'],s1out,{stagger:.03}); tl.to('#map',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s1out);
+sweep(s1out+.05);
+
+/* 02 RETOMADA + APLICAÇÃO */
+const s2in=T(20.1), s2out=T(38.85);
+show('#s2',s2in,s2out+.5); chap(2,T(23.65));
+up('#s2k',T(20.14)); up('#s2a',T(21.94));
+tl.set(['#d1','#d2','#loop'],{opacity:0},0); tl.set(['#tg1','#tg2'],{opacity:0},0); tl.set('.mk u',{scaleX:0,transformOrigin:'0 50%'},0);
+tl.set('#loopP',{strokeDasharray:400,strokeDashoffset:400},0);
+out('#s2k',T(23.6),{duration:.3}); up('#s2k2',T(23.65));
+tl.fromTo('#d1',{opacity:0,y:80},{opacity:1,y:0,duration:.6,ease:'expo.out',immediateRender:false},T(24.62));
+tl.to('#mk0 u',{scaleX:1,duration:.4},T(26.54));
+tl.fromTo('#d2',{opacity:0,y:80},{opacity:1,y:0,duration:.6,ease:'expo.out',immediateRender:false},T(28.29));
+tl.to('#mk1 u',{scaleX:1,duration:.3},T(30.21)); tl.to('#mk2 u',{scaleX:1,duration:.3},T(30.95));
+// "o além disso acrescenta" / "o esse problema retoma"
+tl.to('#tg1',{opacity:1,duration:.3},T(34.61)); pulse('#mk1',T(34.0),1.06);
+tl.to('#tg2',{opacity:1,duration:.3},T(37.0)); pulse('#mk2',T(36.19),1.06);
+tl.to('#loop',{opacity:1,duration:.2},T(37.0)); tl.to('#loopP',{strokeDashoffset:0,duration:.6,ease:'power2.inOut'},T(37.0)); pulse('#mk0',T(37.6),1.06);
+out(['#s2k2','#s2a'],s2out,{stagger:.03}); tl.to(['#d1','#d2','#loop'],{y:-60,opacity:0,duration:.4,stagger:.04,ease:'power3.in'},s2out);
+
+/* 03 ARMADILHAS */
+const s3in=T(38.95), s3out=T(45.4);
+show('#s3',s3in,s3out+.5); chap(3,s3in);
+up('#s3k',T(38.99)); up('#s3a',T(40.27)); up('#s3b',T(40.74));
+tl.set('#st1',{scaleX:0},0);
+tl.from('#tr1',{x:-140,opacity:0,duration:.5,ease:'expo.out'},T(41.3)); tl.to('#st1',{scaleX:1,duration:.35,ease:'power4.inOut'},T(42.3));
+tl.from('#tr2',{x:-140,opacity:0,duration:.5,ease:'expo.out'},T(42.8));
+tl.from('.rep',{opacity:0,scale:.7,duration:.3,stagger:.25,ease:'back.out(2)'},T(43.36));
+tl.to('.rep',{rotation:-3,duration:.12,yoyo:true,repeat:5},T(44.6));
+out(['#s3k','#s3a','#s3b'],s3out,{stagger:.03}); tl.to(['#tr1','#tr2'],{y:-50,opacity:0,duration:.35,stagger:.04,ease:'power3.in'},s3out);
+
+/* 04 BIZU */
+const s4in=T(45.5), s4out=T(49.0);
+show('#s4',s4in,s4out+.5); chap(4,s4in);
+up('#s4k',T(45.56)); up('#s4a',T(46.33)); up('#s4b',T(46.85),{color:'#fff'}); tl.to('#s4b',{color:'#FFC400',duration:.25},T(47.04));
+tl.from('#s4card',{y:120,opacity:0,duration:.6,ease:'expo.out'},T(46.5));
+tl.from('#s4card > *',{opacity:0,y:20,duration:.3,stagger:.12},T(46.8));
+out(['#s4k','#s4a','#s4b'],s4out,{stagger:.03,duration:.32}); tl.to('#s4card',{y:-40,opacity:0,duration:.3,ease:'power3.in'},s4out);
+
+/* 05 CTA */
+const s5in=T(49.1);
+show('#s5',s5in,DUR+1); chap(5,s5in);
+up('#s5k',s5in+.05); up('#s5a',T(49.16));
+const [save,follow]=$$('#s5cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(49.2)); pulse(save.firstElementChild,T(49.6),1.15);
+up('#s5b',T(50.15),{color:'#fff'}); tl.to('#s5b',{color:'#FFC400',duration:.25},T(50.35));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(50.2));
+pulse(follow.lastElementChild,T(50.65),1.12); pulse(follow.lastElementChild,T(52.0),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(50.65));
+
+MOTION.ready();
+</script>
+</body>
+</html>

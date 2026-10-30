@@ -1,0 +1,155 @@
+1
+00:00:00,000 --> 00:00:00,725
+Qual vai ser o tema
+
+2
+00:00:00,755 --> 00:00:01,984
+da redação do ENEM?
+
+3
+00:00:02,101 --> 00:00:02,954
+Ninguém sabe,
+
+4
+00:00:02,984 --> 00:00:03,813
+e quem diz que sabe
+
+5
+00:00:03,843 --> 00:00:04,788
+está chutando.
+
+6
+00:00:04,818 --> 00:00:05,717
+Mas dá pra treinar com
+
+7
+00:00:05,747 --> 00:00:07,279
+problemas sociais atuais.
+
+8
+00:00:07,396 --> 00:00:09,322
+Veja quatro temas possíveis.
+
+9
+00:00:09,381 --> 00:00:11,023
+Saúde mental dos jovens.
+
+10
+00:00:11,053 --> 00:00:13,425
+Eventos climáticos extremos nas cidades.
+
+11
+00:00:13,455 --> 00:00:15,422
+Inteligência artificial na educação.
+
+12
+00:00:15,452 --> 00:00:16,879
+E desperdício de alimentos.
+
+13
+00:00:16,997 --> 00:00:18,476
+Vamos simular com o segundo:
+
+14
+00:00:18,506 --> 00:00:19,881
+os desafios para enfrentar os
+
+15
+00:00:19,911 --> 00:00:21,785
+eventos climáticos extremos nas cidades
+
+16
+00:00:21,815 --> 00:00:22,650
+brasileiras.
+
+17
+00:00:22,767 --> 00:00:24,641
+Uma proposta completa seria:
+
+18
+00:00:24,671 --> 00:00:26,092
+o Ministério das Cidades,
+
+19
+00:00:26,122 --> 00:00:27,926
+em parceria com as prefeituras,
+
+20
+00:00:27,956 --> 00:00:29,471
+deve criar planos de adaptação
+
+21
+00:00:29,501 --> 00:00:30,341
+climática,
+
+22
+00:00:30,371 --> 00:00:31,514
+por meio do mapeamento de
+
+23
+00:00:31,544 --> 00:00:32,652
+áreas de risco e de
+
+24
+00:00:32,682 --> 00:00:33,801
+obras de drenagem,
+
+25
+00:00:33,831 --> 00:00:35,310
+priorizando as periferias,
+
+26
+00:00:35,340 --> 00:00:36,193
+a fim de reduzir os
+
+27
+00:00:36,223 --> 00:00:38,033
+danos causados pelas enchentes.
+
+28
+00:00:39,150 --> 00:00:39,898
+Agente,
+
+29
+00:00:39,928 --> 00:00:40,705
+ação,
+
+30
+00:00:40,764 --> 00:00:41,361
+meio,
+
+31
+00:00:41,391 --> 00:00:43,009
+detalhamento e finalidade:
+
+32
+00:00:43,039 --> 00:00:44,141
+está completa.
+
+33
+00:00:44,258 --> 00:00:44,989
+O bizu:
+
+34
+00:00:45,048 --> 00:00:46,423
+treine a estrutura com vários
+
+35
+00:00:46,453 --> 00:00:47,932
+temas; no dia da prova,
+
+36
+00:00:47,962 --> 00:00:49,081
+é só adaptar ao tema
+
+37
+00:00:49,111 --> 00:00:49,772
+que cair.
+
+38
+00:00:49,889 --> 00:00:51,345
+Salva esse bizu e segue
+
+39
+00:00:51,375 --> 00:00:52,559
+o Bizu do Enem.
