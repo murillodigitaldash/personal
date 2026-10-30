@@ -9,7 +9,7 @@ Cadência: 2 vídeos por dia (12h e 19h). Vídeos de matéria seguem sempre a me
 | 003 | 28/10 | V005 Física: consumo de energia (kWh) | V006 Linguagens: funções da linguagem | ✅ entregues |
 | 004 | 29/10 | V007 Inglês: ideia central sem fluência | V008 Espanhol: falsos amigos | ✅ entregues |
 | 005 | 30/10 | V009 Geografia: escala cartográfica | V010 Biologia: fluxo de energia | ✅ entregues |
-| 006 | 31/10 | V011 Redação: temas possíveis + proposta de intervenção | V012 Redação: conexão entre parágrafos (competência 4) | ✅ roteiro aprovado (`roteiros/DIA-006-redacao.md`) |
+| 006 | 31/10 | V011 Redação: temas possíveis + proposta de intervenção | V012 Redação: conexão entre parágrafos (competência 4) | ✅ entregues |
 | 007 | 01/11 | V013 Dicas: cartão-resposta e questão em branco | V014 Dicas: o que cai em cada dia (1º: Linguagens, Humanas e Redação · 2º: Natureza e Matemática) | 📝 roteiro p/ aprovação |
 | 008 | 02/11 | V015 Sociologia: fato social (Durkheim) | V016 Filosofia: contratualistas (Hobbes × Locke × Rousseau) | 💡 tema proposto |
 | 009 | 03/11 | V017 História: leitura de documento (Lei Áurea) | V018 Literatura: Modernismo (Oswald) | 📝 roteiro em `DIA-004-a-007.md` (movido de 31/10) |

@@ -1,6 +1,6 @@
 # V011 — Tema da redação do ENEM 2026: 4 temas possíveis + proposta de intervenção
 
-**Status:** em produção (30/10/2026). Roteiro: `roteiros/DIA-006-redacao.md` (aprovado em 30/10/2026).
+**Status:** entregue (30/10/2026). MP4 enviado no chat; capa, `.srt` e texto do post em `entrega/`. QC: sem pretos/congelamentos/cortes secos. Roteiro: `roteiros/DIA-006-redacao.md` (aprovado em 30/10/2026).
 
 - **Voz:** Vinicius Messer (`eleven_multilingual_v2`), take 1 de 2; transcrição conferida palavra por palavra (143 palavras).
 - **Pausa:** +1,0 s depois de "pelas enchentes." (ler a proposta inteira). Duração: 53,7 s.
