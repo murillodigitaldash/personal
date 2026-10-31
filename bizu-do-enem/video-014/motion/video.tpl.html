@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V014 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.day{flex:1;border-radius:28px;padding:26px 24px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:2px solid rgba(255,255,255,.14);position:relative}
+.day .dt{font:900 64px/1 var(--display);letter-spacing:-2px}
+.day .lb{font:800 22px/1 var(--mono);letter-spacing:2px;color:var(--cinza-2);margin-top:10px}
+.area{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:16px 18px;border-radius:16px;background:var(--c);color:#0F172A;font:800 28px/1.05 var(--display)}
+.area b{font:900 22px/1 var(--mono);background:rgba(15,23,42,.18);padding:6px 10px;border-radius:10px;white-space:nowrap}
+.seg{position:relative;flex:1;padding:22px 20px;border-radius:20px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.seg .t{font:800 22px/1 var(--mono);color:var(--c);letter-spacing:1px}
+.seg .x{margin-top:12px;font:700 28px/1.2 var(--display)}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script src="../../shared/hook2.js"></script>
+<script>
+const {ctaFollow} = KIT;
+const W = __WORDS__;
+/* tempo: narração take 1, sem pausas (gancho 2.0) */
+const T = t => t;
+const DUR = T(34.041) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CADA DIA','REVISÃO','O BIZU','COMENTA','CTA'], dur:DUR});
+const H = HOOK2.init({faltam:7, words:W, T});
+const DOC=`<svg width="84" height="104" viewBox="0 0 84 104"><rect x="2" y="2" width="80" height="100" rx="12" fill="#F5F3FF"/><path d="M16 26h52M16 42h52M16 58h52M16 74h34" stroke="#9C7BFF" stroke-width="7" stroke-linecap="round"/></svg>`;
+
+$('#scenes').innerHTML=`
+<section id="s1" style="visibility:visible">
+  <div class="abs" style="left:84px;top:390px;width:900px">
+    <div class="h-l" style="font-size:132px;line-height:.95"><span class="y">Redação:</span><br>1º ou 2º dia?</div>
+  </div>
+  <div id="s1days" class="abs" style="left:60px;top:800px;width:870px;display:flex;gap:170px">
+    <div class="day" style="text-align:center;padding:50px 24px"><div class="dt" style="font-size:96px">8/11</div><div class="lb">1º DIA</div></div>
+    <div class="day" style="text-align:center;padding:50px 24px"><div class="dt" style="font-size:96px">15/11</div><div class="lb">2º DIA</div></div>
+  </div>
+  <div id="s1doc" class="abs" style="left:453px;top:820px;transform-origin:42px 52px">${DOC}<div class="abs" style="left:24px;top:110px;font:900 64px/1 var(--display);color:var(--amarelo)">?</div></div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s2k">O que cai em cada dia</span></div>
+    <div class="h-l nowrap" style="font-size:92px">${mask('45 questões','s2a')}${mask('<span class="y">por área</span>','s2b')}</div></div>
+  <div class="abs" style="left:60px;top:700px;width:870px;display:flex;gap:24px;align-items:flex-start">
+    <div class="day" id="d1"><div class="dt">8/11</div><div class="lb">1º DIA</div>
+      <div class="area" id="a0" style="--c:#FFC400">Linguagens <b class="q">45</b></div>
+      <div class="area" id="a1" style="--c:#FF7A8A">Ciências Humanas <b class="q">45</b></div>
+      <div class="area" id="a2" style="--c:#F5F3FF">Redação <b>texto</b></div></div>
+    <div class="day" id="d2"><div class="dt">15/11</div><div class="lb">2º DIA</div>
+      <div class="area" id="a3" style="--c:#3dd6a5">Ciências da Natureza <b class="q">45</b></div>
+      <div class="area" id="a4" style="--c:#4CC9F0">Matemática <b class="q">45</b></div></div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s3k">Aplica na revisão</span></div>
+    <div class="h-l nowrap" style="font-size:92px">${mask('Na ordem','s3a')}${mask('<span class="y">da prova</span>','s3b')}</div></div>
+  <div id="s3tl" class="abs" style="left:60px;top:740px;width:870px">
+    <div style="display:flex;justify-content:space-between;font:800 26px/1 var(--mono);color:var(--cinza-2);margin-bottom:12px"><span>hoje 1/11</span><span style="color:var(--amarelo)">8/11</span><span style="color:#3dd6a5">15/11</span></div>
+    <div style="position:relative;height:16px;border-radius:8px;background:rgba(255,255,255,.1)"><div id="f1" style="position:absolute;left:0;top:0;bottom:0;width:50%;border-radius:8px 0 0 8px;background:#FFC400;transform-origin:0 50%"></div><div id="f2" style="position:absolute;left:50%;top:0;bottom:0;width:50%;border-radius:0 8px 8px 0;background:#3dd6a5;transform-origin:0 50%"></div></div>
+    <div style="display:flex;gap:18px;margin-top:22px">
+      <div class="seg" id="sg1" style="--c:#FFC400"><div class="t">ATÉ 8/11</div><div class="x">Redação, leitura de textos e Humanas</div></div>
+      <div class="seg" id="sg2" style="--c:#3dd6a5"><div class="t">DE 8 A 15/11</div><div class="x">Natureza e Matemática: fórmulas e contas</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s4k">O bizu</span></div>
+    <div class="h-l" style="font-size:110px">${mask('Revise na','s4a')}${mask('<span class="y">ordem da prova</span>','s4b')}</div></div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Comenta aí 👇</span></div>
+    <div class="h-l" style="font-size:100px">${mask('Qual dia te','s5a')}${mask('preocupa mais?','s5b')}</div></div>
+  <div class="abs" style="left:60px;top:880px;width:870px;display:flex;gap:24px">
+    <div class="card s5o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display);color:var(--amarelo)">1º dia</div>
+    <div class="card s5o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display);color:#3dd6a5">2º dia</div></div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s6a')}${mask('e segue','s6b','y')}</div></div>
+  <div id="s6cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova','📘 e-book grátis no perfil')}</div>
+</section>`;
+
+/* 01 GANCHO — quadro 0 já cheio */
+tl.set('#s1',{visibility:'visible'},0);
+tl.fromTo('#s1 .h-l',{scale:1.04},{scale:1,duration:1.2,ease:'power2.out',transformOrigin:'0 0'},0);
+tl.to('#s1doc',{y:-24,duration:.6,yoyo:true,repeat:3,ease:'sine.inOut'},0);
+tl.to('#s1doc',{rotation:-10,duration:.08,yoyo:true,repeat:5},3.33);
+// a resposta: a redação cai no 1º dia
+tl.to('#s1doc',{x:-305,y:190,scale:.7,duration:.6,ease:'back.inOut(1.4)'},5.4);
+tl.to('#s1 .h-l',{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.3);
+tl.set('#s1',{visibility:'hidden'},6.1);
+
+/* 02 CADA DIA */
+const s2in=5.95, s2out=16.35;
+show('#s2',s2in,s2out+.5); chap(1,s2in);
+up('#s2k',6.0);
+tl.set('.area',{opacity:0},0); tl.set('.area .q',{opacity:0},0);
+[[0,7.28],[1,8.15],[2,9.35],[3,12.16],[4,13.5]].forEach(([i,t])=>tl.fromTo(`#a${i}`,{opacity:0,y:-60},{opacity:1,y:0,duration:.4,ease:'bounce.out',immediateRender:false},t-.05));
+pulse('#d1',6.19,1.03); pulse('#d2',11.03,1.03);
+up('#s2a',14.7); up('#s2b',15.79);
+tl.to('.area .q',{opacity:1,duration:.25,stagger:.12},15.14);
+out(['#s2k','#s2a','#s2b'],s2out,{stagger:.03}); tl.to(['#d1','#d2'],{y:-50,opacity:0,duration:.35,stagger:.05,ease:'power3.in'},s2out);
+
+/* 03 REVISÃO */
+const s3in=16.4, s3out=27.9;
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',16.42); up('#s3a',17.0); up('#s3b',17.4,{color:'#fff'}); tl.to('#s3b',{color:'#FFC400',duration:.25},17.6);
+tl.from('#s3tl',{y:120,opacity:0,duration:.6,ease:'expo.out'},16.8);
+tl.set(['#f1','#f2'],{scaleX:0},0);
+tl.to('#f1',{scaleX:1,duration:.8,ease:'power2.inOut'},17.79);
+tl.to('#f2',{scaleX:1,duration:.8,ease:'power2.inOut'},22.33);
+tl.set(['#sg1','#sg2'],{opacity:0},0);
+tl.fromTo('#sg1',{opacity:0,y:30},{opacity:1,y:0,duration:.4,immediateRender:false},18.3); pulse('#sg1',19.0,1.04);
+tl.fromTo('#sg2',{opacity:0,y:30},{opacity:1,y:0,duration:.4,immediateRender:false},22.7); pulse('#sg2',24.2,1.04);
+tl.to('#sg1',{opacity:.5,duration:.3},22.7);
+out(['#s3k','#s3a','#s3b'],s3out,{stagger:.03}); tl.to('#s3tl',{y:-50,opacity:0,duration:.35,ease:'power3.in'},s3out);
+
+/* 04 BIZU */
+const s4in=27.95, s4out=30.0;
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',28.0); up('#s4a',28.82); up('#s4b',29.27,{color:'#fff'}); tl.to('#s4b',{color:'#FFC400',duration:.25},29.45);
+out(['#s4k','#s4a','#s4b'],s4out,{stagger:.03,duration:.3});
+
+/* 05 COMENTA */
+const s5in=30.05, s5out=31.65;
+show('#s5',s5in,s5out+.5); chap(4,s5in);
+up('#s5k',30.08); up('#s5a',30.45); up('#s5b',30.8);
+const O=$$('.s5o'); tl.from(O,{y:60,opacity:0,duration:.4,stagger:.12,ease:'back.out(1.8)'},30.6);
+out(['#s5k','#s5a','#s5b'],s5out,{stagger:.03}); tl.to('.s5o',{y:-50,opacity:0,duration:.3,stagger:.04,ease:'power3.in'},s5out);
+
+/* 06 CTA */
+const s6in=31.7;
+show('#s6',s6in,DUR+1); chap(5,s6in);
+up('#s6k',s6in+.05); up('#s6a',31.74);
+const [save,follow]=$$('#s6cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},31.8); pulse(save.firstElementChild,32.15,1.15);
+up('#s6b',32.69,{color:'#fff'}); tl.to('#s6b',{color:'#FFC400',duration:.25},32.9);
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},32.7);
+pulse(follow.lastElementChild,33.19,1.12); pulse(follow.lastElementChild,34.6,1.08);
+
+MOTION.ready(t => H.update(t));
+</script>
+</body>
+</html>
