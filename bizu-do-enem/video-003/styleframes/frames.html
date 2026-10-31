@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V003 · Styleframes</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+.el{display:flex;align-items:center;gap:22px;padding:22px 26px;border-radius:24px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);margin-bottom:16px}
+.el .ix{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font:800 26px/1 var(--mono);color:var(--navy)}
+.el .t{font:800 40px/1 var(--display)}
+.el .q{font:600 26px/1 var(--mono);margin-left:auto}
+.seg{border-radius:8px;padding:2px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tag{display:inline-flex;align-items:center;gap:10px;font:700 22px/1 var(--mono);padding:10px 14px;border-radius:12px;color:var(--navy)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../shared/kit.js"></script>
+<script>
+const {tok,MARK,brand,shell,ctaFollow}=KIT; const F=KIT.page();
+const EL=[['Agente','Quem?','var(--c1)'],['Ação','O quê?','var(--c2)'],['Modo / meio','Como?','var(--c3)'],['Finalidade','Para quê?','var(--c4)'],['Detalhamento','+ detalhe','var(--c5)']];
+const elList=(on=-1,dim=false)=>EL.map(([t,q,c],i)=>`<div class="el" style="${i===on?`border-color:${c};background:rgba(255,255,255,.09);box-shadow:0 0 40px rgba(0,0,0,.3)`:''};${dim&&i!==on?'opacity:.35':''}">
+  <div class="ix" style="background:${c}">${i+1}</div><div class="t">${t}</div><div class="q" style="color:${c}">${q}</div></div>`).join('');
+const slots=(n)=>`<div style="display:flex;gap:12px">${EL.map(([t,q,c],i)=>`<div style="width:56px;height:20px;border-radius:10px;${i<n?`background:${c}`:'border:2px dashed rgba(255,255,255,.25)'}"></div>`).join('')}</div>`;
+
+const frames={
+// 01 — GANCHO
+1:()=>shell(`${brand('01','GANCHO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Redação · Competência 5</div>
+    <div class="h-l">Sua proposta<br>de intervenção<br>está <span class="y">completa?</span></div></div>
+  <div class="abs" style="left:0;right:0;top:860px;perspective:1800px">
+   <div class="card" style="margin-left:60px;width:870px;padding:40px 44px;transform:rotateY(-9deg) rotateX(6deg);transform-origin:20% 50%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px"><div class="note" style="color:var(--roxo-claro)">CONCLUSÃO · ÚLTIMO PARÁGRAFO</div>${slots(2)}</div>
+    ${[92,86,95,60].map((w,i)=>`<div style="height:20px;width:${w}%;border-radius:10px;background:rgba(255,255,255,${i<2?.16:.10});margin-bottom:22px"></div>`).join('')}
+    <div style="display:flex;align-items:center;gap:16px;margin-top:10px">
+      <div class="tag" style="background:var(--amarelo)">2 de 5 elementos</div><div style="font:600 28px/1.2 var(--texto);color:var(--cinza-1)">Faltou alguma peça?</div></div>
+   </div>
+  </div>`),
+
+// 02 — COMPETÊNCIA 5
+2:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">O que é avaliado</div>
+    <div class="h-l">Competência <span class="y">5</span></div></div>
+  <div class="abs" style="left:84px;top:600px;display:flex;gap:14px">${[1,2,3,4,5].map(n=>`<div style="width:120px;height:120px;border-radius:30px;display:grid;place-items:center;font:900 54px/1 var(--display);
+    ${n===5?'background:var(--amarelo);color:var(--navy);box-shadow:0 0 60px rgba(255,196,0,.45)':'background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);color:var(--cinza-3)'}">C${n}</div>`).join('')}</div>
+  <div class="abs card" style="left:60px;top:800px;width:870px;padding:44px 46px">
+    <div style="display:flex;gap:26px;align-items:flex-start;margin-bottom:34px">
+      <div style="width:84px;height:84px;border-radius:24px;background:rgba(108,59,255,.3);display:grid;place-items:center;flex:none">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></div>
+      <div><div style="font:800 44px/1.1 var(--display)">Propor uma solução</div><div style="font:500 30px/1.3 var(--texto);color:var(--cinza-2);margin-top:8px">para o problema discutido no texto</div></div></div>
+    <div style="display:flex;gap:26px;align-items:flex-start">
+      <div style="width:84px;height:84px;border-radius:24px;background:rgba(61,214,165,.2);display:grid;place-items:center;flex:none">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#3dd6a5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+      <div><div style="font:800 44px/1.1 var(--display)">Respeitando os</div><div style="font:800 44px/1.1 var(--display);color:var(--verde)">direitos humanos</div></div></div>
+  </div>`),
+
+// 03 — OS 5 ELEMENTOS
+3:()=>shell(`${brand('03','5 ELEMENTOS')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Proposta completa</div>
+    <div class="h-l"><span class="y">5</span> elementos</div></div>
+  <div class="abs" style="left:60px;top:640px;width:870px">${elList()}</div>`),
+
+// 04 — ELEMENTO EM FOCO (agente)
+4:()=>shell(`${brand('03','5 ELEMENTOS')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:var(--c1)">Elemento 1 de 5</div>
+    <div class="h-l">Agente:<br><span style="color:var(--c1)">quem vai agir?</span></div></div>
+  <div class="abs" style="left:84px;top:690px;display:flex;gap:16px;flex-wrap:wrap;width:860px">
+    ${[['🏛','governo'],['🏫','escola'],['📺','mídia'],['👨‍👩‍👧','família'],['🤝','ONGs']].map(([e,t],i)=>`<div class="pill" style="font-size:34px;padding:20px 28px;background:${i<3?'rgba(156,123,255,.22)':'rgba(255,255,255,.05)'};border:1.5px solid ${i<3?'rgba(156,123,255,.6)':'rgba(255,255,255,.1)'};${i<3?'':'color:var(--cinza-2)'}">${t}</div>`).join('')}
+  </div>
+  <div class="abs" style="left:60px;top:930px;width:870px">${elList(0,true)}</div>`),
+
+// 05 — EXEMPLO APLICADO
+5:()=>shell(`${brand('04','NA PRÁTICA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Exemplo · tema: desinformação nas redes</div>
+    <div class="h-l">Veja <span class="y">na prática</span></div></div>
+  <div class="abs card" style="left:60px;top:660px;width:870px;padding:44px 44px 36px">
+    <div style="font:600 42px/1.6 var(--texto);color:#fff">
+      <span class="seg" style="background:rgba(156,123,255,.35);box-shadow:inset 0 -5px 0 var(--c1)">O Ministério da Educação</span>
+      <span class="seg" style="background:rgba(255,196,0,.22);box-shadow:inset 0 -5px 0 var(--c2)">deve promover campanhas nas escolas,</span>
+      <span class="seg" style="background:rgba(61,214,165,.22);box-shadow:inset 0 -5px 0 var(--c3)">por meio de oficinas</span>
+      <span class="seg" style="background:rgba(255,122,138,.24);box-shadow:inset 0 -5px 0 var(--c5)">conduzidas por especialistas em mídia,</span>
+      <span class="seg" style="background:rgba(76,201,240,.22);box-shadow:inset 0 -5px 0 var(--c4)">a fim de ensinar os jovens a checar fontes.</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:32px">
+      ${EL.map(([t,q,c])=>`<div class="tag" style="background:${c}">${t}</div>`).join('')}</div>
+  </div>
+  <div class="abs" style="left:84px;top:1390px;display:flex;align-items:center;gap:16px">${slots(5)}<div style="font:700 32px/1 var(--display);color:var(--amarelo)">5 de 5 ✓</div></div>`),
+
+// 06 — BIZU
+6:()=>shell(`${brand('05','O BIZU')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:var(--amarelo)">O bizu</div>
+    <div class="h-l" style="font-size:100px">Antes de passar<br>a limpo, <span class="y">pergunte:</span></div></div>
+  <div class="abs" style="left:60px;top:720px;width:870px">
+    ${EL.map(([t,q,c],i)=>`<div class="el" style="padding:20px 26px">${tok('ok',56)}<div class="t" style="color:${c}">${i<4?q:'Detalhei um elemento?'}</div><div class="q" style="color:var(--cinza-2);font-size:22px">${t.toUpperCase()}</div></div>`).join('')}
+  </div>`),
+
+// 07 — CTA
+7:()=>shell(`${brand('06','CTA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Curtiu o bizu?</div>
+    <div class="h-l">Salva<br><span class="y">e segue</span></div></div>
+  <div class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da redação')}</div>`),
+};
+document.getElementById('root').innerHTML=frames[F]();
+</script>
+</body>
+</html>

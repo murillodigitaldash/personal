@@ -1,0 +1,1 @@
+{ "name": "bizu-do-enem-producao", "private": true, "dependencies": { "gsap": "3.12.5" } }

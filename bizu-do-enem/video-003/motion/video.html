@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V003 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.el{display:flex;align-items:center;gap:22px;padding:22px 26px;border-radius:24px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);margin-bottom:16px;position:relative}
+.el .ix{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font:800 26px/1 var(--mono);color:var(--navy)}
+.el .t{font:800 40px/1 var(--display)}
+.el .q{font:600 26px/1 var(--mono);margin-left:auto}
+.el .hl{position:absolute;inset:-1.5px;border-radius:24px;border:2px solid var(--c);background:rgba(255,255,255,.06);opacity:0}
+.tag{display:inline-flex;align-items:center;gap:10px;font:700 22px/1 var(--mono);padding:10px 14px;border-radius:12px;color:var(--navy)}
+.seg{display:inline;border-radius:8px;padding:2px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.slot{width:56px;height:20px;border-radius:10px;border:2px dashed rgba(255,255,255,.25);position:relative}
+.slot i{position:absolute;inset:-2px;border-radius:10px;background:var(--c)}
+.chips{display:flex;gap:16px;flex-wrap:wrap;width:860px}
+.chip{font-size:34px;padding:20px 28px;background:rgba(255,255,255,.07);border:1.5px solid var(--c)}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {tok, ctaFollow} = KIT;
+/* tempo: narração take 1 + pausas aprovadas (+0,6 s após "cinco elementos."; +1,2 s após "checar fontes.") */
+const T = t => t + (t > 11.56 ? .6 : 0) + (t > 40.94 ? 1.2 : 0);
+const DUR = T(51.409) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CONCEITO','5 ELEMENTOS','NA PRÁTICA','O BIZU','CTA'], dur:DUR});
+
+const EL=[['Agente','Quem?','var(--c1)','#9C7BFF'],['Ação','O quê?','var(--c2)','#FFC400'],['Modo / meio','Como?','var(--c3)','#3dd6a5'],['Finalidade','Para quê?','var(--c4)','#4CC9F0'],['Detalhamento','+ detalhe','var(--c5)','#FF7A8A']];
+const slots=(id)=>`<div id="${id}" style="display:flex;gap:12px">${EL.map(([t,q,c],i)=>`<div class="slot" style="--c:${c}"><i class="${id}i"></i></div>`).join('')}</div>`;
+// foco de cada elemento: título, pergunta, exemplos (chips) e o tempo (orig.) em que é anunciado
+const FOCUS=[
+  {t:'Agente:',q:'quem vai agir?',chips:[['governo',14.40],['escola',15.09],['mídia',15.93]],at:11.645},
+  {t:'Ação:',q:'o que será feito?',chips:[['promover',18.0],['criar',18.2],['ampliar',18.4]],at:16.474},
+  {t:'Modo ou meio:',q:'como?',chips:[['por meio de…',20.85],['mediante…',21.2]],at:18.901},
+  {t:'Finalidade:',q:'para quê?',chips:[['a fim de…',24.07],['para que…',24.4]],at:22.442},
+  {t:'Detalhamento:',q:'+ uma informação',chips:[['sobre qualquer elemento',27.67]],at:25.066},
+];
+
+$('#scenes').innerHTML = `
+<!-- 01 GANCHO -->
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Redação · Competência 5</span></div>
+    <div class="h-l nowrap">${mask('Sua proposta','s1a')}${mask('de intervenção','s1b')}${mask('está <span class="y">completa?</span>','s1c')}</div></div>
+  <div class="abs" style="left:0;right:0;top:860px;perspective:1800px">
+   <div id="s1card" class="card" style="margin-left:60px;width:870px;padding:40px 44px;transform-origin:20% 50%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px"><div class="note" style="color:var(--roxo-claro)">CONCLUSÃO · ÚLTIMO PARÁGRAFO</div>${slots('s1s')}</div>
+    ${[92,86,95,60].map((w,i)=>`<div class="s1line" style="height:20px;width:${w}%;border-radius:10px;background:rgba(255,255,255,${i<2?.16:.10});margin-bottom:22px;transform-origin:0 50%"></div>`).join('')}
+    <div id="s1q" style="display:flex;align-items:center;gap:16px;margin-top:10px">
+      <div class="tag" style="background:var(--amarelo)">2 de 5 elementos</div><div style="font:600 28px/1.2 var(--texto);color:var(--cinza-1)">Faltou alguma peça?</div></div>
+   </div>
+  </div>
+</section>
+
+<!-- 02 COMPETÊNCIA 5 -->
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s2k">O que é avaliado</span></div>
+    <div class="h-l">${mask('Competência <span class="y">5</span>','s2a')}</div></div>
+  <div class="abs" style="left:84px;top:600px;display:flex;gap:14px">${[1,2,3,4,5].map(n=>`<div class="s2c" id="s2c${n}" style="position:relative;width:120px;height:120px;border-radius:30px;display:grid;place-items:center;font:900 54px/1 var(--display);background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);color:var(--cinza-3)">C${n}
+    ${n===5?'<div id="s2c5on" class="abs" style="inset:-1.5px;border-radius:30px;display:grid;place-items:center;background:var(--amarelo);color:var(--navy);box-shadow:0 0 60px rgba(255,196,0,.45)">C5</div>':''}</div>`).join('')}</div>
+  <div id="s2card" class="abs card" style="left:60px;top:800px;width:870px;padding:44px 46px">
+    <div id="s2i1" style="display:flex;gap:26px;align-items:flex-start;margin-bottom:34px">
+      <div style="width:84px;height:84px;border-radius:24px;background:rgba(108,59,255,.3);display:grid;place-items:center;flex:none">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></div>
+      <div><div style="font:800 44px/1.1 var(--display)">Propor uma solução</div><div style="font:500 30px/1.3 var(--texto);color:var(--cinza-2);margin-top:8px">para o problema discutido no texto</div></div></div>
+    <div id="s2i2" style="display:flex;gap:26px;align-items:flex-start">
+      <div style="width:84px;height:84px;border-radius:24px;background:rgba(61,214,165,.2);display:grid;place-items:center;flex:none">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#3dd6a5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+      <div><div style="font:800 44px/1.1 var(--display)">Respeitando os</div><div style="font:800 44px/1.1 var(--display);color:var(--verde)">direitos humanos</div></div></div>
+  </div>
+</section>
+
+<!-- 03 OS 5 ELEMENTOS + UM A UM -->
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px">
+    <div style="position:relative;height:60px;width:900px">
+      <div class="abs kicker mask" style="left:0;top:0"><span id="s3k">Proposta completa</span></div>
+      ${FOCUS.map((f,i)=>`<div class="abs kicker mask" style="left:0;top:0;color:${EL[i][3]}"><span id="s3fk${i}">Elemento ${i+1} de 5</span></div>`).join('')}
+    </div>
+    <div style="position:relative;height:230px;width:920px">
+      <div class="abs h-l nowrap" style="left:0;top:0">${mask('<span class="y">5</span> elementos','s3a')}</div>
+      ${FOCUS.map((f,i)=>`<div class="abs h-l nowrap" style="left:0;top:0;font-size:${i===4?100:112}px">${mask(f.t,'s3f'+i+'a')}${mask(`<span style="color:${EL[i][3]}">${f.q}</span>`,'s3f'+i+'b')}</div>`).join('')}
+    </div>
+  </div>
+  ${FOCUS.map((f,i)=>`<div class="abs chips" id="s3ch${i}" style="left:84px;top:700px">${f.chips.map(([c])=>`<div class="pill chip s3c${i}" style="--c:${EL[i][3]}66">${c}</div>`).join('')}</div>`).join('')}
+  <div id="s3list" class="abs" style="left:60px;top:640px;width:870px">
+    ${EL.map(([t,q,c],i)=>`<div class="el s3el" id="s3el${i}" style="--c:${c}"><div class="hl"></div>
+      <div class="ix" style="background:${c};position:relative">${i+1}</div><div class="t" style="position:relative">${t}</div><div class="q" style="color:${c};position:relative">${q}</div></div>`).join('')}
+  </div>
+</section>
+
+<!-- 04 EXEMPLO APLICADO -->
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s4k">Exemplo · tema: desinformação nas redes</span></div>
+    <div class="h-l">${mask('Veja <span class="y">na prática</span>','s4a')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:660px;width:870px;padding:44px 44px 36px">
+    <div style="font:600 42px/1.6 var(--texto);color:#fff">
+      ${[['O Ministério da Educação',0],['deve promover campanhas nas escolas,',1],['por meio de oficinas',2],['conduzidas por especialistas em mídia,',4],['a fim de ensinar os jovens a checar fontes.',3]].map(([s,e],k)=>
+        `<span class="seg s4seg" id="s4seg${k}" data-c="${EL[e][3]}">${s}</span>`).join(' ')}
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:32px">${EL.map(([t,q,c],i)=>`<div class="tag s4tag" id="s4tag${i}" style="background:${c}">${t}</div>`).join('')}</div>
+  </div>
+  <div class="abs" style="left:84px;top:1390px;display:flex;align-items:center;gap:16px">${slots('s4s')}<div id="s4ok" style="font:700 32px/1 var(--display);color:var(--amarelo)">5 de 5 ✓</div></div>
+</section>
+
+<!-- 05 BIZU -->
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s5k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:100px">${mask('Antes de passar','s5a')}${mask('a limpo, <span class="y">pergunte:</span>','s5b')}</div></div>
+  <div class="abs" style="left:60px;top:720px;width:870px">
+    ${EL.map(([t,q,c],i)=>`<div class="el s5el" style="padding:20px 26px">
+      <div style="position:relative;width:56px;height:56px;border-radius:50%;border:3px solid rgba(255,255,255,.2);flex:none"><div class="abs s5ck" id="s5ck${i}" style="inset:-3px">${tok('ok',56)}</div></div>
+      <div class="t" style="color:${c}">${i<4?q:'Detalhei um elemento?'}</div><div class="q" style="color:var(--cinza-2);font-size:22px">${t.toUpperCase()}</div></div>`).join('')}
+  </div>
+</section>
+
+<!-- 06 CTA -->
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s6a')}${mask('e segue','s6b','y')}</div></div>
+  <div id="s6cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da redação')}</div>
+</section>`;
+
+/* ---- 01 GANCHO: 0 → 2.3 ---- */
+show('#s1',0,2.75);
+up('#s1k',.05); up('#s1a',0.0); up('#s1b',T(.62)); up('#s1c',T(1.20),{color:'#fff'});
+tl.set('#s1card',{rotationY:-9,rotationX:6},0);
+tl.from('#s1card',{y:240,opacity:0,rotationX:-25,duration:.9,ease:'expo.out'},.25);
+tl.from('.s1line',{scaleX:0,duration:.5,stagger:.08},.5);
+tl.set('#s1s i',{scaleX:0,transformOrigin:'0 50%'},0);
+tl.to('#s1s .slot:nth-child(-n+2) i',{scaleX:1,duration:.3,stagger:.15},.9);
+tl.from('#s1q',{opacity:0,y:20,duration:.4},T(1.45));
+tl.fromTo('#s1s .slot:nth-child(n+3)',{borderColor:'rgba(255,255,255,.25)'},{borderColor:'#FFC400',duration:.2,yoyo:true,repeat:3,immediateRender:false},T(1.6));
+out(['#s1k','#s1a','#s1b','#s1c'],2.2,{stagger:.03});
+tl.to('#s1card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},2.2);
+
+/* ---- 02 COMPETÊNCIA 5: 2.3 → 9.1 ---- */
+show('#s2',2.35,9.6); chap(1,2.35);
+up('#s2k',T(2.40)); up('#s2a',T(3.55));
+tl.from('.s2c',{y:60,opacity:0,duration:.5,ease:'back.out(1.8)',stagger:.07},T(3.62));
+tl.from('#s2c5on',{scale:0,duration:.4,ease:'back.out(2.5)'},T(4.19));
+pulse('#s2c5',T(4.45),1.12);
+tl.from('#s2card',{y:200,opacity:0,duration:.8,ease:'expo.out'},T(4.85));
+tl.from('#s2i1',{opacity:0,x:-30,duration:.5},T(5.55));
+tl.from('#s2i2',{opacity:0,x:-30,duration:.5},T(7.45));
+out(['#s2k','#s2a'],9.05,{stagger:.04});
+tl.to(['.s2c','#s2card'],{y:-60,opacity:0,duration:.4,stagger:.02,ease:'power3.in'},9.05);
+
+/* ---- 03 OS 5 ELEMENTOS + UM A UM ---- */
+const s3end = T(29.05);
+show('#s3',9.45,s3end+.5); chap(2,9.45);
+up('#s3k',T(9.30)); up('#s3a',T(10.55));
+tl.from('.s3el',{x:-80,opacity:0,duration:.5,ease:'expo.out',stagger:.12},T(10.85));
+// a lista desce e o foco passa por cada elemento
+const toFocus = T(11.645);
+out(['#s3k','#s3a'],toFocus-.15,{duration:.3});
+tl.to('#s3list',{y:290,duration:.6,ease:'power3.inOut'},toFocus-.1);
+FOCUS.forEach((f,i)=>{
+  const a=T(f.at), next = i<4 ? T(FOCUS[i+1].at) : s3end;
+  up(`#s3fk${i}`,a+.05); up(`#s3f${i}a`,a+.05); up(`#s3f${i}b`,a+.3);
+  tl.to(`#s3el${i} .hl`,{opacity:1,duration:.3},a);
+  tl.to(`.s3el:not(#s3el${i})`,{opacity:.35,duration:.3},a);
+  tl.to(`#s3el${i}`,{opacity:1,duration:.3},a);
+  pulse(`#s3el${i}`,a+.05,1.04);
+  f.chips.forEach(([c,t],k)=>tl.from(`.s3c${i}:nth-child(${k+1})`,{opacity:0,y:24,scale:.85,duration:.4,ease:'back.out(2)'},T(t)));
+  if(i<4){ out([`#s3fk${i}`,`#s3f${i}a`,`#s3f${i}b`],next-.32,{duration:.3});
+    tl.to(`#s3el${i} .hl`,{opacity:0,duration:.3},next);
+    tl.to(`#s3ch${i}`,{opacity:0,y:-20,duration:.3},next-.3); }
+});
+tl.to(`.s3el`,{opacity:1,duration:.3},T(28.5));
+out([`#s3fk4`,`#s3f4a`,`#s3f4b`],s3end,{duration:.35});
+tl.to('#s3ch4',{opacity:0,duration:.3},s3end);
+tl.to('.s3el',{x:-60,opacity:0,duration:.35,stagger:.04,ease:'power3.in'},s3end);
+sweep(s3end+.1);
+
+/* ---- 04 EXEMPLO APLICADO ---- */
+const s4in = s3end+.35;
+show('#s4',s4in,T(40.94)+1.2+.15); chap(3,s4in);
+up('#s4a',T(29.36)); up('#s4k',T(30.55));
+tl.from('#s4card',{y:180,opacity:0,duration:.8,ease:'expo.out'},T(30.9));
+$$('.s4seg').forEach(el=>{el.style.background=el.dataset.c+'00';el.style.boxShadow=`inset 0 -5px 0 ${el.dataset.c}00`;});
+const SEGT=[32.66,34.04,36.04,36.90,38.85], SEGE=[0,1,2,4,3];
+tl.set('.s4seg',{opacity:.0},0);
+tl.set('#s4s i',{scaleX:0,transformOrigin:'0 50%'},0);
+tl.set('.s4tag',{opacity:.25},0);
+SEGT.forEach((t,k)=>{
+  const c=$('#s4seg'+k).dataset.c;
+  tl.fromTo('#s4seg'+k,{opacity:0,y:10},{opacity:1,y:0,duration:.35,immediateRender:false},T(t)-.05);
+  tl.to('#s4seg'+k,{backgroundColor:c+'40',boxShadow:`inset 0 -5px 0 ${c}`,duration:.4},T(t)+.2);
+  tl.to('#s4tag'+SEGE[k],{opacity:1,duration:.25},T(t)+.2);
+  pulse('#s4tag'+SEGE[k],T(t)+.2,1.15);
+  tl.to(`#s4s .slot:nth-child(${k+1}) i`,{scaleX:1,duration:.3},T(t)+.25);
+});
+tl.from('#s4ok',{opacity:0,x:-20,duration:.4},T(40.4));
+const s4out = T(40.94)+1.0;
+out(['#s4k','#s4a'],s4out,{stagger:.04});
+tl.to(['#s4card','#s4s','#s4ok'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},s4out);
+
+/* ---- 05 BIZU ---- */
+const s5in = s4out+.35;
+show('#s5',s5in,T(48.75)+.3); chap(4,s5in);
+up('#s5k',T(41.08)); up('#s5a',T(41.85)); up('#s5b',T(42.55));
+tl.from('.s5el',{x:-60,opacity:0,duration:.45,stagger:.08,ease:'expo.out'},T(42.4));
+tl.set('.s5ck',{scale:0},0);
+[43.69,44.27,45.01,45.64,47.07].forEach((t,i)=>tl.to('#s5ck'+i,{scale:1,duration:.35,ease:'back.out(3)'},T(t)));
+const s5out=T(48.70);
+out(['#s5k','#s5a','#s5b'],s5out,{stagger:.03,duration:.32});
+tl.to('.s5el',{y:-50,opacity:0,duration:.35,stagger:.02,ease:'power3.in'},s5out);
+
+/* ---- 06 CTA ---- */
+const s6in=T(48.80);
+show('#s6',s6in,DUR+1); chap(5,s6in);
+up('#s6k',s6in+.05); up('#s6a',T(48.90));
+const [save,follow]=$$('#s6cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(48.95));
+pulse(save.firstElementChild,T(49.3),1.15);
+up('#s6b',T(50.05),{color:'#fff'}); tl.to('#s6b',{color:'#FFC400',duration:.25},T(50.2));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(50.10));
+pulse(follow.lastElementChild,T(50.50),1.12);
+pulse(follow.lastElementChild,T(51.6),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(50.55));
+
+MOTION.ready();
+</script>
+</body>
+</html>

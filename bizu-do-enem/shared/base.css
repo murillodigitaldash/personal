@@ -1,0 +1,56 @@
+/* Bizu do Enem — base visual compartilhada (styleframes e motion) */
+
+:root{
+  --roxo:#6C3BFF; --roxo-claro:#9C7BFF; --amarelo:#FFC400; --navy:#0F172A; --verde:#3dd6a5;
+  --cinza-1:#E7EAF0; --cinza-2:#A9B1C4; --cinza-3:#5B6680;
+  --display:"Inter Display","Inter",sans-serif; --texto:"Inter",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy)}
+.frame{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:var(--texto);color:#fff;
+  background:radial-gradient(900px 700px at 80% 18%, rgba(108,59,255,.38), transparent 70%),
+    radial-gradient(800px 800px at 10% 92%, rgba(108,59,255,.22), transparent 70%),
+    linear-gradient(180deg,#111a30 0%, var(--navy) 55%, #0b1122 100%)}
+.frame::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 45%,#000 30%,transparent 85%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 65% at 50% 50%,transparent 55%,rgba(5,8,18,.55) 100%)}
+.brand{position:absolute;left:84px;top:252px;display:flex;align-items:center;gap:16px;z-index:5}
+.brand .word{font:900 36px/1 var(--display);letter-spacing:-1.2px}
+.brand .word b{font:800 17px/1 var(--display);letter-spacing:2.4px;color:var(--amarelo);margin-left:8px;vertical-align:6px}
+.chapter{position:absolute;right:180px;top:266px;font:600 24px/1 var(--mono);color:var(--cinza-2);letter-spacing:2px;z-index:5}
+.chapter i{font-style:normal;color:var(--amarelo)}
+.h-xl{font:900 150px/.92 var(--display);letter-spacing:-6px}
+.h-l{font:900 112px/.95 var(--display);letter-spacing:-4px}
+.kicker{font:600 26px/1 var(--mono);letter-spacing:3px;text-transform:uppercase;color:var(--roxo-claro)}
+.y{color:var(--amarelo)} .abs{position:absolute}
+.note{font:500 24px/1.2 var(--mono);color:var(--cinza-3);letter-spacing:1px}
+.tok{width:var(--s,64px);height:var(--s,64px);border-radius:50%;display:grid;place-items:center;flex:none;position:relative}
+.tok svg{width:46%;height:46%}
+.tok.ok{background:radial-gradient(circle at 35% 30%,#8d66ff,var(--roxo) 60%,#4f22e0);box-shadow:0 8px 22px rgba(108,59,255,.45),inset 0 2px 0 rgba(255,255,255,.25)}
+.tok.err{background:rgba(255,255,255,.03);border:3px solid rgba(169,177,196,.35)}
+.tok.warn{background:rgba(255,196,0,.10);border:3px solid var(--amarelo);box-shadow:0 0 30px rgba(255,196,0,.35)}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1.5px solid rgba(255,255,255,.12);
+  border-radius:36px;box-shadow:0 40px 90px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.pill{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border-radius:999px;font:700 30px/1 var(--display);white-space:nowrap}
+/* stepper dos 3 erros */
+/* indicador de etapas */
+.stepper{position:absolute;left:84px;top:350px;display:flex;gap:14px}
+.step{display:flex;align-items:center;gap:12px;padding:12px 20px 12px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);font:700 24px/1 var(--display);color:var(--cinza-2)}
+.step .n{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:800 18px/1 var(--mono);background:rgba(255,255,255,.08)}
+.step.on{border-color:var(--amarelo);color:#fff;background:rgba(255,196,0,.10)}
+.step.on .n{background:var(--amarelo);color:var(--navy)}
+.step.done .n{background:var(--roxo);color:#fff}
+.safe{position:absolute;inset:0;pointer-events:none;z-index:99;display:none}
+.show-safe .safe{display:block}
+.safe .top{position:absolute;left:0;right:0;top:0;height:220px;background:rgba(255,0,80,.25)}
+.safe .bot{position:absolute;left:0;right:0;bottom:0;height:420px;background:rgba(255,0,80,.25)}
+.safe .right{position:absolute;right:0;top:220px;bottom:420px;width:150px;background:rgba(255,0,80,.18)}
+
+/* paleta categórica (para codificar elementos/series; o amarelo segue reservado para ênfase) */
+:root{--c1:#9C7BFF;--c2:#FFC400;--c3:#3dd6a5;--c4:#4CC9F0;--c5:#FF7A8A}
+.h-m{font:800 76px/1 var(--display);letter-spacing:-2.5px}
+.mono{font-family:var(--mono)}
