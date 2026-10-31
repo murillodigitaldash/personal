@@ -36,3 +36,6 @@ Nos três, a curva cai abaixo de 50% em 0:01 ("a maioria parou de assistir em 0:
 4. Legenda da fala queimada no vídeo.
 5. Somar "Comenta a letra", "Faltam X dias" e o e-book no CTA.
 Meta: tempo médio acima de 10 s e mais de 50% de retenção depois de 1 s.
+
+## Decisão de 31/10: estilo visual
+Mantém o motion graphics atual com o gancho 2.0. Se a retenção não melhorar na próxima semana, o plano B é o estilo "historinha" em 3D low-poly, com um mascote fixo e cenários reaproveitáveis. É viável no pipeline atual: three.js local, e o WebGL no Chromium headless foi testado e funciona.
