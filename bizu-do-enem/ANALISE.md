@@ -19,3 +19,20 @@ Distribuição boa, conversão fraca: o público assiste e curte, mas não comen
 
 ## Pendente
 - Retenção por vídeo (tempo médio, % que assistiu completo, curva) de V003, V005 e V001: o usuário vai mandar.
+
+## Retenção por vídeo (prints de 31/10)
+| Vídeo | Views | Tempo médio | % assistido | Completo | Salvos | Seguidores |
+|---|---|---|---|---|---|---|
+| V001 TRI (29,6 s) | 499 | 3,6 s | 12% | 1,81% | 2 | 0 |
+| V003 Proposta (54,5 s) | 613 | 4,1 s | 7% | 0,76% | 14 | 3 |
+| V005 Chuveiro (50,7 s) | 724 | 7,2 s | 14% | 2,34% | 16 | 3 |
+
+Nos três, a curva cai abaixo de 50% em 0:01 ("a maioria parou de assistir em 0:01"). Causa provável: o quadro 0 é escuro e vazio (o título entra animado). Quem passa do início salva (~2%).
+
+## Gancho 2.0 (próxima semana)
+1. Quadro 0 já com o título grande na tela, sem animação de entrada.
+2. Abrir com o desafio/questão ("Você erraria essa?") e só depois explicar.
+3. Contraste e cor forte no quadro 0, com impacto sonoro.
+4. Legenda da fala queimada no vídeo.
+5. Somar "Comenta a letra", "Faltam X dias" e o e-book no CTA.
+Meta: tempo médio acima de 10 s e mais de 50% de retenção depois de 1 s.
