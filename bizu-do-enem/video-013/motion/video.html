@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V013 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.bub{width:54px;height:54px;border-radius:50%;border:3px solid rgba(255,255,255,.3);display:grid;place-items:center;font:800 20px/1 var(--display);color:var(--cinza-2);position:relative}
+.bub.f{background:var(--roxo);border-color:var(--roxo);color:#fff}
+.bub.r{border-color:#FF7A8A;box-shadow:0 0 18px rgba(255,122,138,.5)}
+.sheet{border-radius:26px;padding:26px 28px;background:#F5F3FF;color:#0F172A;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.sheet .hd{font:800 20px/1 var(--mono);letter-spacing:2px;color:#6C3BFF;margin-bottom:18px}
+.qrow{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.qrow .n{width:46px;font:800 20px/1 var(--mono);color:#5B6680}
+.qrow .o{width:40px;height:40px;border-radius:50%;border:2.5px solid #A9B1C4;display:grid;place-items:center;font:800 16px/1 var(--display);color:#5B6680}
+.qrow .o.f{background:#6C3BFF;border-color:#6C3BFF;color:#fff}
+.stamp{position:absolute;padding:14px 22px;border-radius:16px;border:4px solid;font:900 34px/1 var(--display);background:rgba(15,23,42,.9);white-space:nowrap}
+.strike{position:absolute;left:-4px;right:-4px;top:50%;height:5px;background:#FF7A8A;transform-origin:0 50%}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script src="../../shared/hook2.js"></script>
+<script>
+const {ctaFollow, CHECK, CROSS} = KIT;
+const W = [{"w": "Faltam", "s": 0.0, "e": 0.348}, {"w": "dez", "s": 0.441, "e": 0.65}, {"w": "minutos", "s": 0.72, "e": 1.138}, {"w": "e", "s": 1.405, "e": 1.498}, {"w": "você", "s": 1.544, "e": 1.741}, {"w": "ainda", "s": 1.765, "e": 1.927}, {"w": "tem", "s": 1.962, "e": 2.078}, {"w": "quinze", "s": 2.171, "e": 2.485}, {"w": "questões", "s": 2.531, "e": 2.961}, {"w": "sem", "s": 2.984, "e": 3.135}, {"w": "passar", "s": 3.193, "e": 3.518}, {"w": "pro", "s": 3.576, "e": 3.669}, {"w": "cartão.", "s": 3.692, "e": 4.226}, {"w": "O", "s": 4.365, "e": 4.435}, {"w": "que", "s": 4.493, "e": 4.563}, {"w": "você", "s": 4.598, "e": 4.748}, {"w": "faz?", "s": 4.83, "e": 5.283}, {"w": "Primeiro:", "s": 5.457, "e": 5.991}, {"w": "o", "s": 6.13, "e": 6.188}, {"w": "que", "s": 6.246, "e": 6.316}, {"w": "vale", "s": 6.374, "e": 6.711}, {"w": "é", "s": 6.769, "e": 6.827}, {"w": "o", "s": 6.885, "e": 6.908}, {"w": "cartão-resposta,", "s": 6.931, "e": 7.976}, {"w": "não", "s": 8.15, "e": 8.301}, {"w": "o", "s": 8.324, "e": 8.348}, {"w": "caderno,", "s": 8.394, "e": 8.975}, {"w": "e", "s": 9.114, "e": 9.207}, {"w": "não", "s": 9.265, "e": 9.358}, {"w": "existe", "s": 9.381, "e": 9.625}, {"w": "tempo", "s": 9.671, "e": 9.961}, {"w": "extra", "s": 10.054, "e": 10.252}, {"w": "pra", "s": 10.286, "e": 10.379}, {"w": "preencher.", "s": 10.414, "e": 10.995}, {"w": "Então", "s": 11.204, "e": 11.505}, {"w": "passe", "s": 11.552, "e": 11.773}, {"w": "pro", "s": 11.807, "e": 11.889}, {"w": "cartão", "s": 11.912, "e": 12.341}, {"w": "as", "s": 12.399, "e": 12.516}, {"w": "que", "s": 12.55, "e": 12.62}, {"w": "você", "s": 12.655, "e": 12.817}, {"w": "já", "s": 12.887, "e": 12.957}, {"w": "resolveu.", "s": 12.992, "e": 13.537}, {"w": "Segundo:", "s": 13.746, "e": 14.339}, {"w": "não", "s": 14.478, "e": 14.629}, {"w": "deixe", "s": 14.664, "e": 14.849}, {"w": "nenhuma", "s": 14.884, "e": 15.093}, {"w": "em", "s": 15.116, "e": 15.163}, {"w": "branco.", "s": 15.198, "e": 15.604}, {"w": "No", "s": 15.743, "e": 15.848}, {"w": "ENEM,", "s": 15.883, "e": 16.254}, {"w": "questão", "s": 16.382, "e": 16.614}, {"w": "em", "s": 16.637, "e": 16.684}, {"w": "branco", "s": 16.719, "e": 16.986}, {"w": "conta", "s": 17.044, "e": 17.288}, {"w": "como", "s": 17.334, "e": 17.566}, {"w": "erro,", "s": 17.659, "e": 17.961}, {"w": "então", "s": 18.054, "e": 18.356}, {"w": "marque", "s": 18.402, "e": 18.704}, {"w": "a", "s": 18.727, "e": 18.75}, {"w": "alternativa", "s": 18.774, "e": 19.296}, {"w": "mais", "s": 19.354, "e": 19.551}, {"w": "provável,", "s": 19.61, "e": 20.202}, {"w": "eliminando", "s": 20.341, "e": 20.852}, {"w": "o", "s": 20.898, "e": 20.921}, {"w": "que", "s": 20.979, "e": 21.049}, {"w": "puder.", "s": 21.096, "e": 21.56}, {"w": "E", "s": 21.734, "e": 21.815}, {"w": "pra", "s": 21.885, "e": 21.978}, {"w": "não", "s": 22.013, "e": 22.094}, {"w": "chegar", "s": 22.117, "e": 22.361}, {"w": "nessa", "s": 22.396, "e": 22.558}, {"w": "situação,", "s": 22.593, "e": 23.278}, {"w": "vá", "s": 23.418, "e": 23.534}, {"w": "passando", "s": 23.58, "e": 23.882}, {"w": "as", "s": 23.905, "e": 23.952}, {"w": "respostas", "s": 23.975, "e": 24.404}, {"w": "por", "s": 24.462, "e": 24.555}, {"w": "blocos", "s": 24.602, "e": 24.927}, {"w": "durante", "s": 24.962, "e": 25.217}, {"w": "a", "s": 25.24, "e": 25.264}, {"w": "prova.", "s": 25.322, "e": 25.786}, {"w": "O", "s": 25.96, "e": 26.03}, {"w": "bizu:", "s": 26.111, "e": 26.587}, {"w": "o", "s": 26.761, "e": 26.831}, {"w": "cartão", "s": 26.877, "e": 27.168}, {"w": "é", "s": 27.191, "e": 27.214}, {"w": "a", "s": 27.237, "e": 27.26}, {"w": "sua", "s": 27.307, "e": 27.435}, {"w": "prova;", "s": 27.481, "e": 27.887}, {"w": "o", "s": 27.98, "e": 28.038}, {"w": "caderno", "s": 28.073, "e": 28.433}, {"w": "é", "s": 28.456, "e": 28.48}, {"w": "rascunho.", "s": 28.503, "e": 29.106}, {"w": "Comenta", "s": 29.246, "e": 29.571}, {"w": "aí:", "s": 29.594, "e": 29.896}, {"w": "você", "s": 30.035, "e": 30.221}, {"w": "passa", "s": 30.291, "e": 30.534}, {"w": "as", "s": 30.558, "e": 30.604}, {"w": "respostas", "s": 30.639, "e": 31.103}, {"w": "no", "s": 31.138, "e": 31.185}, {"w": "final", "s": 31.231, "e": 31.579}, {"w": "ou", "s": 31.846, "e": 31.963}, {"w": "por", "s": 32.021, "e": 32.137}, {"w": "blocos?", "s": 32.183, "e": 32.706}, {"w": "Salva", "s": 32.915, "e": 33.205}, {"w": "esse", "s": 33.228, "e": 33.332}, {"w": "bizu", "s": 33.379, "e": 33.692}, {"w": "e", "s": 33.901, "e": 34.029}, {"w": "segue", "s": 34.122, "e": 34.389}, {"w": "o", "s": 34.412, "e": 34.435}, {"w": "Bizu", "s": 34.47, "e": 34.726}, {"w": "do", "s": 34.784, "e": 34.842}, {"w": "Enem.", "s": 34.888, "e": 35.387}];
+/* tempo: narração take 1, sem pausas (gancho 2.0) */
+const T = t => t;
+const DUR = T(35.387) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','O CARTÃO','EM BRANCO','POR BLOCOS','O BIZU','COMENTA','CTA'], dur:DUR});
+const H = HOOK2.init({faltam:7, words:W, T});
+
+const rows=(n,filled,red)=>[...Array(n)].map((_,i)=>`<div class="qrow"><div class="n">${String(i+31).padStart(2,'0')}</div>${'ABCDE'.split('').map((l,j)=>`<div class="o ${filled.includes(i)&&j===(i*3+1)%5?'f':''}" data-r="${i}" data-c="${j}">${l}</div>`).join('')}</div>`).join('');
+
+$('#scenes').innerHTML=`
+<section id="s1" style="visibility:visible">
+  <div class="abs" style="left:84px;top:390px;width:900px">
+    <div class="h-l" style="font-size:118px;line-height:.95"><span class="y">Faltam 10 min</span><br>e 15 questões<br>sem marcar.</div>
+    <div id="s1q" class="h-l" style="font-size:92px;margin-top:22px;color:#FF7A8A">E agora?</div>
+  </div>
+  <div id="s1timer" class="abs card" style="left:60px;top:1010px;width:330px;padding:26px 30px;text-align:center">
+    <div style="font:700 20px/1 var(--mono);color:var(--cinza-2);letter-spacing:2px">TEMPO</div>
+    <div id="clock" style="font:900 86px/1 var(--mono);color:#FF7A8A;margin-top:12px">10:00</div></div>
+  <div id="s1grid" class="abs card" style="left:420px;top:1010px;width:510px;padding:26px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;justify-items:center">
+    ${[...Array(15)].map(()=>`<div class="bub r"></div>`).join('')}</div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s2k">1º · Prioridade</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('O que vale é','s2a')}${mask('o <span class="y">cartão</span>','s2b')}</div></div>
+  <div class="abs" style="left:60px;top:780px;width:870px;display:flex;gap:24px">
+    <div id="cad" class="card" style="flex:1;padding:26px;position:relative">
+      <div style="font:800 22px/1 var(--mono);color:var(--cinza-2);letter-spacing:2px;margin-bottom:18px">CADERNO</div>
+      ${[0,1,2,3].map(i=>`<div style="height:12px;border-radius:6px;background:rgba(255,255,255,.14);margin-bottom:14px;width:${[92,80,88,70][i]}%"></div>`).join('')}
+      <div style="font:900 40px/1 var(--display);color:var(--cinza-2);margin-top:10px">C ✎</div>
+      <div id="cadX" class="stamp" style="left:30px;top:170px;border-color:#FF7A8A;color:#FF7A8A;transform:rotate(-8deg)">rascunho</div></div>
+    <div id="car" class="sheet" style="flex:1.25;position:relative">
+      <div class="hd">CARTÃO-RESPOSTA</div>${rows(5,[],[])}
+      <div id="carOk" class="stamp" style="right:-10px;top:-26px;border-color:#3dd6a5;color:#3dd6a5;transform:rotate(6deg)">é o que vale ✓</div></div>
+  </div>
+  <div id="s2t" class="abs pill" style="left:84px;top:1230px;background:#FF7A8A;color:#0F172A;font-size:34px">⏱ sem tempo extra</div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s3k">2º · Nada em branco</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('Em branco','s3a')}${mask('<span style="color:#FF7A8A">= erro</span>','s3b')}</div></div>
+  <div id="s3card" class="abs sheet" style="left:60px;top:800px;width:870px">
+    <div class="hd">QUESTÃO 44</div>
+    <div style="display:flex;gap:18px;justify-content:center">
+      ${'ABCDE'.split('').map(l=>`<div class="bub s3b" id="b${l}" style="width:120px;height:120px;font-size:44px;border-color:#A9B1C4;color:#5B6680">${l}${'AD'.includes(l)?'<div class="strike s3x"></div>':''}</div>`).join('')}</div>
+    <div id="s3n" style="margin-top:22px;text-align:center;font:800 32px/1.2 var(--display)">elimine o que puder e marque a <span style="color:#6C3BFF">mais provável</span></div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s4k">Para não chegar nessa situação</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('Passe por','s4a')}${mask('<span class="y">blocos</span>','s4b')}</div></div>
+  <div id="s4bar" class="abs card" style="left:60px;top:820px;width:870px;padding:40px 36px">
+    <div style="position:relative;height:30px;border-radius:15px;background:rgba(255,255,255,.08)"><div id="s4fill" style="position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:15px;background:linear-gradient(90deg,#6C3BFF,#9C7BFF);transform-origin:0 50%"></div></div>
+    <div style="position:relative;height:120px;margin-top:18px">
+      ${['Bloco 1','Bloco 2','Bloco 3'].map((b,i)=>`<div class="abs s4m" style="left:${28+i*33}%;top:0;transform:translateX(-50%);text-align:center"><div style="width:4px;height:30px;background:var(--amarelo);margin:0 auto"></div><div class="pill" style="background:var(--amarelo);color:var(--navy);font-size:26px;margin-top:8px">✓ ${b}</div></div>`).join('')}</div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s5k">O bizu</span></div>
+    <div class="h-l" style="font-size:100px">${mask('O cartão é','s5a')}${mask('<span class="y">a sua prova</span>','s5b')}${mask('<span style="color:var(--cinza-2);font-size:74px">o caderno é rascunho</span>','s5c')}</div></div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Comenta aí 👇</span></div>
+    <div class="h-l" style="font-size:100px">${mask('Você passa','s6a')}${mask('as respostas…','s6b')}</div></div>
+  <div class="abs" style="left:60px;top:880px;width:870px;display:flex;gap:24px">
+    <div class="card s6o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display)">no final?</div>
+    <div class="card s6o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display);color:var(--amarelo)">por blocos?</div></div>
+</section>
+
+<section id="s7">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s7k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s7a')}${mask('e segue','s7b','y')}</div></div>
+  <div id="s7cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova','📘 e-book grátis no perfil')}</div>
+</section>`;
+
+/* 01 GANCHO — quadro 0 já cheio */
+tl.set('#s1',{visibility:'visible'},0); tl.set('#s1',{visibility:'hidden'},5.6);
+tl.fromTo('#s1 .h-l',{scale:1},{scale:1.025,duration:4,ease:'sine.inOut',transformOrigin:'0 0',immediateRender:false},0.3);
+$$('#s1grid .bub').forEach((b,i)=>tl.fromTo(b,{scale:1},{scale:1.12,duration:.25,yoyo:true,repeat:1,immediateRender:false},.15+i*.12));
+pulse('#s1q',T(4.36),1.08); pulse('#s1timer',T(.44),1.06);
+tl.to(['#s1 .h-l','#s1q'],{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.25); tl.to(['#s1timer','#s1grid'],{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.3);
+
+/* 02 O CARTÃO */
+const s2in=5.4, s2out=13.6;
+show('#s2',s2in,s2out+.5); chap(1,s2in);
+up('#s2k',5.46); up('#s2a',6.13); up('#s2b',6.93,{color:'#fff'}); tl.to('#s2b',{color:'#FFC400',duration:.25},7.2);
+tl.from('#cad',{x:-120,opacity:0,duration:.5,ease:'expo.out'},5.9); tl.from('#car',{x:120,opacity:0,duration:.5,ease:'expo.out'},6.1);
+tl.set(['#carOk','#cadX','#s2t'],{opacity:0},0);
+tl.fromTo('#carOk',{opacity:0,scale:2},{opacity:1,scale:1,duration:.3,ease:'power4.in',immediateRender:false},7.0);
+tl.fromTo('#cadX',{opacity:0,scale:2},{opacity:1,scale:1,duration:.3,ease:'power4.in',immediateRender:false},8.39);
+tl.to('#cad',{opacity:.55,duration:.3},8.5);
+tl.fromTo('#s2t',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:'back.out(2)',immediateRender:false},9.4); pulse('#s2t',10.0,1.08);
+// "passe pro cartão as que você já resolveu"
+$$('#car .o').filter(o=>(+o.dataset.c)===((+o.dataset.r)*3+1)%5).forEach((o,i)=>tl.to(o,{backgroundColor:'#6C3BFF',borderColor:'#6C3BFF',color:'#fff',duration:.15},11.6+i*.28));
+out(['#s2k','#s2a','#s2b'],s2out,{stagger:.03}); tl.to(['#cad','#car','#s2t'],{y:-50,opacity:0,duration:.35,stagger:.04,ease:'power3.in'},s2out);
+
+/* 03 EM BRANCO */
+const s3in=13.7, s3out=21.6;
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',13.75); up('#s3a',14.66); up('#s3b',16.72);
+tl.from('#s3card',{y:120,opacity:0,duration:.6,ease:'expo.out'},14.5);
+tl.set('.s3x',{scaleX:0},0); tl.set('#s3n',{opacity:0},0);
+tl.to('#s3card .bub',{borderColor:'#FF7A8A',duration:.3},16.4); tl.to('#s3card .bub',{borderColor:'#A9B1C4',duration:.3},17.9);
+tl.to('#s3n',{opacity:1,duration:.3},18.4);
+tl.to('.s3x',{scaleX:1,duration:.3,stagger:.25,ease:'power4.inOut'},20.35); tl.to(['#bA','#bD'],{opacity:.4,duration:.3},20.6);
+tl.to('#bC',{backgroundColor:'#6C3BFF',borderColor:'#6C3BFF',color:'#fff',duration:.25},19.4); pulse('#bC',19.45,1.15);
+out(['#s3k','#s3a','#s3b'],s3out,{stagger:.03}); tl.to('#s3card',{y:-50,opacity:0,duration:.35,ease:'power3.in'},s3out);
+
+/* 04 POR BLOCOS */
+const s4in=21.7, s4out=25.85;
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',21.73); up('#s4a',23.42); up('#s4b',24.6,{color:'#fff'}); tl.to('#s4b',{color:'#FFC400',duration:.25},24.8);
+tl.from('#s4bar',{y:120,opacity:0,duration:.6,ease:'expo.out'},22.0);
+tl.fromTo('#s4fill',{scaleX:0},{scaleX:1,duration:2.6,ease:'none',immediateRender:false},23.0);
+tl.set('.s4m',{opacity:0},0);
+$$('.s4m').forEach((m,i)=>tl.fromTo(m,{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:'back.out(2)',immediateRender:false},23.0+(.28+i*.33)*2.6));
+out(['#s4k','#s4a','#s4b'],s4out,{stagger:.03}); tl.to('#s4bar',{y:-50,opacity:0,duration:.35,ease:'power3.in'},s4out);
+
+/* 05 BIZU */
+const s5in=25.95, s5out=29.15;
+show('#s5',s5in,s5out+.5); chap(4,s5in);
+up('#s5k',25.96); up('#s5a',26.76); up('#s5b',27.24,{color:'#fff'}); tl.to('#s5b',{color:'#FFC400',duration:.25},27.45); up('#s5c',27.98);
+out(['#s5k','#s5a','#s5b','#s5c'],s5out,{stagger:.03,duration:.32});
+
+/* 06 COMENTA */
+const s6in=29.2, s6out=32.8;
+show('#s6',s6in,s6out+.5); chap(5,s6in);
+up('#s6k',29.25); up('#s6a',30.04); up('#s6b',30.29);
+const O=$$('.s6o'); tl.from(O[0],{x:-120,opacity:0,duration:.45,ease:'expo.out'},31.2); tl.from(O[1],{x:120,opacity:0,duration:.45,ease:'expo.out'},31.85);
+pulse(O[1],32.2,1.06);
+out(['#s6k','#s6a','#s6b'],s6out,{stagger:.03}); tl.to('.s6o',{y:-50,opacity:0,duration:.3,stagger:.04,ease:'power3.in'},s6out);
+
+/* 07 CTA */
+const s7in=32.9;
+show('#s7',s7in,DUR+1); chap(6,s7in);
+up('#s7k',s7in+.05); up('#s7a',32.92);
+const [save,follow]=$$('#s7cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},33.0); pulse(save.firstElementChild,33.35,1.15);
+up('#s7b',33.9,{color:'#fff'}); tl.to('#s7b',{color:'#FFC400',duration:.25},34.12);
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},33.95);
+pulse(follow.lastElementChild,34.47,1.12); pulse(follow.lastElementChild,35.9,1.08);
+
+// cronômetro do gancho: 10:00 → 09:55
+MOTION.ready(t => { H.update(t); if (t < 5.6) { const s = 600 - Math.floor(t); $('#clock').textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; } });
+</script>
+</body>
+</html>

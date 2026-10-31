@@ -1,0 +1,16 @@
+/* Bizu do Enem — camada de motion (usar junto com base.css) */
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+.glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(20px)}
+#g1{width:1300px;height:1000px;left:220px;top:-200px;background:radial-gradient(closest-side,rgba(108,59,255,.42),transparent)}
+#g2{width:1200px;height:1200px;left:-500px;top:1250px;background:radial-gradient(closest-side,rgba(108,59,255,.24),transparent)}
+#g3{width:900px;height:900px;left:500px;top:900px;background:radial-gradient(closest-side,rgba(255,196,0,.07),transparent)}
+#sweep{position:absolute;left:-400px;top:-200px;width:500px;height:2400px;z-index:48;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(156,123,255,.35),transparent);transform:rotate(12deg)}
+#stage .grain{inset:-120px;z-index:50}
+#stage .vignette{z-index:49}
+#stage .brand,#stage .chapter{z-index:40}
+#stage .chapter{height:26px;overflow:hidden;line-height:26px;text-align:right}
+section{position:absolute;inset:0;visibility:hidden}
+.mask{overflow:hidden;padding:0 .06em .1em 0;margin-bottom:-.1em}
+.mask>span{display:inline-block}
+.nowrap{white-space:nowrap}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V011 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.tema{position:relative;width:417px;height:250px;padding:28px;border-radius:28px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1.5px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.tema .n{font:800 22px/1 var(--mono);color:var(--roxo-claro)}
+.tema .t{margin-top:18px;font:800 33px/1.1 var(--display);letter-spacing:-.5px;padding-right:20px}
+.tema svg{position:absolute;right:20px;top:18px;width:46px;height:46px}
+.row{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding:14px 16px;border-radius:18px;position:relative}
+.row .hl{position:absolute;inset:0;border-radius:18px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);opacity:0}
+.row .lab{position:relative;justify-self:start;padding:9px 14px;border-radius:12px;background:var(--c);color:#0F172A;font:800 19px/1 var(--mono);letter-spacing:1px}
+.row .tx{position:relative;font:600 34px/1.22 var(--texto)}
+.row .tx b{color:var(--c);font-weight:800}
+.ck{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;border:2px solid var(--c);font:800 24px/1 var(--display);color:#fff;background:rgba(255,255,255,.04)}
+.ck i{width:28px;height:28px;border-radius:50%;background:var(--c);display:grid;place-items:center;font-style:normal;color:#0F172A;font-size:18px}
+.slot{flex:1;height:72px;border-radius:16px;border:2px dashed var(--c);display:grid;place-items:center;font:800 14px/1 var(--mono);color:var(--c);letter-spacing:.5px}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {ctaFollow} = KIT;
+/* tempo: narração take 1 + pausa de +1,0 s após "pelas enchentes." (ler a proposta inteira) */
+const T = t => t + (t > 38.0 ? 1.0 : 0);
+const DUR = T(51.409) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','TEMAS','SIMULAÇÃO','O BIZU','CTA'], dur:DUR});
+
+const ICO={
+  mente:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FF7A8A" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg>`,
+  clima:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#4CC9F0" stroke-width="2" stroke-linecap="round"><path d="M6 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16 15H6z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/></svg>`,
+  ia:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#FFC400" stroke-width="2" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/><circle cx="12" cy="12" r="2.5"/></svg>`,
+  comida:`<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#3dd6a5" stroke-width="2" stroke-linecap="round"><path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg>`};
+const TEMAS=[['01','Saúde mental<br>dos jovens','mente',9.38],['02','Eventos climáticos<br>extremos nas cidades','clima',11.05],['03','Inteligência artificial<br>na educação','ia',13.46],['04','Desperdício<br>de alimentos','comida',15.45]];
+// elemento, cor, trecho, início da fala, tempo no recap
+const EL=[['AGENTE','#9C7BFF','<b>O Ministério das Cidades</b>, em parceria com as prefeituras,',24.67,38.15],
+          ['AÇÃO','#FFC400','deve <b>criar planos de adaptação climática</b>,',27.96,38.93],
+          ['MEIO','#4CC9F0','<b>por meio do</b> mapeamento de áreas de risco e de obras de drenagem,',30.37,39.76],
+          ['DETALHAMENTO','#FF7A8A','<b>priorizando as periferias</b>,',33.83,40.39],
+          ['FINALIDADE','#3dd6a5','<b>a fim de</b> reduzir os danos causados pelas enchentes.',35.34,41.24]];
+
+$('#scenes').innerHTML=`
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Redação ENEM 2026</span></div>
+    <div class="h-l nowrap">${mask('Qual vai ser','s1a')}${mask('o tema?','s1b','y')}</div></div>
+  <div id="s1env" class="abs" style="left:190px;top:820px;width:610px;height:420px">
+    <svg width="610" height="420" viewBox="0 0 610 420"><rect x="5" y="40" width="600" height="375" rx="26" fill="#F5F3FF"/>
+      <path d="M5 66 L305 260 L605 66" fill="none" stroke="#C9BEF5" stroke-width="8"/>
+      <rect x="225" y="300" width="160" height="60" rx="14" fill="#6C3BFF"/><text x="305" y="341" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="26" fill="#fff">ENEM</text></svg>
+    <div id="s1q" class="abs" style="left:255px;top:70px;font:900 150px/1 var(--display);color:var(--amarelo);text-shadow:0 10px 30px rgba(0,0,0,.4)">?</div>
+    <div id="s1st" class="abs pill" style="left:150px;top:-10px;background:#FF7A8A;color:#0F172A;font-size:34px;transform:rotate(-6deg)">ninguém sabe</div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s2k">Para treinar · não é previsão</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('4 temas','s2a')}${mask('possíveis','s2b','y')}</div></div>
+  <div class="abs" style="left:60px;top:740px;width:870px;display:grid;grid-template-columns:1fr 1fr;gap:36px">
+    ${TEMAS.map(([n,t,ic],i)=>`<div class="tema" id="t${i}">${ICO[ic]}<div class="n">${n}</div><div class="t">${t}</div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:380px;width:860px">
+    <div class="kicker mask" style="margin-bottom:18px"><span id="s3k">Tema simulado</span></div>
+    <div id="s3tema" style="font:800 40px/1.15 var(--display);letter-spacing:-.5px">Desafios para o enfrentamento dos <span class="y">eventos climáticos extremos</span> nas cidades brasileiras</div>
+  </div>
+  <div id="s3card" class="abs card" style="left:60px;top:620px;width:870px;padding:22px 20px">
+    ${EL.map(([l,c,tx],i)=>`<div class="row" id="r${i}" style="--c:${c}"><div class="hl"></div><div class="lab">${l}</div><div class="tx">${tx}</div></div>`).join('')}
+  </div>
+  <div id="s3stamp" class="abs" style="left:560px;top:1300px;padding:18px 28px;border-radius:18px;border:4px solid #3dd6a5;color:#3dd6a5;font:900 40px/1 var(--display);transform:rotate(-6deg);background:rgba(15,23,42,.85)">COMPLETA ✓</div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s4k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:96px">${mask('Treine a','s4a')}${mask('estrutura,','s4b','y')}${mask('adapte o tema','s4c')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:900px;width:870px;padding:34px 30px">
+    <div style="position:relative;height:56px;margin-bottom:22px">
+      ${['Saúde mental dos jovens','Eventos climáticos extremos','IA na educação','Desperdício de alimentos'].map((t,i)=>`<div class="abs pill s4t" style="left:0;top:0;background:var(--roxo);font-size:28px">Tema: ${t}</div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px">${EL.map(([l,c])=>`<div class="slot" style="--c:${c}">${l}</div>`).join('')}</div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s5a')}${mask('e segue','s5b','y')}</div></div>
+  <div id="s5cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* 01 GANCHO: 0 → 4.75 */
+show('#s1',0,5.15);
+up('#s1k',.05); up('#s1a',0); up('#s1b',T(.45),{color:'#fff'}); tl.to('#s1b',{color:'#FFC400',duration:.25},T(.7));
+tl.from('#s1env',{y:220,opacity:0,rotation:-4,duration:.9,ease:'expo.out'},.3);
+tl.from('#s1q',{scale:0,duration:.5,ease:'back.out(2)'},1.0);
+tl.to('#s1q',{rotation:12,duration:.25,yoyo:true,repeat:5,ease:'sine.inOut'},1.6);
+tl.from('#s1st',{scale:2,opacity:0,duration:.35,ease:'power4.in'},T(2.1)); pulse('#s1st',T(4.03),1.1);
+out(['#s1k','#s1a','#s1b'],4.65,{stagger:.03}); tl.to('#s1env',{y:-60,opacity:0,duration:.4,ease:'power3.in'},4.65);
+
+/* 02 TEMAS */
+const s2in=4.8, s2out=T(16.85);
+show('#s2',s2in,s2out+.8); chap(1,s2in);
+up('#s2k',T(4.82)); up('#s2a',T(7.4)); up('#s2b',T(8.46),{color:'#fff'}); tl.to('#s2b',{color:'#FFC400',duration:.25},T(8.7));
+TEMAS.forEach(([n,t,ic,ts],i)=>{ tl.from(`#t${i}`,{opacity:0,y:60,scale:.9,duration:.5,ease:'back.out(1.6)'},T(ts)-.15); pulse(`#t${i} svg`,T(ts)+.2,1.2); });
+// "vamos simular com o segundo"
+tl.to(['#t0','#t2','#t3'],{opacity:.25,scale:.95,duration:.4},T(17.0));
+tl.to('#t1',{borderColor:'#FFC400',scale:1.06,duration:.4,ease:'back.out(2)'},T(17.83));
+out(['#s2k','#s2a','#s2b'],s2out+.6,{stagger:.03});
+tl.to(['#t0','#t2','#t3'],{opacity:0,duration:.3},s2out+.6); tl.to('#t1',{y:-300,opacity:0,duration:.45,ease:'power3.in'},s2out+.6);
+
+/* 03 SIMULAÇÃO */
+const s3in=T(18.0), s3out=T(43.1);
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',T(18.2));
+tl.from('#s3tema',{opacity:0,y:30,duration:.5},T(18.5));
+tl.from('#s3card',{y:140,opacity:0,duration:.7,ease:'expo.out'},T(22.6));
+tl.set('.row',{opacity:0},0); tl.set('#s3stamp',{opacity:0},0);
+EL.forEach(([l,c,tx,t0,tr],i)=>{
+  tl.fromTo(`#r${i}`,{opacity:0,x:-30},{opacity:1,x:0,duration:.4,immediateRender:false},T(t0)-.1);
+  tl.fromTo(`#r${i} .lab`,{scale:.6},{scale:1,duration:.35,ease:'back.out(2.4)',immediateRender:false},T(t0));
+  // recap: cada elemento acende quando é nomeado
+  tl.to(`#r${i} .hl`,{opacity:1,duration:.25},T(tr)); pulse(`#r${i} .lab`,T(tr),1.15);
+});
+tl.fromTo('#s3stamp',{opacity:0,scale:2.2},{opacity:1,scale:1,duration:.35,ease:'power4.in',immediateRender:false},T(42.04));
+out('#s3k',s3out,{duration:.3});
+tl.to(['#s3tema','#s3card','#s3stamp'],{y:-60,opacity:0,duration:.4,stagger:.04,ease:'power3.in'},s3out);
+
+/* 04 BIZU */
+const s4in=T(43.2), s4out=T(48.75);
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',T(43.26)); up('#s4a',T(44.05)); up('#s4b',T(44.43),{color:'#fff'}); tl.to('#s4b',{color:'#FFC400',duration:.25},T(44.7));
+up('#s4c',T(47.29));
+tl.from('#s4card',{y:120,opacity:0,duration:.6,ease:'expo.out'},T(44.3));
+tl.set('.s4t',{opacity:0},0);
+$$('.s4t').forEach((p,i)=>{ const a=T(45.0)+i*.9; tl.fromTo(p,{opacity:0,y:20},{opacity:1,y:0,duration:.25,immediateRender:false},a); if(i<3) tl.to(p,{opacity:0,y:-20,duration:.25},a+.7); });
+tl.from('.slot',{opacity:0,scale:.7,duration:.3,stagger:.08,ease:'back.out(2)'},T(44.6));
+out(['#s4k','#s4a','#s4b','#s4c'],s4out,{stagger:.03,duration:.32}); tl.to('#s4card',{y:-40,opacity:0,duration:.3,ease:'power3.in'},s4out);
+
+/* 05 CTA */
+const s5in=T(48.85);
+show('#s5',s5in,DUR+1); chap(4,s5in);
+up('#s5k',s5in+.05); up('#s5a',T(48.89));
+const [save,follow]=$$('#s5cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(48.95)); pulse(save.firstElementChild,T(49.3),1.15);
+up('#s5b',T(49.86),{color:'#fff'}); tl.to('#s5b',{color:'#FFC400',duration:.25},T(50.08));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(49.9));
+pulse(follow.lastElementChild,T(50.45),1.12); pulse(follow.lastElementChild,T(51.8),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(50.45));
+
+MOTION.ready();
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+1
+00:00:00,000 --> 00:00:01,108
+Na redação do ENEM,
+
+2
+00:00:01,138 --> 00:00:02,838
+a competência quatro avalia a
+
+3
+00:00:02,868 --> 00:00:03,627
+coesão,
+
+4
+00:00:03,657 --> 00:00:04,898
+e um ponto que pesa
+
+5
+00:00:04,957 --> 00:00:05,879
+é a ligação entre os
+
+6
+00:00:05,909 --> 00:00:06,785
+parágrafos.
+
+7
+00:00:06,815 --> 00:00:07,528
+A regra:
+
+8
+00:00:07,558 --> 00:00:09,676
+cada parágrafo começa conectado ao
+
+9
+00:00:09,706 --> 00:00:10,483
+anterior.
+
+10
+00:00:10,600 --> 00:00:12,381
+Para abrir o primeiro desenvolvimento:
+
+11
+00:00:12,411 --> 00:00:13,472
+em primeiro lugar,
+
+12
+00:00:13,502 --> 00:00:14,552
+ou inicialmente.
+
+13
+00:00:14,582 --> 00:00:15,469
+Para o segundo:
+
+14
+00:00:15,499 --> 00:00:16,212
+além disso,
+
+15
+00:00:16,242 --> 00:00:17,164
+ou ademais.
+
+16
+00:00:17,194 --> 00:00:18,337
+E para a conclusão:
+
+17
+00:00:18,367 --> 00:00:19,057
+portanto,
+
+18
+00:00:19,087 --> 00:00:20,084
+ou diante disso.
+
+19
+00:00:20,143 --> 00:00:21,216
+Mas só o conectivo não
+
+20
+00:00:21,246 --> 00:00:21,913
+basta:
+
+21
+00:00:21,943 --> 00:00:23,590
+retome a ideia anterior.
+
+22
+00:00:23,649 --> 00:00:24,594
+Vamos aplicar.
+
+23
+00:00:24,624 --> 00:00:26,371
+O primeiro desenvolvimento termina falando
+
+24
+00:00:26,401 --> 00:00:27,555
+da falta de drenagem nas
+
+25
+00:00:27,585 --> 00:00:28,263
+cidades.
+
+26
+00:00:28,293 --> 00:00:30,092
+O segundo pode começar assim:
+
+27
+00:00:30,209 --> 00:00:30,922
+além disso,
+
+28
+00:00:30,952 --> 00:00:32,071
+esse problema se agrava com
+
+29
+00:00:32,101 --> 00:00:33,093
+a ocupação de áreas de
+
+30
+00:00:33,123 --> 00:00:33,656
+risco.
+
+31
+00:00:34,373 --> 00:00:35,829
+O "além disso" acrescenta um
+
+32
+00:00:35,859 --> 00:00:36,572
+argumento,
+
+33
+00:00:36,602 --> 00:00:38,047
+e o "esse problema" retoma
+
+34
+00:00:38,077 --> 00:00:39,481
+o parágrafo anterior.
+
+35
+00:00:39,598 --> 00:00:40,845
+A armadilha é usar o
+
+36
+00:00:40,875 --> 00:00:41,901
+conectivo errado,
+
+37
+00:00:41,931 --> 00:00:42,853
+como "portanto" no meio do
+
+38
+00:00:42,883 --> 00:00:43,399
+texto,
+
+39
+00:00:43,429 --> 00:00:44,699
+ou repetir o mesmo conectivo
+
+40
+00:00:44,729 --> 00:00:46,040
+em todos os parágrafos.
+
+41
+00:00:46,157 --> 00:00:46,905
+O bizu:
+
+42
+00:00:46,935 --> 00:00:48,577
+conectivo mais retomada no início
+
+43
+00:00:48,607 --> 00:00:49,639
+de cada parágrafo.
+
+44
+00:00:49,756 --> 00:00:51,166
+Salva esse bizu e segue
+
+45
+00:00:51,196 --> 00:00:52,252
+o Bizu do Enem.

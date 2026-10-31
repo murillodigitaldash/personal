@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V014 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.day{flex:1;border-radius:28px;padding:26px 24px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:2px solid rgba(255,255,255,.14);position:relative}
+.day .dt{font:900 64px/1 var(--display);letter-spacing:-2px}
+.day .lb{font:800 22px/1 var(--mono);letter-spacing:2px;color:var(--cinza-2);margin-top:10px}
+.area{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:16px 18px;border-radius:16px;background:var(--c);color:#0F172A;font:800 28px/1.05 var(--display)}
+.area b{font:900 22px/1 var(--mono);background:rgba(15,23,42,.18);padding:6px 10px;border-radius:10px;white-space:nowrap}
+.seg{position:relative;flex:1;padding:22px 20px;border-radius:20px;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.seg .t{font:800 22px/1 var(--mono);color:var(--c);letter-spacing:1px}
+.seg .x{margin-top:12px;font:700 28px/1.2 var(--display)}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script src="../../shared/hook2.js"></script>
+<script>
+const {ctaFollow} = KIT;
+const W = [{"w": "Redação", "s": 0.0, "e": 0.534}, {"w": "cai", "s": 0.58, "e": 0.743}, {"w": "no", "s": 0.778, "e": 0.836}, {"w": "primeiro", "s": 0.882, "e": 1.265}, {"w": "ou", "s": 1.358, "e": 1.428}, {"w": "no", "s": 1.463, "e": 1.521}, {"w": "segundo", "s": 1.567, "e": 1.869}, {"w": "domingo", "s": 1.904, "e": 2.206}, {"w": "do", "s": 2.241, "e": 2.287}, {"w": "ENEM?", "s": 2.322, "e": 2.74}, {"w": "Se", "s": 3.007, "e": 3.1}, {"w": "você", "s": 3.135, "e": 3.309}, {"w": "hesitou,", "s": 3.332, "e": 3.889}, {"w": "esse", "s": 3.982, "e": 4.156}, {"w": "vídeo", "s": 4.203, "e": 4.389}, {"w": "é", "s": 4.412, "e": 4.435}, {"w": "pra", "s": 4.47, "e": 4.563}, {"w": "você.", "s": 4.598, "e": 5.132}, {"w": "No", "s": 5.399, "e": 5.492}, {"w": "primeiro", "s": 5.526, "e": 5.793}, {"w": "dia,", "s": 5.84, "e": 6.13}, {"w": "oito", "s": 6.188, "e": 6.444}, {"w": "de", "s": 6.478, "e": 6.525}, {"w": "novembro:", "s": 6.571, "e": 7.14}, {"w": "Linguagens,", "s": 7.279, "e": 8.057}, {"w": "Ciências", "s": 8.15, "e": 8.638}, {"w": "Humanas", "s": 8.696, "e": 9.091}, {"w": "e", "s": 9.16, "e": 9.253}, {"w": "a", "s": 9.288, "e": 9.311}, {"w": "redação.", "s": 9.346, "e": 10.008}, {"w": "No", "s": 10.217, "e": 10.321}, {"w": "segundo,", "s": 10.356, "e": 10.855}, {"w": "quinze", "s": 11.029, "e": 11.32}, {"w": "de", "s": 11.355, "e": 11.401}, {"w": "novembro:", "s": 11.447, "e": 12.016}, {"w": "Ciências", "s": 12.156, "e": 12.678}, {"w": "da", "s": 12.713, "e": 12.759}, {"w": "Natureza", "s": 12.806, "e": 13.317}, {"w": "e", "s": 13.375, "e": 13.445}, {"w": "Matemática.", "s": 13.503, "e": 14.292}, {"w": "São", "s": 14.501, "e": 14.687}, {"w": "quarenta", "s": 14.71, "e": 15.07}, {"w": "e", "s": 15.093, "e": 15.116}, {"w": "cinco", "s": 15.14, "e": 15.384}, {"w": "questões", "s": 15.43, "e": 15.743}, {"w": "por", "s": 15.79, "e": 15.894}, {"w": "área.", "s": 15.952, "e": 16.243}, {"w": "Agora", "s": 16.417, "e": 16.707}, {"w": "aplica", "s": 16.73, "e": 17.009}, {"w": "na", "s": 17.044, "e": 17.09}, {"w": "revisão:", "s": 17.113, "e": 17.647}, {"w": "até", "s": 17.787, "e": 17.973}, {"w": "o", "s": 18.007, "e": 18.031}, {"w": "primeiro", "s": 18.054, "e": 18.309}, {"w": "domingo,", "s": 18.344, "e": 18.82}, {"w": "priorize", "s": 18.948, "e": 19.389}, {"w": "redação,", "s": 19.424, "e": 20.132}, {"w": "leitura", "s": 20.271, "e": 20.596}, {"w": "de", "s": 20.631, "e": 20.689}, {"w": "textos", "s": 20.747, "e": 21.223}, {"w": "e", "s": 21.397, "e": 21.537}, {"w": "Humanas.", "s": 21.56, "e": 22.152}, {"w": "Entre", "s": 22.326, "e": 22.593}, {"w": "um", "s": 22.617, "e": 22.663}, {"w": "domingo", "s": 22.698, "e": 23.023}, {"w": "e", "s": 23.046, "e": 23.081}, {"w": "outro,", "s": 23.127, "e": 23.557}, {"w": "foque", "s": 23.696, "e": 24.021}, {"w": "em", "s": 24.045, "e": 24.091}, {"w": "Natureza", "s": 24.149, "e": 24.718}, {"w": "e", "s": 24.776, "e": 24.846}, {"w": "Matemática,", "s": 24.904, "e": 25.682}, {"w": "com", "s": 25.821, "e": 25.914}, {"w": "as", "s": 25.96, "e": 26.007}, {"w": "fórmulas", "s": 26.076, "e": 26.459}, {"w": "e", "s": 26.494, "e": 26.517}, {"w": "as", "s": 26.552, "e": 26.622}, {"w": "contas", "s": 26.692, "e": 27.017}, {"w": "que", "s": 27.063, "e": 27.133}, {"w": "mais", "s": 27.179, "e": 27.354}, {"w": "caem.", "s": 27.423, "e": 27.806}, {"w": "O", "s": 28.015, "e": 28.085}, {"w": "bizu:", "s": 28.166, "e": 28.642}, {"w": "revise", "s": 28.817, "e": 29.165}, {"w": "na", "s": 29.2, "e": 29.246}, {"w": "ordem", "s": 29.269, "e": 29.443}, {"w": "da", "s": 29.467, "e": 29.525}, {"w": "prova.", "s": 29.571, "e": 29.943}, {"w": "Comenta", "s": 30.082, "e": 30.442}, {"w": "qual", "s": 30.477, "e": 30.581}, {"w": "dia", "s": 30.628, "e": 30.709}, {"w": "te", "s": 30.732, "e": 30.79}, {"w": "preocupa", "s": 30.825, "e": 31.162}, {"w": "mais.", "s": 31.197, "e": 31.568}, {"w": "Salva", "s": 31.742, "e": 32.032}, {"w": "esse", "s": 32.056, "e": 32.16}, {"w": "bizu", "s": 32.207, "e": 32.52}, {"w": "e", "s": 32.694, "e": 32.822}, {"w": "segue", "s": 32.892, "e": 33.112}, {"w": "o", "s": 33.135, "e": 33.159}, {"w": "Bizu", "s": 33.193, "e": 33.391}, {"w": "do", "s": 33.437, "e": 33.495}, {"w": "Enem.", "s": 33.542, "e": 34.041}];
+/* tempo: narração take 1, sem pausas (gancho 2.0) */
+const T = t => t;
+const DUR = T(34.041) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CADA DIA','REVISÃO','O BIZU','COMENTA','CTA'], dur:DUR});
+const H = HOOK2.init({faltam:7, words:W, T});
+const DOC=`<svg width="84" height="104" viewBox="0 0 84 104"><rect x="2" y="2" width="80" height="100" rx="12" fill="#F5F3FF"/><path d="M16 26h52M16 42h52M16 58h52M16 74h34" stroke="#9C7BFF" stroke-width="7" stroke-linecap="round"/></svg>`;
+
+$('#scenes').innerHTML=`
+<section id="s1" style="visibility:visible">
+  <div class="abs" style="left:84px;top:390px;width:900px">
+    <div class="h-l" style="font-size:132px;line-height:.95"><span class="y">Redação:</span><br>1º ou 2º dia?</div>
+  </div>
+  <div id="s1days" class="abs" style="left:60px;top:800px;width:870px;display:flex;gap:170px">
+    <div class="day" style="text-align:center;padding:50px 24px"><div class="dt" style="font-size:96px">8/11</div><div class="lb">1º DIA</div></div>
+    <div class="day" style="text-align:center;padding:50px 24px"><div class="dt" style="font-size:96px">15/11</div><div class="lb">2º DIA</div></div>
+  </div>
+  <div id="s1doc" class="abs" style="left:453px;top:820px;transform-origin:42px 52px">${DOC}<div class="abs" style="left:24px;top:110px;font:900 64px/1 var(--display);color:var(--amarelo)">?</div></div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s2k">O que cai em cada dia</span></div>
+    <div class="h-l nowrap" style="font-size:92px">${mask('45 questões','s2a')}${mask('<span class="y">por área</span>','s2b')}</div></div>
+  <div class="abs" style="left:60px;top:700px;width:870px;display:flex;gap:24px;align-items:flex-start">
+    <div class="day" id="d1"><div class="dt">8/11</div><div class="lb">1º DIA</div>
+      <div class="area" id="a0" style="--c:#FFC400">Linguagens <b class="q">45</b></div>
+      <div class="area" id="a1" style="--c:#FF7A8A">Ciências Humanas <b class="q">45</b></div>
+      <div class="area" id="a2" style="--c:#F5F3FF">Redação <b>texto</b></div></div>
+    <div class="day" id="d2"><div class="dt">15/11</div><div class="lb">2º DIA</div>
+      <div class="area" id="a3" style="--c:#3dd6a5">Ciências da Natureza <b class="q">45</b></div>
+      <div class="area" id="a4" style="--c:#4CC9F0">Matemática <b class="q">45</b></div></div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:24px"><span id="s3k">Aplica na revisão</span></div>
+    <div class="h-l nowrap" style="font-size:92px">${mask('Na ordem','s3a')}${mask('<span class="y">da prova</span>','s3b')}</div></div>
+  <div id="s3tl" class="abs" style="left:60px;top:740px;width:870px">
+    <div style="display:flex;justify-content:space-between;font:800 26px/1 var(--mono);color:var(--cinza-2);margin-bottom:12px"><span>hoje 1/11</span><span style="color:var(--amarelo)">8/11</span><span style="color:#3dd6a5">15/11</span></div>
+    <div style="position:relative;height:16px;border-radius:8px;background:rgba(255,255,255,.1)"><div id="f1" style="position:absolute;left:0;top:0;bottom:0;width:50%;border-radius:8px 0 0 8px;background:#FFC400;transform-origin:0 50%"></div><div id="f2" style="position:absolute;left:50%;top:0;bottom:0;width:50%;border-radius:0 8px 8px 0;background:#3dd6a5;transform-origin:0 50%"></div></div>
+    <div style="display:flex;gap:18px;margin-top:22px">
+      <div class="seg" id="sg1" style="--c:#FFC400"><div class="t">ATÉ 8/11</div><div class="x">Redação, leitura de textos e Humanas</div></div>
+      <div class="seg" id="sg2" style="--c:#3dd6a5"><div class="t">DE 8 A 15/11</div><div class="x">Natureza e Matemática: fórmulas e contas</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s4k">O bizu</span></div>
+    <div class="h-l" style="font-size:110px">${mask('Revise na','s4a')}${mask('<span class="y">ordem da prova</span>','s4b')}</div></div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Comenta aí 👇</span></div>
+    <div class="h-l" style="font-size:100px">${mask('Qual dia te','s5a')}${mask('preocupa mais?','s5b')}</div></div>
+  <div class="abs" style="left:60px;top:880px;width:870px;display:flex;gap:24px">
+    <div class="card s5o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display);color:var(--amarelo)">1º dia</div>
+    <div class="card s5o" style="flex:1;padding:40px;text-align:center;font:900 54px/1 var(--display);color:#3dd6a5">2º dia</div></div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s6k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s6a')}${mask('e segue','s6b','y')}</div></div>
+  <div id="s6cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova','📘 e-book grátis no perfil')}</div>
+</section>`;
+
+/* 01 GANCHO — quadro 0 já cheio */
+tl.set('#s1',{visibility:'visible'},0);
+tl.fromTo('#s1 .h-l',{scale:1},{scale:1.025,duration:4,ease:'sine.inOut',transformOrigin:'0 0',immediateRender:false},0.3);
+tl.to('#s1doc',{y:-24,duration:.6,yoyo:true,repeat:3,ease:'sine.inOut'},0);
+tl.to('#s1doc',{rotation:-10,duration:.08,yoyo:true,repeat:5},3.33);
+// a resposta: a redação cai no 1º dia
+tl.to('#s1doc',{x:-305,y:190,scale:.7,duration:.6,ease:'back.inOut(1.4)'},5.4);
+tl.to('#s1 .h-l',{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.3);
+tl.set('#s1',{visibility:'hidden'},6.1);
+
+/* 02 CADA DIA */
+const s2in=5.95, s2out=16.35;
+show('#s2',s2in,s2out+.5); chap(1,s2in);
+up('#s2k',6.0);
+tl.set('.area',{opacity:0},0); tl.set('.area .q',{opacity:0},0);
+[[0,7.28],[1,8.15],[2,9.35],[3,12.16],[4,13.5]].forEach(([i,t])=>tl.fromTo(`#a${i}`,{opacity:0,y:-60},{opacity:1,y:0,duration:.4,ease:'bounce.out',immediateRender:false},t-.05));
+pulse('#d1',6.19,1.03); pulse('#d2',11.03,1.03);
+up('#s2a',14.7); up('#s2b',15.79);
+tl.to('.area .q',{opacity:1,duration:.25,stagger:.12},15.14);
+out(['#s2k','#s2a','#s2b'],s2out,{stagger:.03}); tl.to(['#d1','#d2'],{y:-50,opacity:0,duration:.35,stagger:.05,ease:'power3.in'},s2out);
+
+/* 03 REVISÃO */
+const s3in=16.4, s3out=27.9;
+show('#s3',s3in,s3out+.5); chap(2,s3in);
+up('#s3k',16.42); up('#s3a',17.0); up('#s3b',17.4,{color:'#fff'}); tl.to('#s3b',{color:'#FFC400',duration:.25},17.6);
+tl.from('#s3tl',{y:120,opacity:0,duration:.6,ease:'expo.out'},16.8);
+tl.set(['#f1','#f2'],{scaleX:0},0);
+tl.to('#f1',{scaleX:1,duration:.8,ease:'power2.inOut'},17.79);
+tl.to('#f2',{scaleX:1,duration:.8,ease:'power2.inOut'},22.33);
+tl.set(['#sg1','#sg2'],{opacity:0},0);
+tl.fromTo('#sg1',{opacity:0,y:30},{opacity:1,y:0,duration:.4,immediateRender:false},18.3); pulse('#sg1',19.0,1.04);
+tl.fromTo('#sg2',{opacity:0,y:30},{opacity:1,y:0,duration:.4,immediateRender:false},22.7); pulse('#sg2',24.2,1.04);
+tl.to('#sg1',{opacity:.5,duration:.3},22.7);
+out(['#s3k','#s3a','#s3b'],s3out,{stagger:.03}); tl.to('#s3tl',{y:-50,opacity:0,duration:.35,ease:'power3.in'},s3out);
+
+/* 04 BIZU */
+const s4in=27.95, s4out=30.0;
+show('#s4',s4in,s4out+.5); chap(3,s4in);
+up('#s4k',28.0); up('#s4a',28.82); up('#s4b',29.27,{color:'#fff'}); tl.to('#s4b',{color:'#FFC400',duration:.25},29.45);
+out(['#s4k','#s4a','#s4b'],s4out,{stagger:.03,duration:.3});
+
+/* 05 COMENTA */
+const s5in=30.05, s5out=31.65;
+show('#s5',s5in,s5out+.5); chap(4,s5in);
+up('#s5k',30.08); up('#s5a',30.45); up('#s5b',30.8);
+const O=$$('.s5o'); tl.from(O,{y:60,opacity:0,duration:.4,stagger:.12,ease:'back.out(1.8)'},30.6);
+out(['#s5k','#s5a','#s5b'],s5out,{stagger:.03}); tl.to('.s5o',{y:-50,opacity:0,duration:.3,stagger:.04,ease:'power3.in'},s5out);
+
+/* 06 CTA */
+const s6in=31.7;
+show('#s6',s6in,DUR+1); chap(5,s6in);
+up('#s6k',s6in+.05); up('#s6a',31.74);
+const [save,follow]=$$('#s6cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},31.8); pulse(save.firstElementChild,32.15,1.15);
+up('#s6b',32.69,{color:'#fff'}); tl.to('#s6b',{color:'#FFC400',duration:.25},32.9);
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},32.7);
+pulse(follow.lastElementChild,33.19,1.12); pulse(follow.lastElementChild,34.6,1.08);
+
+MOTION.ready(t => H.update(t));
+</script>
+</body>
+</html>

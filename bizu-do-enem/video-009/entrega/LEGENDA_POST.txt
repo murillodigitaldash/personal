@@ -1,0 +1,19 @@
+Como calcular escala cartográfica no ENEM de cabeça 🗺️ Dica de Geografia para o ENEM 2026: a conta é mais simples do que parece.
+
+Escala 1:500.000 = 1 cm no mapa vale 500.000 cm no terreno (5 km).
+
+Exemplo de questão de escala do ENEM: num mapa 1:500.000, duas cidades estão a 4 cm de distância. Qual a distância real?
+✏️ 4 × 500.000 = 2.000.000 cm
+✏️ cm → km: divida por 100.000 (corte 5 zeros)
+✅ Resposta: 20 km
+⚠️ Armadilha: cortar zeros a mais (2 km) ou a menos (200 km).
+
+📌 Bizu: multiplique pelo denominador e corte cinco zeros para ter quilômetros. E lembre: quanto maior o denominador, menor a escala e menos detalhes o mapa mostra.
+
+Salva pra revisar e segue o Bizu do Enem pra mais dicas de ENEM!
+
+#enem #enem2026 #geografiaenem #escalacartografica #bizudoenem
+
+---
+Título (YouTube Shorts): Como calcular escala cartográfica no ENEM (de cabeça)
+Texto alternativo (Instagram): Vídeo explicando escala cartográfica para o ENEM 2026: na escala 1:500.000, 4 cm no mapa equivalem a 2.000.000 cm, ou 20 km; o bizu é multiplicar pelo denominador e cortar cinco zeros.

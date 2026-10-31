@@ -1,0 +1,4 @@
+node_modules/
+**/render/
+**/entrega/*.mp4
+**/render.log

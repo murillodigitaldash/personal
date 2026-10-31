@@ -1,0 +1,151 @@
+1
+00:00:00,000 --> 00:00:01,201
+Por que uma cadeia alimentar
+
+2
+00:00:01,231 --> 00:00:02,814
+raramente passa de quatro ou
+
+3
+00:00:02,844 --> 00:00:03,819
+cinco níveis?
+
+4
+00:00:03,936 --> 00:00:05,090
+A resposta está no fluxo
+
+5
+00:00:05,120 --> 00:00:05,920
+de energia.
+
+6
+00:00:06,037 --> 00:00:07,052
+Quando um ser vivo come
+
+7
+00:00:07,082 --> 00:00:07,609
+outro,
+
+8
+00:00:07,639 --> 00:00:08,677
+a maior parte da energia
+
+9
+00:00:08,707 --> 00:00:09,467
+se perde,
+
+10
+00:00:09,497 --> 00:00:11,801
+principalmente como calor na respiração,
+
+11
+00:00:11,831 --> 00:00:12,868
+e só cerca de dez
+
+12
+00:00:12,898 --> 00:00:14,122
+por cento passa para o
+
+13
+00:00:14,152 --> 00:00:15,161
+nível seguinte.
+
+14
+00:00:15,278 --> 00:00:16,264
+Vamos aplicar.
+
+15
+00:00:16,381 --> 00:00:17,268
+Se os produtores de um
+
+16
+00:00:17,298 --> 00:00:20,043
+ecossistema fixam dez mil quilocalorias,
+
+17
+00:00:20,073 --> 00:00:22,267
+quanto chega aos consumidores secundários?
+
+18
+00:00:23,884 --> 00:00:25,467
+Dos produtores para os consumidores
+
+19
+00:00:25,497 --> 00:00:26,239
+primários,
+
+20
+00:00:26,298 --> 00:00:27,354
+dez por cento:
+
+21
+00:00:27,471 --> 00:00:27,970
+mil.
+
+22
+00:00:28,087 --> 00:00:29,775
+Dos primários para os secundários,
+
+23
+00:00:29,805 --> 00:00:30,901
+mais dez por cento:
+
+24
+00:00:30,931 --> 00:00:32,370
+cem quilocalorias.
+
+25
+00:00:32,487 --> 00:00:33,734
+A armadilha é aplicar os
+
+26
+00:00:33,764 --> 00:00:34,663
+dez por cento uma vez
+
+27
+00:00:34,693 --> 00:00:35,191
+só,
+
+28
+00:00:35,250 --> 00:00:36,311
+ou subtrair em vez de
+
+29
+00:00:36,341 --> 00:00:37,159
+multiplicar.
+
+30
+00:00:37,189 --> 00:00:37,925
+E repare:
+
+31
+00:00:37,955 --> 00:00:38,540
+é por isso que a
+
+32
+00:00:38,570 --> 00:00:39,956
+pirâmide de energia nunca é
+
+33
+00:00:39,986 --> 00:00:40,775
+invertida.
+
+34
+00:00:40,834 --> 00:00:41,535
+O bizu:
+
+35
+00:00:41,565 --> 00:00:42,244
+a cada nível,
+
+36
+00:00:42,274 --> 00:00:43,236
+divida por dez.
+
+37
+00:00:43,295 --> 00:00:44,577
+Salva esse bizu e segue
+
+38
+00:00:44,607 --> 00:00:45,721
+o Bizu do Enem.

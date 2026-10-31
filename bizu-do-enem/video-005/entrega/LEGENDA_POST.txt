@@ -1,0 +1,15 @@
+Quanto o chuveiro gasta? A conta que cai no ENEM ⚡
+
+Energia = potência × tempo. Na conta de luz, ela vem em kWh: potência em kW e tempo em horas.
+
+Questão: chuveiro de 5.500 W, ligado 20 min por dia, durante 30 dias.
+➡️ 5.500 W = 5,5 kW
+➡️ 20 min × 30 = 600 min = 10 h
+✅ 5,5 × 10 = 55 kWh
+⚠️ Se esquecer de converter os minutos, dá 3.300: 60 vezes maior!
+
+📌 Bizu: antes de multiplicar, deixe a potência em kW e o tempo em horas.
+
+Salva pra revisar e segue o Bizu do Enem!
+
+#enem #enem2026 #fisicaenem #vestibular #bizudoenem

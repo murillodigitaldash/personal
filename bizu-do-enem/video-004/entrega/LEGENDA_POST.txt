@@ -1,0 +1,14 @@
+Juros compostos: a pegadinha que derruba muita gente 💸
+
+Nos juros simples, a taxa incide sempre sobre o valor inicial. Nos compostos, incide sobre o valor já atualizado: juros sobre juros.
+M = C · (1 + i)ᵗ
+
+Questão: R$ 1.000 a 10% ao mês, por 3 meses.
+✅ 1.000 · 1,1³ = R$ 1.331
+⚠️ R$ 1.300 é a armadilha: essa é a conta de juros simples.
+
+📌 Bizu: transforme a taxa em fator e eleve ao tempo.
+
+Salva pra revisar e segue o Bizu do Enem!
+
+#enem #enem2026 #matematicaenem #vestibular #bizudoenem

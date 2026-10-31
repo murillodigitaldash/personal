@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V005 · Motion</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../../shared/motion.css">
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<style>
+.alt{display:flex;align-items:center;gap:20px;padding:16px 20px;border-radius:20px;margin-bottom:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);position:relative}
+.alt .l{position:relative;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{position:relative;font:700 38px/1 var(--display);font-variant-numeric:tabular-nums}
+.alt .n{margin-left:auto;font:600 22px/1 var(--mono)}
+.alt .on{position:absolute;inset:-1.5px;border-radius:20px;border:1.5px solid var(--amarelo);background:rgba(255,196,0,.12);opacity:0}
+.strike{position:absolute;left:-4px;right:-4px;top:52%;height:4px;background:#FF7A8A;transform-origin:0 50%}
+.math{white-space:nowrap;font:800 64px/1.1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.conv{display:flex;align-items:center;gap:22px;padding:26px 30px;border-radius:26px;background:rgba(255,255,255,.05);margin-bottom:18px}
+.conv .a{font:800 54px/1 var(--display);color:var(--cinza-2);white-space:nowrap}
+.conv .b{font:900 64px/1 var(--display);white-space:nowrap}
+.conv .op{font:700 24px/1 var(--mono);color:var(--c3);padding:10px 14px;border-radius:12px;background:rgba(61,214,165,.14);white-space:nowrap}
+.hl-word{border-radius:8px;padding:0 4px}
+</style>
+</head>
+<body>
+<div id="stage"><div id="scenes"></div></div>
+<script src="../../shared/kit.js"></script>
+<script src="../../shared/motion.js"></script>
+<script>
+const {tok, ctaFollow} = KIT;
+/* tempo: narração take 1 + pausas aprovadas (+1,5 s após "trinta dias?"; +0,6 s após "sessenta vezes maior.") */
+const T = t => t + (t > 19.89 ? 1.5 : 0) + (t > 39.81 ? .6 : 0);
+const DUR = T(47.275) + 1.3;
+const {tl, show, up, out, chap, sweep, pulse, mask, $, $$} = MOTION.init({chapters:['GANCHO','CONCEITO','APLICAÇÃO','ARMADILHA','O BIZU','CTA'], dur:DUR});
+
+const SHOWER=`<svg width="230" height="230" viewBox="0 0 120 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M30 18h34a14 14 0 0 1 14 14v8" stroke="#A9B1C4" stroke-width="7"/>
+  <path d="M58 46h40l-6 12H64z" fill="#6C3BFF" stroke="#9C7BFF" stroke-width="3"/>
+  ${[64,72,80,88].map((x,i)=>`<path class="drop" d="M${x} 66 l-4 ${16+i%2*8}" stroke="#4CC9F0" stroke-width="4" opacity=".8"/>`).join('')}
+  <path id="bolt" d="M84 70 l-8 16 h10 l-6 16" stroke="#FFC400" stroke-width="5"/></svg>`;
+const ALTS=[['A','3.300 kWh','minutos sem converter','trap'],['B','165 kWh','1 h por dia','x'],['C','55 kWh','✓ correta','ok'],['D','1,83 kWh','só 1 dia','x'],['E','55.000 kWh','watts sem converter','x']];
+const alts=(p)=>ALTS.map(([l,v,n,k])=>`<div class="alt ${p}alt" id="${p}${l}"><div class="on"></div>
+  <div class="l">${l}${k==='ok'?`<div class="abs ${p}Cf" style="inset:-2px;border-radius:50%;display:grid;place-items:center;background:var(--amarelo);color:var(--navy);opacity:0">${l}</div>`:''}</div>
+  <div class="v">${v}${k==='trap'?`<div class="strike ${p}strike"></div>`:''}</div>
+  <div class="n ${p}note" style="color:${k==='trap'?'#FF7A8A':k==='ok'?'var(--amarelo)':'var(--cinza-2)'}">${k==='trap'?'⚠ ':''}${n}</div></div>`).join('');
+
+$('#scenes').innerHTML=`
+<section id="s1">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s1k">Física · Energia elétrica</span></div>
+    <div class="h-l nowrap">${mask('Quanto o','s1a')}${mask('chuveiro','s1b')}${mask('gasta?','s1c','y')}</div></div>
+  <div id="s1card" class="abs card" style="left:60px;top:900px;width:870px;padding:40px 44px;display:flex;align-items:center;gap:40px">
+    ${SHOWER}
+    <div><div class="note" style="color:var(--cinza-2);margin-bottom:12px">CONSUMO NO MÊS</div>
+      <div class="math y" style="font-size:96px"><span id="s1q">??</span> kWh</div>
+      <div class="note" style="color:var(--cinza-2);margin-top:14px">20 min por dia · 30 dias</div></div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s2k">Energia consumida</span></div>
+    <div class="h-l nowrap">${mask('Potência','s2a')}${mask('<span class="y">× tempo</span>','s2b')}</div></div>
+  <div id="s2card" class="abs card" style="left:60px;top:720px;width:870px;padding:56px 50px 44px">
+    <div style="font:900 120px/1 var(--display);letter-spacing:-3px;text-align:center;white-space:nowrap">
+      <span id="fE" style="display:inline-block">E</span> <span id="fP" style="display:inline-block">= P</span> <span id="fT" style="display:inline-block">· <span class="y">Δt</span></span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px">
+      ${[['E','energia','kWh','#fff'],['P','potência','kW','var(--c4)'],['Δt','tempo','h','var(--amarelo)']].map(([a,b,u,c],k)=>`<div class="ft" id="ft${k}" style="text-align:center;padding:22px 10px;border-radius:22px;background:rgba(255,255,255,.05)">
+        <div style="font:900 60px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div>
+        <div class="fu" id="fu${k}" style="margin-top:14px;display:inline-block;font:700 26px/1 var(--mono);padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.08);color:${c}">${u}</div></div>`).join('')}
+    </div>
+    <div id="s2luz" style="margin-top:34px;text-align:center;font:600 30px/1.3 var(--texto);color:var(--cinza-1)">Na conta de luz: <b class="y">kW × h = kWh</b></div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s3k">Vamos aplicar</span></div>
+    <div class="h-l">${mask('Na <span class="y">questão</span>','s3a')}</div></div>
+  <div id="s3card" class="abs card" style="left:60px;top:640px;width:870px;padding:40px 40px 30px">
+    <div class="note" style="color:var(--roxo-claro);margin-bottom:20px">QUESTÃO · ESTILO ENEM</div>
+    <div style="font:600 34px/1.4 var(--texto);color:var(--cinza-1);margin-bottom:26px">Um chuveiro elétrico de <b id="q1" class="hl-word" style="color:#fff">5.500 W</b> fica ligado <b id="q2" class="hl-word" style="color:#fff">20 minutos por dia</b>. Em <b id="q3" class="hl-word" style="color:#fff">30 dias</b>, o consumo será de:</div>
+    ${alts('q')}
+  </div>
+</section>
+
+<section id="s4">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s4k">Passo 1</span></div>
+    <div class="h-l nowrap">${mask('Primeiro,','s4a')}${mask('converta','s4b','y')}</div></div>
+  <div id="s4card" class="abs card" style="left:60px;top:720px;width:870px;padding:40px 40px 22px">
+    <div class="conv" id="c1"><div class="a" id="c1a">5.500 W</div><div class="op" id="c1o">÷ 1.000</div><div class="b" id="c1b" style="color:var(--c4)">5,5 kW</div></div>
+    <div class="conv" id="c2"><div class="a" id="c2a" style="font-size:44px">20 min × 30</div><div class="op" id="c2o">= 600 min ÷ 60</div><div class="b y" id="c2b">10 h</div></div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s5k">Passo 2</span></div>
+    <div class="h-l nowrap">${mask('Agora,','s5a')}${mask('multiplique','s5b','y')}</div></div>
+  <div id="s5card" class="abs card" style="left:60px;top:720px;width:870px;padding:56px 50px;text-align:center">
+    <div class="math" style="font-size:96px"><span id="m1" style="display:inline-block;color:var(--c4)">5,5</span> <span id="m2" style="display:inline-block">× <span class="y">10</span></span> <span id="m3" style="display:inline-block">= 55</span></div>
+    <div id="m4" style="margin-top:20px;font:800 52px/1 var(--display);color:var(--cinza-2)">kWh</div>
+    <div id="m5" style="margin-top:36px;display:inline-flex;background:var(--amarelo);color:var(--navy);padding:18px 30px;border-radius:999px;font:800 40px/1 var(--display);box-shadow:0 0 40px rgba(255,196,0,.4)">55 kWh · (C)</div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:#FF7A8A"><span id="s6k">Atenção</span></div>
+    <div class="h-l nowrap">${mask('Esqueceu de','s6a')}${mask('<span style="color:#FF7A8A">converter?</span>','s6b')}</div></div>
+  <div id="s6card" class="abs card" style="left:60px;top:720px;width:870px;padding:36px 40px 26px">${alts('t')}</div>
+  <div id="s6eq" class="abs" style="left:84px;top:1290px;font:600 32px/1.35 var(--texto);color:var(--cinza-1);width:840px">5,5 × 600 min = 3.300 → <b style="color:#FF7A8A">60 vezes maior</b></div>
+</section>
+
+<section id="s7">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px;color:var(--amarelo)"><span id="s7k">O bizu</span></div>
+    <div class="h-l nowrap" style="font-size:100px">${mask('Antes de','s7a')}${mask('multiplicar:','s7b')}${mask('kW e horas','s7c','y')}</div></div>
+  <div class="abs" style="left:60px;top:860px;width:870px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    ${[['W → kW','÷ 1.000','var(--c4)'],['min → h','÷ 60','var(--amarelo)']].map(([a,b,c],i)=>`<div class="card b7" id="b7_${i}" style="padding:40px 30px;text-align:center">
+      <div style="font:900 56px/1 var(--display);color:${c}">${a}</div><div style="margin-top:18px;font:700 36px/1 var(--mono);color:var(--cinza-1)">${b}</div></div>`).join('')}
+  </div>
+</section>
+
+<section id="s8">
+  <div class="abs" style="left:84px;top:390px"><div class="kicker mask" style="margin-bottom:28px"><span id="s8k">Curtiu o bizu?</span></div>
+    <div class="h-l">${mask('Salva','s8a')}${mask('e segue','s8b','y')}</div></div>
+  <div id="s8cards" class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>
+</section>`;
+
+/* 01 GANCHO: 0 → 4.3 */
+show('#s1',0,4.75);
+up('#s1k',.05); up('#s1a',0); up('#s1b',T(1.03)); up('#s1c',T(1.75),{color:'#fff'}); tl.to('#s1c',{color:'#FFC400',duration:.25},T(1.9));
+tl.from('#s1card',{y:200,opacity:0,duration:.8,ease:'expo.out'},.5);
+tl.fromTo('.drop',{y:-6,opacity:0},{y:8,opacity:.9,duration:.5,stagger:{each:.12,repeat:7,yoyo:false},ease:'none',immediateRender:false},.9);
+pulse('#bolt',T(2.1),1.3);
+tl.fromTo('#s1q',{opacity:1},{opacity:.35,duration:.25,yoyo:true,repeat:5,immediateRender:false},T(2.9));
+out(['#s1k','#s1a','#s1b','#s1c'],4.25,{stagger:.03});
+tl.to('#s1card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},4.25);
+
+/* 02 CONCEITO: 4.4 → 13.9 */
+show('#s2',4.4,14.3); chap(1,4.4);
+up('#s2k',T(4.39)); up('#s2a',T(5.62)); up('#s2b',T(6.75));
+tl.from('#s2card',{y:200,opacity:0,duration:.8,ease:'expo.out'},4.5);
+tl.set(['#fE','#fP','#fT'],{opacity:0},0); tl.set('.fu',{opacity:0,scale:.6},0);
+tl.from('.ft',{opacity:0,y:30,duration:.4,stagger:.06},4.7);
+[['#fE',4.49,0],['#fP',5.66,1],['#fT',6.79,2]].forEach(([s,t,k])=>{
+  tl.fromTo(s,{opacity:0,y:40},{opacity:1,y:0,duration:.45,ease:'back.out(2)',immediateRender:false},T(t));
+  tl.to('#ft'+k,{backgroundColor:'rgba(255,255,255,.14)',duration:.25,yoyo:true,repeat:1},T(t)); });
+tl.from('#s2luz',{opacity:0,y:20,duration:.45},T(7.99));
+[[0,9.62],[1,11.55],[2,13.23]].forEach(([k,t])=>{ tl.to('#fu'+k,{opacity:1,scale:1,duration:.35,ease:'back.out(2.5)'},T(t)); pulse('#ft'+k,T(t),1.06); });
+out(['#s2k','#s2a','#s2b'],13.85,{stagger:.04});
+tl.to('#s2card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},13.85);
+
+/* 03 QUESTÃO: 14.2 → T(19.98) */
+const s3out=T(19.98)-.15;
+show('#s3',14.15,s3out+.45); chap(2,14.15);
+up('#s3k',T(13.98)); up('#s3a',T(14.25));
+tl.from('#s3card',{y:220,opacity:0,duration:.8,ease:'expo.out'},T(14.5));
+tl.set('.qnote',{opacity:0},0); tl.set('.qstrike',{scaleX:0},0); // a questão não pode entregar a resposta
+[['#q1',15.47],['#q2',16.92],['#q3',19.04]].forEach(([s,t])=>tl.fromTo(s,{backgroundColor:'rgba(108,59,255,0)'},{backgroundColor:'rgba(108,59,255,.55)',duration:.3,immediateRender:false},T(t)));
+tl.from('.qalt',{opacity:0,x:-30,duration:.35,stagger:.1},T(18.2));
+out(['#s3k','#s3a'],s3out,{stagger:.04});
+tl.to('#s3card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s3out);
+
+/* 04 CONVERTA */
+const s4in=s3out+.3, s4out=T(29.85);
+show('#s4',s4in,s4out+.45);
+up('#s4k',s4in); up('#s4a',T(19.98)); up('#s4b',T(20.42));
+tl.from('#s4card',{y:200,opacity:0,duration:.7,ease:'expo.out'},s4in+.1);
+tl.from('#c1',{opacity:0,x:-30,duration:.4},T(21.2)); tl.from('#c1o',{opacity:0,scale:.6,duration:.35,ease:'back.out(2.5)'},T(22.7)); tl.from('#c1b',{opacity:0,x:-20,duration:.4,ease:'back.out(2)'},T(23.95));
+tl.to('#c1a',{opacity:.5,duration:.3},T(23.95));
+tl.from('#c2',{opacity:0,x:-30,duration:.4},T(25.45)); tl.from('#c2o',{opacity:0,scale:.6,duration:.35,ease:'back.out(2.5)'},T(27.78)); tl.from('#c2b',{opacity:0,x:-20,duration:.4,ease:'back.out(2)'},T(29.2));
+tl.to('#c2a',{opacity:.5,duration:.3},T(29.2));
+out(['#s4k','#s4a','#s4b'],s4out,{stagger:.04});
+tl.to('#s4card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s4out);
+
+/* 05 MULTIPLIQUE */
+const s5in=s4out+.3, s5out=T(35.1);
+show('#s5',s5in,s5out+.45);
+up('#s5k',s5in); up('#s5a',T(29.95)); up('#s5b',T(30.45));
+tl.from('#s5card',{y:200,opacity:0,duration:.7,ease:'expo.out'},s5in+.1);
+tl.from('#m1',{opacity:0,y:30,duration:.4,ease:'back.out(2)'},T(31.28));
+tl.from('#m2',{opacity:0,y:30,duration:.4,ease:'back.out(2)'},T(32.35));
+tl.from('#m3',{opacity:0,scale:.6,duration:.45,ease:'back.out(2.5)'},T(33.2));
+tl.from('#m4',{opacity:0,duration:.3},T(34.07));
+tl.from('#m5',{opacity:0,scale:.7,duration:.5,ease:'back.out(2)'},T(34.3));
+out(['#s5k','#s5a','#s5b'],s5out,{stagger:.04});
+tl.to('#s5card',{y:-60,opacity:0,duration:.4,ease:'power3.in'},s5out);
+sweep(s5out+.05);
+
+/* 06 ARMADILHA */
+const s6in=s5out+.3, s6out=T(39.81)+.45;
+show('#s6',s6in,s6out+.45); chap(3,s6in);
+up('#s6k',T(35.2)); up('#s6a',T(35.6)); up('#s6b',T(36.68),{color:'#fff'});
+tl.from('#s6card',{y:200,opacity:0,duration:.7,ease:'expo.out'},s6in+.05);
+tl.from('.talt',{opacity:0,x:-30,duration:.3,stagger:.06},s6in+.15);
+tl.set('.tnote',{opacity:0},0); tl.set('.tstrike',{scaleX:0},0);
+tl.to('#tC .on',{opacity:1,duration:.3},s6in+.6); tl.to('.tCf',{opacity:1,duration:.3},s6in+.6); tl.to('#tC .tnote',{opacity:1,duration:.3},s6in+.7);
+tl.to('#tA',{borderColor:'#FF7A8A',duration:.3},T(36.68)); pulse('#tA',T(36.68),1.04);
+tl.to('.tstrike',{scaleX:1,duration:.35,ease:'power4.inOut'},T(37.18)); tl.to('#tA .v',{color:'#A9B1C4',duration:.3},T(37.18));
+tl.to('#tA .tnote',{opacity:1,duration:.3},T(37.3));
+tl.from('#s6eq',{opacity:0,y:20,duration:.45},T(38.5));
+tl.to(['#tB','#tD','#tE'],{opacity:.4,duration:.4},T(39.3)); tl.to(['#tB .tnote','#tD .tnote','#tE .tnote'],{opacity:1,duration:.3},T(39.3));
+out(['#s6k','#s6a','#s6b'],s6out,{stagger:.04});
+tl.to(['#s6card','#s6eq'],{y:-60,opacity:0,duration:.4,ease:'power3.in'},s6out);
+
+/* 07 BIZU */
+const s7in=s6out+.3, s7out=T(44.62);
+show('#s7',s7in,s7out+.45); chap(4,s7in);
+up('#s7k',T(39.92)); up('#s7a',T(40.74)); up('#s7b',T(41.07)); up('#s7c',T(42.8));
+tl.from('#b7_0',{opacity:0,y:60,duration:.5,ease:'back.out(1.8)'},T(42.82));
+tl.from('#b7_1',{opacity:0,y:60,duration:.5,ease:'back.out(1.8)'},T(43.81));
+out(['#s7k','#s7a','#s7b','#s7c'],s7out,{stagger:.03,duration:.32});
+tl.to('.b7',{y:-50,opacity:0,duration:.35,ease:'power3.in'},s7out);
+
+/* 08 CTA */
+const s8in=T(44.72);
+show('#s8',s8in,DUR+1); chap(5,s8in);
+up('#s8k',s8in+.05); up('#s8a',T(44.76));
+const [save,follow]=$$('#s8cards > .card');
+tl.from(save,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(44.8)); pulse(save.firstElementChild,T(45.2),1.15);
+up('#s8b',T(45.95),{color:'#fff'}); tl.to('#s8b',{color:'#FFC400',duration:.25},T(46.1));
+tl.from(follow,{x:-200,opacity:0,duration:.6,ease:'expo.out'},T(46.0));
+pulse(follow.lastElementChild,T(46.35),1.12); pulse(follow.lastElementChild,T(47.4),1.08);
+tl.to('#stage .brand',{scale:1.08,transformOrigin:'0 50%',duration:.3,yoyo:true,repeat:1,ease:'power2.out'},T(46.4));
+
+MOTION.ready();
+</script>
+</body>
+</html>

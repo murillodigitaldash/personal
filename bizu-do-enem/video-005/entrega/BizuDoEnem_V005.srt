@@ -1,0 +1,151 @@
+1
+00:00:00,000 --> 00:00:01,352
+Você sabe calcular quanto um
+
+2
+00:00:01,382 --> 00:00:02,820
+chuveiro gasta de energia?
+
+3
+00:00:02,937 --> 00:00:04,330
+Isso cai muito no ENEM.
+
+4
+00:00:04,389 --> 00:00:05,636
+A energia consumida é a
+
+5
+00:00:05,666 --> 00:00:07,180
+potência vezes o tempo de
+
+6
+00:00:07,210 --> 00:00:07,725
+uso.
+
+7
+00:00:07,755 --> 00:00:08,828
+E na conta de luz,
+
+8
+00:00:08,858 --> 00:00:10,872
+ela é medida em quilowatt-hora:
+
+9
+00:00:10,902 --> 00:00:13,020
+potência em quilowatts e tempo
+
+10
+00:00:13,050 --> 00:00:13,861
+em horas.
+
+11
+00:00:13,978 --> 00:00:14,923
+Vamos aplicar.
+
+12
+00:00:14,953 --> 00:00:15,771
+Um chuveiro de cinco mil
+
+13
+00:00:15,801 --> 00:00:16,897
+e quinhentos watts fica ligado
+
+14
+00:00:16,927 --> 00:00:18,099
+vinte minutos por dia.
+
+15
+00:00:18,216 --> 00:00:19,335
+Quanto ele consome em trinta
+
+16
+00:00:19,365 --> 00:00:19,956
+dias?
+
+17
+00:00:21,480 --> 00:00:21,891
+Primeiro,
+
+18
+00:00:21,921 --> 00:00:22,693
+converta:
+
+19
+00:00:22,723 --> 00:00:24,092
+cinco mil e quinhentos watts
+
+20
+00:00:24,209 --> 00:00:26,768
+são cinco vírgula cinco quilowatts.
+
+21
+00:00:26,798 --> 00:00:27,975
+E vinte minutos por dia,
+
+22
+00:00:28,005 --> 00:00:29,066
+em trinta dias,
+
+23
+00:00:29,096 --> 00:00:30,297
+dão seiscentos minutos,
+
+24
+00:00:30,327 --> 00:00:30,680
+ou seja,
+
+25
+00:00:30,710 --> 00:00:31,412
+dez horas.
+
+26
+00:00:31,442 --> 00:00:32,758
+Agora é só multiplicar:
+
+27
+00:00:32,788 --> 00:00:34,686
+cinco vírgula cinco vezes dez,
+
+28
+00:00:34,716 --> 00:00:36,584
+cinquenta e cinco quilowatts-hora.
+
+29
+00:00:36,701 --> 00:00:38,157
+A armadilha é esquecer de
+
+30
+00:00:38,187 --> 00:00:39,260
+converter os minutos:
+
+31
+00:00:39,290 --> 00:00:40,781
+o resultado sai sessenta vezes
+
+32
+00:00:40,811 --> 00:00:41,356
+maior.
+
+33
+00:00:42,015 --> 00:00:42,734
+O bizu:
+
+34
+00:00:42,851 --> 00:00:43,964
+antes de multiplicar,
+
+35
+00:00:44,023 --> 00:00:45,648
+deixe a potência em quilowatts
+
+36
+00:00:45,707 --> 00:00:46,797
+e o tempo em horas.
+
+37
+00:00:46,856 --> 00:00:48,335
+Salva esse bizu e segue
+
+38
+00:00:48,365 --> 00:00:49,525
+o Bizu do Enem.

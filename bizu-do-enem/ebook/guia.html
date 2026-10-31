@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Guia da Reta Final — ENEM 2026 | Bizu do Enem</title>
+<style>
+@page{size:148mm 210mm;margin:0}
+:root{
+  --roxo:#6C3BFF; --roxo-claro:#9C7BFF; --roxo-bg:#F1ECFF; --amarelo:#FFC400; --amarelo-bg:#FFF6D6;
+  --navy:#0F172A; --tinta:#1E2638; --cinza:#5B6680; --linha:#E3E6EE; --verde:#1FA77D; --vermelho:#E5484D;
+  --display:"Inter Display","Inter",sans-serif; --texto:"Inter",sans-serif; --mono:"JetBrains Mono","DejaVu Sans Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#fff}
+body{font-family:var(--texto);color:var(--tinta);font-size:9.4pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:148mm;height:210mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;padding:17mm 13mm 16mm}
+.page:last-child{page-break-after:auto;break-after:auto}
+
+/* cabeçalho e rodapé das páginas internas */
+.hd{position:absolute;top:7mm;left:13mm;right:13mm;display:flex;justify-content:space-between;align-items:center;font:600 6.6pt/1 var(--mono);letter-spacing:.9pt;text-transform:uppercase;color:var(--cinza)}
+.hd .mk{display:flex;align-items:center;gap:5px;color:var(--navy);font:800 7.6pt/1 var(--display);letter-spacing:-.1pt;text-transform:none}
+.hd .mk b{color:var(--roxo)}
+.ft{position:absolute;bottom:7mm;left:13mm;right:13mm;display:flex;justify-content:space-between;font:500 6.4pt/1 var(--mono);color:#9AA2B5;letter-spacing:.5pt}
+.ft .n{color:var(--roxo);font-weight:700}
+
+/* tipografia */
+.kick{font:700 7pt/1 var(--mono);letter-spacing:1.4pt;text-transform:uppercase;color:var(--roxo);margin-bottom:2.2mm}
+h1{font:900 21pt/1.02 var(--display);letter-spacing:-.6pt;color:var(--navy);margin-bottom:3.2mm}
+h1 em{font-style:normal;color:var(--roxo)}
+h2{font:800 11.5pt/1.15 var(--display);letter-spacing:-.2pt;color:var(--navy);margin:4.2mm 0 1.6mm}
+h3{font:800 9.6pt/1.2 var(--display);color:var(--navy);margin:3mm 0 1mm}
+p{margin-bottom:2mm}
+.lead{font-size:10.2pt;line-height:1.42;color:var(--tinta)}
+strong{color:var(--navy);font-weight:700}
+.hl{background:linear-gradient(transparent 58%,rgba(255,196,0,.55) 58%)}
+ul.lst{list-style:none;margin:1mm 0 2.2mm}
+ul.lst li{position:relative;padding-left:5mm;margin-bottom:1.3mm}
+ul.lst li::before{content:"";position:absolute;left:.6mm;top:1.55mm;width:2mm;height:2mm;border-radius:50%;background:var(--roxo)}
+ol.num{list-style:none;counter-reset:n;margin:1mm 0 2mm}
+ol.num li{counter-increment:n;position:relative;padding-left:7mm;margin-bottom:1.6mm}
+ol.num li::before{content:counter(n);position:absolute;left:0;top:-.2mm;width:4.8mm;height:4.8mm;border-radius:50%;background:var(--roxo);color:#fff;font:800 7pt/4.8mm var(--display);text-align:center}
+.small{font-size:7.8pt;color:var(--cinza);line-height:1.4}
+
+/* caixas */
+.bizu{position:relative;background:var(--amarelo-bg);border:1.4px solid var(--amarelo);border-radius:4mm;padding:3.2mm 4mm 3.2mm 15mm;margin:3.5mm 0 2mm}
+.bizu::before{content:"";position:absolute;left:3.6mm;top:50%;transform:translateY(-50%);width:8mm;height:8mm;border-radius:2.4mm;background:var(--roxo) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M14 1 L5 14 L11 14 L9 23 L19 9 L13 9 L16 1 Z' fill='%23FFC400'/></svg>") center/62% no-repeat}
+.bizu .t{font:800 6.8pt/1 var(--mono);letter-spacing:1.3pt;color:var(--roxo);text-transform:uppercase;margin-bottom:1.2mm}
+.bizu .x{font:800 10pt/1.3 var(--display);color:var(--navy);letter-spacing:-.1pt}
+.box{background:#F7F8FB;border:1px solid var(--linha);border-radius:3.5mm;padding:3mm 3.6mm;margin:2.5mm 0}
+.box .t{font:700 6.6pt/1 var(--mono);letter-spacing:1.2pt;text-transform:uppercase;color:var(--cinza);margin-bottom:1.6mm}
+.q{background:#fff;border:1px solid var(--linha);border-left:3px solid var(--roxo);border-radius:2.5mm;padding:3mm 3.6mm;margin:2.5mm 0}
+.q .t{font:700 6.6pt/1 var(--mono);letter-spacing:1.2pt;text-transform:uppercase;color:var(--roxo);margin-bottom:1.6mm}
+.alt{display:grid;grid-template-columns:5mm 1fr;gap:.6mm 1.4mm;margin-top:1.6mm;font-size:8.6pt}
+.alt.row{grid-template-columns:repeat(3,auto 1fr)} .alt.row span{white-space:nowrap}
+.alt .l{font:700 8pt/1.45 var(--mono);color:var(--cinza)}
+.alt .ok{color:var(--verde);font-weight:700}
+.alt .ok + span,.alt span.okt{font-weight:600;color:var(--navy)}
+.tag{display:inline-block;font:700 6.2pt/1 var(--mono);letter-spacing:.6pt;text-transform:uppercase;padding:.9mm 1.6mm;border-radius:1.2mm;margin-left:1.2mm;vertical-align:.3mm}
+.tag.ok{background:#DDF6EC;color:var(--verde)} .tag.err{background:#FDE4E4;color:var(--vermelho)}
+.res{font-size:8.6pt;margin-top:2mm;padding-top:2mm;border-top:1px dashed var(--linha)}
+.mono{font-family:var(--mono);font-size:8.4pt}
+.eq{font:700 11pt/1.2 var(--mono);color:var(--navy);background:var(--roxo-bg);border-radius:2.5mm;padding:2.4mm 3mm;text-align:center;margin:2mm 0}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:2mm 0 2.5mm;font-size:8.4pt}
+th{font:700 6.6pt/1.2 var(--mono);letter-spacing:.8pt;text-transform:uppercase;color:var(--cinza);text-align:left;padding:1.6mm 1.8mm;border-bottom:1.4px solid var(--navy)}
+td{padding:1.7mm 1.8mm;border-bottom:1px solid var(--linha);vertical-align:top}
+td b{color:var(--navy)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:3mm}
+.chk{list-style:none;margin:1.2mm 0 2mm}
+.chk li{position:relative;padding-left:6.4mm;margin-bottom:1.5mm}
+.chk li::before{content:"";position:absolute;left:0;top:.3mm;width:3.6mm;height:3.6mm;border:1.4px solid var(--roxo);border-radius:1mm;background:#fff}
+.no li::before{border-color:var(--vermelho)}
+.no li::after{content:"";position:absolute;left:.75mm;top:2mm;width:2.4mm;height:1.4px;background:var(--vermelho);transform:rotate(45deg);box-shadow:0 0 0 0 transparent}
+
+/* capa e contracapa */
+.dark{background:radial-gradient(90mm 80mm at 85% 12%,rgba(108,59,255,.55),transparent 70%),radial-gradient(90mm 90mm at 5% 95%,rgba(108,59,255,.30),transparent 70%),linear-gradient(180deg,#121b33 0%,var(--navy) 55%,#0a1020 100%);color:#fff}
+.dark::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:7mm 7mm;-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 45%,#000 30%,transparent 85%)}
+.cover .logo{position:absolute;top:16mm;left:13mm;display:flex;align-items:center;gap:3mm}
+.cover .logo .w{font:900 13pt/1 var(--display);letter-spacing:-.4pt}
+.cover .logo .w b{color:var(--amarelo);font:800 6.4pt/1 var(--display);letter-spacing:1.1pt;margin-left:1.4mm;vertical-align:1.6mm}
+.cover .mid{position:absolute;left:13mm;right:13mm;top:58mm}
+.cover .k{font:700 7.4pt/1 var(--mono);letter-spacing:2pt;color:var(--roxo-claro);text-transform:uppercase;margin-bottom:4mm}
+.cover h1{color:#fff;font-size:40pt;line-height:.92;letter-spacing:-1.6pt;margin-bottom:5mm}
+.cover h1 em{color:var(--amarelo)}
+.cover .sub{font:500 11pt/1.4 var(--texto);color:#C9CFDE;max-width:105mm}
+.cover .dates{position:absolute;left:13mm;bottom:20mm;display:flex;gap:2.4mm}
+.cover .pill{font:700 8pt/1 var(--display);padding:2.6mm 3.6mm;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06)}
+.cover .pill.y{background:var(--amarelo);color:var(--navy);border-color:var(--amarelo)}
+.cover .tokens{position:absolute;right:10mm;top:124mm;display:grid;grid-template-columns:repeat(5,7mm);gap:2.2mm;opacity:.95}
+.tk{width:7mm;height:7mm;border-radius:50%}
+.tk.o{background:radial-gradient(circle at 35% 30%,#8d66ff,var(--roxo) 60%,#4f22e0)}
+.tk.e{border:1.3px solid rgba(169,177,196,.35)}
+.tk.w{border:1.3px solid var(--amarelo);background:rgba(255,196,0,.12)}
+
+.toc{list-style:none;margin-top:3mm}
+.toc li{display:grid;grid-template-columns:9mm 1fr auto;align-items:baseline;padding:2.1mm 0;border-bottom:1px solid var(--linha)}
+.toc .c{font:700 8pt/1 var(--mono);color:var(--roxo)}
+.toc .s{font:700 9.6pt/1.25 var(--display);color:var(--navy)}
+.toc .s small{display:block;font:400 7.6pt/1.35 var(--texto);color:var(--cinza);margin-top:.5mm}
+.toc .p{font:600 7.6pt/1 var(--mono);color:var(--cinza)}
+</style>
+</head>
+<body>
+
+<!-- 1 · CAPA -->
+<section class="page dark cover">
+  <div class="logo">
+    <svg width="34" height="34" viewBox="0 0 120 120"><rect width="120" height="120" rx="34" fill="#6C3BFF"/><rect x="27" y="20" width="17" height="78" rx="8.5" fill="#fff"/><circle cx="60" cy="72" r="23" fill="none" stroke="#fff" stroke-width="17"/><path d="M92 10 L81 29 L90 29 L84 45 L103 24 L93 24 L100 10 Z" fill="#FFC400"/></svg>
+    <div class="w">Bizu do Enem</div>
+  </div>
+  <div class="mid">
+    <div class="k">E-book gratuito · ENEM 2026</div>
+    <h1>Guia da<br>Reta <em>Final</em></h1>
+    <p class="sub">Os bizus que mais valem na hora da prova: como a nota funciona, o que revisar em cada área e o checklist do dia.</p>
+  </div>
+  <div class="tokens">
+    <i class="tk o"></i><i class="tk o"></i><i class="tk e"></i><i class="tk o"></i><i class="tk o"></i>
+    <i class="tk o"></i><i class="tk w"></i><i class="tk o"></i><i class="tk o"></i><i class="tk e"></i>
+    <i class="tk o"></i><i class="tk o"></i><i class="tk o"></i><i class="tk e"></i><i class="tk o"></i>
+  </div>
+  <div class="dates"><span class="pill y">1º dia · 8/11</span><span class="pill">2º dia · 15/11</span></div>
+</section>
+
+<!-- 2 · COMO USAR + SUMÁRIO -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>Comece aqui</span></div>
+  <div class="kick">Comece aqui</div>
+  <h1>Valeu por seguir o <em>Bizu do Enem!</em></h1>
+  <p class="lead">Este guia junta, num lugar só, os bizus dos nossos vídeos. Cada tema tem o mesmo formato: <strong>a explicação</strong>, <strong>um exemplo de aplicação</strong> e <strong>o bizu</strong>, a regra prática para levar para a prova.</p>
+  <ol class="toc">
+    <li><span class="c">01</span><span class="s">Como a sua nota funciona<small>TRI e por que as fáceis importam</small></span><span class="p">3</span></li>
+    <li><span class="c">02</span><span class="s">Erros que custam pontos<small>Comando, tempo, troca de resposta e cartão</small></span><span class="p">4</span></li>
+    <li><span class="c">03</span><span class="s">O que cai em cada dia<small>E um plano de revisão na ordem da prova</small></span><span class="p">5</span></li>
+    <li><span class="c">04</span><span class="s">Redação<small>As 5 competências e a proposta de intervenção</small></span><span class="p">6</span></li>
+    <li><span class="c">05</span><span class="s">Matemática<small>Porcentagem como fator e juros compostos</small></span><span class="p">8</span></li>
+    <li><span class="c">06</span><span class="s">Ciências da Natureza<small>Consumo de energia e fluxo de energia</small></span><span class="p">9</span></li>
+    <li><span class="c">07</span><span class="s">Linguagens<small>Funções da linguagem, inglês e espanhol</small></span><span class="p">10</span></li>
+    <li><span class="c">08</span><span class="s">Ciências Humanas<small>Escala cartográfica e documento histórico</small></span><span class="p">13</span></li>
+    <li><span class="c">09</span><span class="s">Véspera e dia da prova<small>Checklists para não esquecer nada</small></span><span class="p">14</span></li>
+  </ol>
+  <p class="small" style="margin-top:3mm">As questões deste guia são originais, no estilo do ENEM. Horários e regras da prova foram conferidos em outubro de 2026, mas a palavra final é sempre do edital e da Página do Participante do Inep.</p>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">2</span></div>
+</section>
+
+<!-- 3 · TRI -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>01 · Como a nota funciona</span></div>
+  <div class="kick">01 · Estratégia</div>
+  <h1>Acertar mais nem sempre dá <em>nota maior</em></h1>
+  <p class="lead">No ENEM, as provas objetivas são corrigidas pela <strong>TRI, a Teoria de Resposta ao Item</strong>. Ela não dá um número fixo de pontos por acerto: estima a sua proficiência a partir do <span class="hl">padrão das suas respostas</span> e das características de cada questão.</p>
+  <h2>O que o modelo leva em conta</h2>
+  <table>
+    <tr><th>Característica</th><th>O que significa</th></tr>
+    <tr><td><b>Dificuldade</b></td><td>O quanto é preciso saber para acertar a questão.</td></tr>
+    <tr><td><b>Discriminação</b></td><td>O quanto a questão separa quem sabe de quem não sabe.</td></tr>
+    <tr><td><b>Acerto ao acaso</b></td><td>A chance de alguém acertar sem saber.</td></tr>
+  </table>
+  <h2>Exemplo de aplicação</h2>
+  <p>Ana e Bruno fazem a mesma prova. <strong>Ana acerta 30</strong>, incluindo quase todas as fáceis. <strong>Bruno acerta 32</strong>, mas erra várias fáceis e acerta difíceis. Para o modelo, o padrão de Bruno é pouco provável para quem domina o conteúdo, e a estimativa dele pode sair <strong>menor</strong> que a de Ana, mesmo com mais acertos.</p>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Comece pelas questões que você domina e não deixe as fáceis escaparem por desatenção. Elas dão coerência ao seu padrão de respostas.</div></div>
+  <p class="small">Isso não é uma fórmula de pontos: é uma tendência do modelo. Cada edição tem a sua calibração.</p>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">3</span></div>
+</section>
+
+<!-- 4 · ERROS -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>02 · Erros que custam pontos</span></div>
+  <div class="kick">02 · Estratégia</div>
+  <h1>5 erros que custam <em>pontos</em></h1>
+  <ol class="num">
+    <li><strong>Não ler o comando até o fim.</strong> Uma palavra como "incorreta", "exceto" ou "predominante" muda a resposta. Antes de marcar, releia o que a pergunta pede.</li>
+    <li><strong>Gastar tempo demais numa questão.</strong> Travou? Pule e volte depois. Uma questão difícil vale o mesmo espaço no cartão que uma fácil que você deixou de ler.</li>
+    <li><strong>Trocar a resposta sem motivo.</strong> Só mude se encontrar um motivo concreto no texto ou na conta, e não por insegurança.</li>
+    <li><strong>Deixar o cartão-resposta para o final.</strong> Não existe tempo extra para transcrever, e o que vale é o que está no cartão, não o que está no caderno. Passe as respostas por blocos ou reserve um tempo no fim.</li>
+    <li><strong>Deixar questão em branco.</strong> No ENEM, não há desconto por erro: em branco conta como errada. Elimine o que puder e marque a alternativa mais provável.</li>
+  </ol>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    Faltam poucos minutos e você ainda tem dez questões sem marcar no cartão. O que fazer?
+    <div class="res"><strong>1º</strong> passe para o cartão as que você já resolveu. <strong>2º</strong> nas restantes, elimine o que der e marque a mais provável. Nenhuma fica em branco.</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">O cartão é a sua prova; o caderno é rascunho.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">4</span></div>
+</section>
+
+<!-- 5 · O QUE CAI + PLANO -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>03 · O que cai em cada dia</span></div>
+  <div class="kick">03 · Planejamento</div>
+  <h1>O que cai em <em>cada dia</em></h1>
+  <div class="two">
+    <div class="box"><div class="t">1º dia · 8/11</div><strong>Linguagens</strong> · 45 questões<br><strong>Ciências Humanas</strong> · 45 questões<br><strong>Redação</strong></div>
+    <div class="box"><div class="t">2º dia · 15/11</div><strong>Ciências da Natureza</strong> · 45 questões<br><strong>Matemática</strong> · 45 questões</div>
+  </div>
+  <p class="small">Em Linguagens, você escolhe na inscrição entre inglês e espanhol para as 5 questões de língua estrangeira.</p>
+  <h2>Plano de revisão na ordem da prova</h2>
+  <table>
+    <tr><th style="width:27mm">Quando</th><th>Foco</th></tr>
+    <tr><td><b>Até 7/11</b></td><td>Redação (escreva pelo menos uma completa e confira a proposta de intervenção), leitura e interpretação, funções da linguagem, língua estrangeira e Humanas.</td></tr>
+    <tr><td><b>7/11 · véspera</b></td><td>Só revisão leve dos bizus. Separe documento e caneta e durma cedo.</td></tr>
+    <tr><td><b>9/11 a 13/11</b></td><td>Natureza e Matemática: fórmulas, unidades e as contas que mais caem. Refaça as questões que errou.</td></tr>
+    <tr><td><b>14/11 · véspera</b></td><td>Revisão leve. Calculadora não entra: confie nas contas que você treinou.</td></tr>
+  </table>
+  <h3>Rotina de um dia de revisão</h3>
+  <ul class="lst">
+    <li>Um bloco de questões no tempo de prova (conte uns 3 minutos por questão).</li>
+    <li>Corrija na hora e anote <strong>por que</strong> errou: conteúdo, leitura ou atenção.</li>
+    <li>No dia seguinte, refaça só as que errou.</li>
+  </ul>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Organize a revisão na ordem da prova: primeiro o que cai no 1º domingo.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">5</span></div>
+</section>
+
+<!-- 6 · REDAÇÃO 1 -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>04 · Redação</span></div>
+  <div class="kick">04 · Redação</div>
+  <h1>As 5 competências da <em>redação</em></h1>
+  <p class="lead">A redação do ENEM é um texto <strong>dissertativo-argumentativo</strong> sobre um tema de ordem social. Cada competência vale de 0 a 200 pontos, num total de 1.000.</p>
+  <table>
+    <tr><th style="width:9mm">C</th><th>O que é avaliado</th></tr>
+    <tr><td><b>1</b></td><td>Domínio da norma-padrão da língua escrita.</td></tr>
+    <tr><td><b>2</b></td><td>Compreender a proposta, desenvolver o tema e usar repertório de várias áreas do conhecimento, dentro do tipo dissertativo-argumentativo.</td></tr>
+    <tr><td><b>3</b></td><td>Selecionar, relacionar, organizar e interpretar informações e argumentos em defesa de um ponto de vista.</td></tr>
+    <tr><td><b>4</b></td><td>Coesão: os mecanismos linguísticos que ligam as partes do texto.</td></tr>
+    <tr><td><b>5</b></td><td>Elaborar uma proposta de intervenção para o problema, respeitando os direitos humanos.</td></tr>
+  </table>
+  <h2>Uma estrutura que funciona</h2>
+  <ul class="lst">
+    <li><strong>Introdução:</strong> contextualize o tema e apresente a sua tese.</li>
+    <li><strong>Desenvolvimento 1 e 2:</strong> um argumento por parágrafo, cada um com repertório ligado ao tema (e não solto).</li>
+    <li><strong>Conclusão:</strong> retome a tese e feche com a proposta de intervenção completa.</li>
+  </ul>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Repertório só vale se você explicar como ele se conecta ao tema.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">6</span></div>
+</section>
+
+<!-- 7 · REDAÇÃO 2 -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>04 · Redação</span></div>
+  <div class="kick">04 · Redação · competência 5</div>
+  <h1>Sua proposta de intervenção está <em>completa?</em></h1>
+  <p class="lead">Uma proposta completa tem <strong>cinco elementos</strong>:</p>
+  <table>
+    <tr><th style="width:27mm">Elemento</th><th>Pergunta</th></tr>
+    <tr><td><b>Agente</b></td><td>Quem vai agir? (governo, escola, mídia, ONGs…)</td></tr>
+    <tr><td><b>Ação</b></td><td>O que será feito?</td></tr>
+    <tr><td><b>Modo ou meio</b></td><td>Como essa ação vai acontecer?</td></tr>
+    <tr><td><b>Finalidade</b></td><td>Para que ela serve? Qual efeito se espera?</td></tr>
+    <tr><td><b>Detalhamento</b></td><td>Uma informação a mais sobre qualquer um dos elementos.</td></tr>
+  </table>
+  <div class="q"><div class="t">Exemplo de aplicação · tema: desinformação nas redes</div>
+    "<span class="hl">O Ministério da Educação</span> deve <span class="hl">promover campanhas nas escolas</span>, <span class="hl">por meio de oficinas</span> <span class="hl">conduzidas por especialistas em mídia</span>, <span class="hl">a fim de ensinar os jovens a checar fontes</span>."
+    <div class="res mono" style="font-size:7.6pt;line-height:1.6">agente → Ministério da Educação · ação → promover campanhas nas escolas · meio → por meio de oficinas · detalhamento → conduzidas por especialistas em mídia · finalidade → ensinar os jovens a checar fontes</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Antes de passar a limpo, pergunte: quem? o quê? como? para quê? E confira se detalhou pelo menos um elemento.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">7</span></div>
+</section>
+
+<!-- 8 · MATEMÁTICA -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>05 · Matemática</span></div>
+  <div class="kick">05 · Matemática</div>
+  <h1>Porcentagem vira <em>fator</em></h1>
+  <p>Troque a porcentagem por um fator de multiplicação e a conta fica mais rápida.</p>
+  <table>
+    <tr><th>Situação</th><th>Fator</th></tr>
+    <tr><td>Aumento de 20%</td><td class="mono">× 1,20</td></tr>
+    <tr><td>Desconto de 20%</td><td class="mono">× 0,80</td></tr>
+    <tr><td>Dois aumentos seguidos de 10%</td><td class="mono">× 1,21 <span class="tag err">não é 20%</span></td></tr>
+    <tr><td>Aumento de 10% e depois desconto de 10%</td><td class="mono">× 0,99 <span class="tag err">não volta</span></td></tr>
+  </table>
+  <h2>Juros compostos</h2>
+  <p>Nos juros simples, a taxa incide sobre o valor inicial. Nos compostos, sobre o valor já atualizado: juros sobre juros.</p>
+  <div class="eq">M = C · (1 + i)<sup>t</sup></div>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    Uma pessoa aplica R$ 1.000,00 a juros compostos de 10% ao mês, sem retiradas. Após 3 meses, o montante será de:
+    <div class="alt row">
+      <span class="l">A</span><span>R$ 1.300,00 <span class="tag err">armadilha</span></span>
+      <span class="l">B</span><span>R$ 1.310,00</span>
+      <span class="l ok">C</span><span class="okt">R$ 1.331,00 <span class="tag ok">correta</span></span>
+      <span class="l">D</span><span>R$ 1.210,00</span>
+      <span class="l">E</span><span>R$ 1.464,10</span>
+    </div>
+    <div class="res">1.000 × 1,1³ = 1.000 × 1,331 = <strong>R$ 1.331,00</strong>. A alternativa A é a conta de juros simples (1.000 + 3 × 100).</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Transforme a taxa em fator e eleve ao tempo.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">8</span></div>
+</section>
+
+<!-- 9 · NATUREZA -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>06 · Ciências da Natureza</span></div>
+  <div class="kick">06 · Física</div>
+  <h1>Quanto o chuveiro <em>gasta?</em></h1>
+  <div class="eq">E = P · Δt &nbsp;→&nbsp; kWh = kW × h</div>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    Um chuveiro de 5.500 W fica ligado 20 minutos por dia. Em 30 dias, consome:
+    <div class="res">5.500 W = <strong>5,5 kW</strong> · 20 min × 30 = 600 min = <strong>10 h</strong> · 5,5 × 10 = <strong>55 kWh</strong>.<br>Armadilha: esquecer de converter os minutos dá 3.300, um resultado 60 vezes maior.</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Antes de multiplicar, deixe a potência em kW e o tempo em horas.</div></div>
+  <div class="kick" style="margin-top:5mm">06 · Biologia</div>
+  <h1 style="font-size:16pt">Por que a cadeia alimentar é <em>curta?</em></h1>
+  <p>A cada nível trófico, a maior parte da energia se perde, principalmente como calor na respiração. Só cerca de <strong>10%</strong> passa para o nível seguinte. Por isso, a pirâmide de energia nunca é invertida.</p>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    Produtores fixam 10.000 kcal. Quanto chega aos consumidores secundários?
+    <div class="res">10.000 → <strong>1.000</strong> (consumidores primários) → <strong>100 kcal</strong> (secundários).<br>Armadilhas: aplicar os 10% uma vez só (1.000) ou subtrair 10% em vez de multiplicar (9.000).</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">A cada nível, divida por dez.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">9</span></div>
+</section>
+
+<!-- 10 · FUNÇÕES DA LINGUAGEM -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>07 · Linguagens</span></div>
+  <div class="kick">07 · Linguagens</div>
+  <h1>Funções da linguagem: ache o <em>foco</em></h1>
+  <p class="lead">Toda comunicação tem seis elementos, e cada um corresponde a uma função. Um texto pode ter várias funções; a questão pede a <strong>predominante</strong>.</p>
+  <table>
+    <tr><th>Foco no…</th><th>Função</th><th>Marcas típicas</th></tr>
+    <tr><td><b>Emissor</b></td><td>Emotiva</td><td>1ª pessoa, sentimentos, exclamações</td></tr>
+    <tr><td><b>Receptor</b></td><td>Conativa</td><td>Imperativo, "você", tentativa de convencer</td></tr>
+    <tr><td><b>Assunto</b></td><td>Referencial</td><td>3ª pessoa, informação objetiva</td></tr>
+    <tr><td><b>Canal</b></td><td>Fática</td><td>Testar o contato: "alô, tá me ouvindo?"</td></tr>
+    <tr><td><b>Código</b></td><td>Metalinguística</td><td>A língua explicando a língua (dicionário)</td></tr>
+    <tr><td><b>Mensagem</b></td><td>Poética</td><td>Rima, ritmo, jogo de palavras</td></tr>
+  </table>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    "Proteja sua pele. Use protetor solar todos os dias." Nesse anúncio, predomina a função:
+    <div class="alt">
+      <span class="l">A</span><span>emotiva</span>
+      <span class="l ok">B</span><span class="okt">conativa <span class="tag ok">correta</span></span>
+      <span class="l">C</span><span>referencial <span class="tag err">armadilha</span></span>
+      <span class="l">D</span><span>fática</span>
+      <span class="l">E</span><span>metalinguística</span>
+    </div>
+    <div class="res">Os verbos no imperativo falam direto com o leitor. O texto cita um produto, mas o foco é convencer quem lê.</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Pergunte: em quem ou em quê o texto está focado?</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">10</span></div>
+</section>
+
+<!-- 11 · INGLÊS -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>07 · Inglês</span></div>
+  <div class="kick">07 · Inglês</div>
+  <h1>Ache a ideia central sem ser <em>fluente</em></h1>
+  <ol class="num">
+    <li><strong>Leia a pergunta primeiro.</strong> Ela vem em português e diz o que procurar.</li>
+    <li><strong>Olhe título, fonte e imagens.</strong> Eles já entregam o tema.</li>
+    <li><strong>Procure os cognatos e as palavras que se repetem.</strong> Palavras parecidas com o português mostram a ideia central.</li>
+  </ol>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    <em>"Plastic pollution is a global problem. Every year, millions of tons of plastic end up in the oceans, harming marine life."</em><br>O texto tem como objetivo principal:
+    <div class="alt">
+      <span class="l">A</span><span>incentivar a reciclagem doméstica <span class="tag err">armadilha</span></span>
+      <span class="l ok">B</span><span class="okt">apontar a poluição dos oceanos por plástico como problema global <span class="tag ok">correta</span></span>
+      <span class="l">C</span><span>explicar como o plástico é fabricado</span>
+      <span class="l">D</span><span>defender a pesca industrial</span>
+      <span class="l">E</span><span>apresentar dados sobre turismo no litoral</span>
+    </div>
+    <div class="res">Cognatos: <em>plastic, pollution, global, problem, oceans, marine</em>. A alternativa A fala de um tema vizinho, que não está no texto.</div>
+  </div>
+  <h3>Falsos cognatos que mais enganam</h3>
+  <table>
+    <tr><td><b>actually</b> = na verdade</td><td><b>pretend</b> = fingir</td></tr>
+    <tr><td><b>push</b> = empurrar</td><td><b>library</b> = biblioteca</td></tr>
+    <tr><td><b>college</b> = faculdade</td><td><b>parents</b> = pais</td></tr>
+  </table>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Pergunta primeiro, depois título e palavras conhecidas.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">11</span></div>
+</section>
+
+<!-- 12 · ESPANHOL -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>07 · Espanhol</span></div>
+  <div class="kick">07 · Espanhol</div>
+  <h1>Cuidado com os <em>falsos amigos</em></h1>
+  <p class="lead">A estratégia é a mesma do inglês: pergunta, título, fonte, imagens e palavras repetidas. A pegadinha é que o espanhol <strong>parece</strong> fácil: muitas palavras iguais ao português significam outra coisa.</p>
+  <table>
+    <tr><th>Espanhol</th><th>Significa</th><th>Espanhol</th><th>Significa</th></tr>
+    <tr><td><b>exquisito</b></td><td>delicioso</td><td><b>cena</b></td><td>jantar</td></tr>
+    <tr><td><b>embarazada</b></td><td>grávida</td><td><b>largo</b></td><td>comprido</td></tr>
+    <tr><td><b>oficina</b></td><td>escritório</td><td><b>apellido</b></td><td>sobrenome</td></tr>
+    <tr><td><b>rato</b></td><td>um tempinho</td><td><b>polvo</b></td><td>pó</td></tr>
+    <tr><td><b>pronto</b></td><td>logo, em breve</td><td><b>zurdo</b></td><td>canhoto</td></tr>
+    <tr><td><b>borracha</b></td><td>bêbada</td><td><b>taza</b></td><td>xícara</td></tr>
+  </table>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    <em>"Pasé un rato en la oficina y luego comí algo exquisito."</em> A frase significa:
+    <div class="alt">
+      <span class="l">A</span><span>Vi um rato na oficina e comi algo estranho <span class="tag err">armadilha</span></span>
+      <span class="l ok">B</span><span class="okt">Passei um tempo no escritório e depois comi algo delicioso <span class="tag ok">correta</span></span>
+      <span class="l">C</span><span>Passei um tempo na oficina e comi algo estranho</span>
+      <span class="l">D</span><span>Peguei um rato no escritório e comi algo delicioso</span>
+      <span class="l">E</span><span>Fiquei pouco tempo no escritório e não comi nada</span>
+    </div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Em espanhol, desconfie da palavra que parece igual.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">12</span></div>
+</section>
+
+<!-- 13 · HUMANAS -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>08 · Ciências Humanas</span></div>
+  <div class="kick">08 · Geografia</div>
+  <h1 style="font-size:17pt">Escala cartográfica <em>de cabeça</em></h1>
+  <p style="margin-bottom:1mm">Na escala <strong>1 : 500.000</strong>, 1 cm no mapa vale 500.000 cm no terreno.</p>
+  <div class="q"><div class="t">Exemplo de aplicação</div>
+    Num mapa na escala 1 : 500.000, duas cidades estão a 4 cm de distância. Qual a distância real?
+    <div class="res">4 × 500.000 = 2.000.000 cm. De cm para km, divida por 100.000 (corte cinco zeros): <strong>20 km</strong>.<br>Armadilha: cortar zeros a mais (2 km) ou a menos (200 km).</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Multiplique pelo denominador e corte cinco zeros para ter quilômetros. Quanto maior o denominador, menor a escala e menos detalhes.</div></div>
+  <div class="kick" style="margin-top:3.5mm">08 · História</div>
+  <h1 style="font-size:17pt">O que o documento diz e o que ele <em>cala</em></h1>
+  <p style="margin-bottom:1mm">A questão quase sempre começa com um documento. Pergunte: <strong>quem escreveu, quando e em que contexto?</strong></p>
+  <div class="q"><div class="t">Exemplo de aplicação · Lei Áurea (Lei nº 3.353, 1888)</div>
+    "É declarada extincta desde a data desta lei a escravidão no Brazil." <span class="small">(art. 1º, grafia original)</span>
+    <div class="res">A lei aboliu a escravidão, mas não previu terra, trabalho ou educação para as pessoas libertadas. Por isso, as questões costumam ligá-la à exclusão que permaneceu.<br>Armadilha: tratar a abolição como o fim da desigualdade.</div>
+  </div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Leia o documento e pergunte o que ele diz e o que deixa de fora.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">13</span></div>
+</section>
+
+<!-- 14 · VÉSPERA -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>09 · Véspera</span></div>
+  <div class="kick">09 · Véspera da prova</div>
+  <h1>Na véspera, o objetivo é chegar <em>inteiro</em></h1>
+  <h2>Faça</h2>
+  <ul class="chk">
+    <li>Revise só resumos, fórmulas e os seus bizus. Nada de conteúdo novo.</li>
+    <li>Separe tudo na noite anterior: documento com foto, caneta e o que o edital pedir.</li>
+    <li>Confira o local de prova no Cartão de Confirmação da Inscrição e planeje o trajeto com folga.</li>
+    <li>Prepare água e um lanche leve.</li>
+    <li>Durma cedo. O sono ajuda a memória e a concentração.</li>
+  </ul>
+  <h2>Evite</h2>
+  <ul class="chk no">
+    <li>Virar a noite estudando.</li>
+    <li>Testar comida diferente no dia.</li>
+    <li>Deixar para descobrir o local de prova no domingo.</li>
+  </ul>
+  <div class="box"><div class="t">Antes do 2º domingo</div>Calculadora não entra. Na véspera do dia 15/11, revise as contas que mais caem: porcentagem como fator, unidades (kW, h, cm, km) e proporção.</div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Na véspera, o objetivo não é aprender mais, é chegar inteiro.</div></div>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">14</span></div>
+</section>
+
+<!-- 15 · DIA DA PROVA -->
+<section class="page">
+  <div class="hd"><span class="mk"><b>⚡</b>Bizu do Enem</span><span>09 · Dia da prova</span></div>
+  <div class="kick">09 · Dia da prova</div>
+  <h1>Checklist do <em>domingo</em></h1>
+  <table>
+    <tr><th>Horário de Brasília</th><th>8/11</th><th>15/11</th></tr>
+    <tr><td><b>Portões abrem</b></td><td>12h</td><td>12h</td></tr>
+    <tr><td><b>Portões fecham</b></td><td>13h</td><td>13h</td></tr>
+    <tr><td><b>Início da prova</b></td><td>13h30</td><td>13h30</td></tr>
+    <tr><td><b>Fim da prova</b></td><td>19h</td><td>18h30</td></tr>
+  </table>
+  <p class="small">Atenção ao fuso: se você mora fora do horário de Brasília, converta para o horário local.</p>
+  <h2>Leve</h2>
+  <ul class="chk">
+    <li>Documento oficial com foto, original (ou a versão digital pelo app oficial).</li>
+    <li>Caneta esferográfica de tinta preta, de corpo transparente, e uma reserva.</li>
+    <li>Cartão de Confirmação da Inscrição (recomendado).</li>
+    <li>Água e lanche.</li>
+  </ul>
+  <h2>Não fica com você na sala</h2>
+  <ul class="chk no">
+    <li>Celular, relógio e qualquer eletrônico (vão desligados no envelope porta-objetos).</li>
+    <li>Lápis, borracha, lapiseira, corretivo, calculadora e óculos escuros.</li>
+  </ul>
+  <div class="box"><div class="t">Regras de saída</div>Só é possível sair depois de <strong>2 horas</strong> do início. Para levar o caderno de questões, é preciso ficar até os <strong>últimos 30 minutos</strong>.</div>
+  <div class="bizu"><div class="t">O bizu</div><div class="x">Chegue com folga: os portões fecham no horário marcado e não reabrem.</div></div>
+  <p class="small">Conferido em 28/10/2026. Confirme no edital e na Página do Participante do Inep.</p>
+  <div class="ft"><span>Guia da Reta Final · ENEM 2026</span><span class="n">15</span></div>
+</section>
+
+<!-- 16 · CONTRACAPA -->
+<section class="page dark cover">
+  <div class="mid" style="top:52mm">
+    <svg width="64" height="64" viewBox="0 0 120 120" style="margin-bottom:8mm"><rect width="120" height="120" rx="34" fill="#6C3BFF"/><rect x="27" y="20" width="17" height="78" rx="8.5" fill="#fff"/><circle cx="60" cy="72" r="23" fill="none" stroke="#fff" stroke-width="17"/><path d="M92 10 L81 29 L90 29 L84 45 L103 24 L93 24 L100 10 Z" fill="#FFC400"/></svg>
+    <div class="k">Até o dia da prova</div>
+    <h1 style="font-size:28pt">Todo dia tem <em>bizu novo</em></h1>
+    <p class="sub">Dois vídeos por dia, às 12h e às 19h, com explicação, exemplo de aplicação e o bizu de cada tema.</p>
+    <p class="sub" style="margin-top:6mm;color:#fff;font-weight:700">Segue o Bizu do Enem e salva os vídeos para revisar.</p>
+  </div>
+  <div class="dates"><span class="pill y">Bons estudos ⚡</span></div>
+</section>
+
+</body>
+</html>

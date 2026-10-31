@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Bizu do Enem · V004 · Styleframes</title>
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+.alt{display:flex;align-items:center;gap:20px;padding:16px 20px;border-radius:20px;margin-bottom:10px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);position:relative}
+.alt .l{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 26px/1 var(--display);border:2px solid rgba(255,255,255,.25);color:var(--cinza-2);flex:none}
+.alt .v{font:700 38px/1 var(--display);font-variant-numeric:tabular-nums}
+.alt .n{margin-left:auto;font:600 22px/1 var(--mono)}
+.math{white-space:nowrap;font:800 64px/1.1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-1px}
+sup{font-size:.55em;vertical-align:.9em}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../shared/kit.js"></script>
+<script>
+const {tok,MARK,brand,shell,ctaFollow}=KIT; const F=KIT.page();
+// barras: juros simples vs compostos, mês 0..3
+const bars=(hl=false)=>{const S=[1000,1100,1200,1300],C=[1000,1100,1210,1331],max=1400,H=520,bw=64;
+  return `<svg width="800" height="${H+90}" viewBox="0 0 800 ${H+90}" style="overflow:visible">
+  ${[1000,1100,1200,1300].map(v=>`<line x1="0" x2="800" y1="${H-(v-800)/(max-800)*H}" y2="${H-(v-800)/(max-800)*H}" stroke="rgba(255,255,255,.07)"/><text x="-12" y="${H-(v-800)/(max-800)*H+8}" text-anchor="end" font-family="JetBrains Mono" font-size="20" fill="#5B6680">${v}</text>`).join('')}
+  ${[0,1,2,3].map(m=>{const x=60+m*190;const hs=(S[m]-800)/(max-800)*H, hc=(C[m]-800)/(max-800)*H, hb=(1000-800)/(max-800)*H;
+    return `<rect x="${x}" y="${H-hs}" width="${bw}" height="${hs}" rx="10" fill="#5B6680"/>
+      <rect x="${x+bw+12}" y="${H-hc}" width="${bw}" height="${hc}" rx="10" fill="#6C3BFF"/>
+      ${m>0&&hl?`<rect x="${x+bw+12}" y="${H-hc}" width="${bw}" height="${(C[m]-C[m-1])/(max-800)*H}" rx="8" fill="#FFC400"/>
+      <text x="${x+bw+12+bw/2}" y="${H-hc-14}" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="22" fill="#FFC400">+${C[m]-C[m-1]}</text>`:''}
+      <text x="${x+bw+6}" y="${H+44}" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="#A9B1C4">mês ${m}</text>`}).join('')}
+  <line x1="0" x2="800" y1="${H}" y2="${H}" stroke="rgba(255,255,255,.35)" stroke-width="2"/></svg>`;};
+const legend=`<div style="display:flex;gap:26px;font:700 26px/1 var(--display);margin-bottom:26px">
+  <span style="display:flex;align-items:center;gap:10px"><i style="width:22px;height:22px;border-radius:6px;background:#5B6680"></i>Simples</span>
+  <span style="display:flex;align-items:center;gap:10px"><i style="width:22px;height:22px;border-radius:6px;background:#6C3BFF"></i>Compostos</span>
+  <span style="display:flex;align-items:center;gap:10px;color:var(--amarelo)"><i style="width:22px;height:22px;border-radius:6px;background:#FFC400"></i>juros do mês</span></div>`;
+const ALTS=[['A','R$ 1.300,00','juros simples','trap'],['B','R$ 1.310,00','',''],['C','R$ 1.331,00','','ok'],['D','R$ 1.210,00','só 2 meses','x'],['E','R$ 1.464,10','4 meses','x']];
+const question=(state=0)=>`<div class="note" style="color:var(--roxo-claro);margin-bottom:20px">QUESTÃO · ESTILO ENEM</div>
+  <div style="font:600 34px/1.4 var(--texto);color:var(--cinza-1);margin-bottom:28px">Uma pessoa aplica <b style="color:#fff">R$ 1.000,00</b> a juros compostos de <b style="color:#fff">10% ao mês</b>, sem retiradas. Após <b style="color:#fff">3 meses</b>, o montante será de:</div>
+  ${ALTS.map(([l,v,n,k])=>{const ok=state&&k==='ok', trap=state&&k==='trap', x=state&&(k==='x'||k==='trap');
+    return `<div class="alt" style="${ok?'border-color:var(--amarelo);background:rgba(255,196,0,.12)':''};${x&&!trap?'opacity:.4':''}">
+    <div class="l" style="${ok?'background:var(--amarelo);color:var(--navy);border-color:var(--amarelo)':''}">${l}</div>
+    <div class="v" style="${trap?'text-decoration:line-through;text-decoration-color:#FF7A8A;text-decoration-thickness:4px;color:var(--cinza-2)':''}">${v}</div>
+    ${state&&n?`<div class="n" style="color:${trap?'#FF7A8A':'var(--cinza-2)'}">${trap?'⚠ ':''}${n}</div>`:''}${ok?'<div class="n" style="color:var(--amarelo)">✓ correta</div>':''}</div>`}).join('')}`;
+
+const frames={
+// 01 — GANCHO
+1:()=>shell(`${brand('01','GANCHO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Matemática · Juros compostos</div>
+    <div class="h-l">A pegadinha<br>dos <span class="y">juros</span><br><span class="y">compostos</span></div></div>
+  <div class="abs card" style="left:60px;top:880px;width:870px;padding:40px 40px 20px">
+    <div style="display:flex;align-items:center;gap:30px;margin-bottom:20px">
+      <div class="math" style="color:var(--cinza-2);text-decoration:line-through;text-decoration-color:#FF7A8A;text-decoration-thickness:6px">R$ 1.300</div>
+      <div style="font:900 60px/1 var(--display);color:var(--cinza-3)">→</div>
+      <div class="math y" style="font-size:84px;text-shadow:0 0 50px rgba(255,196,0,.4)">R$ 1.331</div></div>
+    <div class="note" style="color:var(--cinza-2)">R$ 1.000 · 10% ao mês · 3 meses</div>
+  </div>`),
+
+// 02 — SIMPLES x COMPOSTOS
+2:()=>shell(`${brand('02','CONCEITO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Simples × compostos</div>
+    <div class="h-l">Juros sobre<br><span class="y">juros</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:40px 40px 20px 70px">${legend}${bars(true)}</div>`),
+
+// 03 — FÓRMULA
+3:()=>shell(`${brand('03','FÓRMULA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">O montante</div>
+    <div class="h-l">A <span class="y">fórmula</span></div></div>
+  <div class="abs card" style="left:60px;top:680px;width:870px;padding:60px 50px 46px">
+    <div style="font:900 104px/1 var(--display);letter-spacing:-3px;text-align:center;white-space:nowrap">M = C · (1 + i)<sup style="color:var(--amarelo)">t</sup></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px">
+      ${[['M','montante','#fff'],['C','capital','var(--c1)'],['i','taxa','var(--c3)'],['t','tempo','var(--amarelo)']].map(([a,b,c])=>`<div style="text-align:center;padding:20px 10px;border-radius:20px;background:rgba(255,255,255,.05)">
+        <div style="font:900 56px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:10px">${b}</div></div>`).join('')}
+    </div>
+  </div>`),
+
+// 04 — QUESTÃO
+4:()=>shell(`${brand('04','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Vamos aplicar</div>
+    <div class="h-l">Na <span class="y">questão</span></div></div>
+  <div class="abs card" style="left:60px;top:640px;width:870px;padding:40px 40px 30px">${question(0)}</div>`),
+
+// 05 — RESOLUÇÃO
+5:()=>shell(`${brand('04','APLICAÇÃO')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Resolução</div>
+    <div class="h-l">Passo a <span class="y">passo</span></div></div>
+  <div class="abs card" style="left:60px;top:660px;width:870px;padding:50px 50px 44px">
+    <div class="math" style="margin-bottom:34px">1.000 · <span class="y">1,1</span><sup class="y">3</sup></div>
+    ${[['1,1²','= 1,21'],['1,21 · 1,1','= 1,331'],['1.000 · 1,331','= 1.331']].map(([a,b],i)=>`
+      <div style="display:flex;align-items:center;gap:24px;margin-bottom:24px">
+        <div style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:800 22px/1 var(--mono);background:rgba(108,59,255,.35)">${i+1}</div>
+        <div style="font:700 52px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--cinza-1)">${a} <span style="color:${i===2?'var(--amarelo)':'#fff'}">${b}</span></div></div>`).join('')}
+    <div style="margin-top:20px;display:inline-flex" class="pill" ><span style="background:var(--amarelo);color:var(--navy);padding:16px 26px;border-radius:999px;font:800 40px/1 var(--display)">R$ 1.331,00 · (C)</span></div>
+  </div>`),
+
+// 06 — ARMADILHA
+6:()=>shell(`${brand('05','ARMADILHA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:#FF7A8A">Atenção</div>
+    <div class="h-l">Cuidado com<br>a <span style="color:#FF7A8A">(A)</span></div></div>
+  <div class="abs card" style="left:60px;top:720px;width:870px;padding:36px 40px 26px">${question(1).replace(/<div class="note"[\s\S]*?montante será de:<\/div>/,'')}</div>
+  <div class="abs" style="left:84px;top:1240px;font:600 32px/1.35 var(--texto);color:var(--cinza-1);width:840px">R$ 1.300 = 1.000 + 3 × 100 → <b style="color:#FF7A8A">conta de juros simples</b></div>`),
+
+// 07 — BIZU
+7:()=>shell(`${brand('06','O BIZU')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px;color:var(--amarelo)">O bizu</div>
+    <div class="h-l">Taxa vira fator,<br><span class="y">fator elevado</span><br><span class="y">ao tempo</span></div></div>
+  <div class="abs card" style="left:60px;top:860px;width:870px;padding:50px 40px;display:flex;align-items:center;justify-content:space-between">
+    ${[['10%','taxa','var(--cinza-1)'],['1,1','fator','var(--c3)'],['1,1<sup>t</sup>','no tempo','var(--amarelo)']].map(([a,b,c],i)=>`
+      <div style="text-align:center"><div style="font:900 84px/1 var(--display);color:${c}">${a}</div><div class="note" style="color:var(--cinza-2);margin-top:12px">${b}</div></div>
+      ${i<2?'<div style="font:900 54px/1 var(--display);color:var(--cinza-3)">→</div>':''}`).join('')}
+  </div>
+  <div class="abs" style="left:84px;top:1180px;display:flex;gap:14px;flex-wrap:wrap;width:860px">
+    ${[['5%','1,05'],['12%','1,12'],['−20%','0,80']].map(([a,b])=>`<div class="pill" style="font-size:28px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12)"><span style="color:var(--cinza-2)">${a}</span> → <span class="y">${b}</span></div>`).join('')}</div>`),
+
+// 08 — CTA
+8:()=>shell(`${brand('07','CTA')}
+  <div class="abs" style="left:84px;top:390px"><div class="kicker" style="margin-bottom:28px">Curtiu o bizu?</div>
+    <div class="h-l">Salva<br><span class="y">e segue</span></div></div>
+  <div class="abs" style="left:84px;top:800px;display:flex;flex-direction:column;gap:28px">${ctaFollow('pra revisar antes da prova')}</div>`),
+};
+document.getElementById('root').innerHTML=frames[F]();
+</script>
+</body>
+</html>
