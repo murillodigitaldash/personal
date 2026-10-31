@@ -92,7 +92,7 @@ $('#scenes').innerHTML=`
 
 /* 01 GANCHO — quadro 0 já cheio */
 tl.set('#s1',{visibility:'visible'},0);
-tl.fromTo('#s1 .h-l',{scale:1.04},{scale:1,duration:1.2,ease:'power2.out',transformOrigin:'0 0'},0);
+tl.fromTo('#s1 .h-l',{scale:1},{scale:1.025,duration:4,ease:'sine.inOut',transformOrigin:'0 0',immediateRender:false},0.3);
 tl.to('#s1doc',{y:-24,duration:.6,yoyo:true,repeat:3,ease:'sine.inOut'},0);
 tl.to('#s1doc',{rotation:-10,duration:.08,yoyo:true,repeat:5},3.33);
 // a resposta: a redação cai no 1º dia

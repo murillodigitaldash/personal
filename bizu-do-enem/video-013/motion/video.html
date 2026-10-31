@@ -107,7 +107,7 @@ $('#scenes').innerHTML=`
 
 /* 01 GANCHO — quadro 0 já cheio */
 tl.set('#s1',{visibility:'visible'},0); tl.set('#s1',{visibility:'hidden'},5.6);
-tl.fromTo('#s1 .h-l',{scale:1.04},{scale:1,duration:1.2,ease:'power2.out',transformOrigin:'0 0'},0);
+tl.fromTo('#s1 .h-l',{scale:1},{scale:1.025,duration:4,ease:'sine.inOut',transformOrigin:'0 0',immediateRender:false},0.3);
 $$('#s1grid .bub').forEach((b,i)=>tl.fromTo(b,{scale:1},{scale:1.12,duration:.25,yoyo:true,repeat:1,immediateRender:false},.15+i*.12));
 pulse('#s1q',T(4.36),1.08); pulse('#s1timer',T(.44),1.06);
 tl.to(['#s1 .h-l','#s1q'],{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.25); tl.to(['#s1timer','#s1grid'],{opacity:0,y:-40,duration:.35,ease:'power3.in'},5.3);
